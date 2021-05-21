@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "67172006596",
+    "project_id": "golden-balance",
+    "storage_bucket": "golden-balance.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67172006596:android:4c23dc80c0d6c6e4472791",
+        "android_client_info": {
+          "package_name": "groundplayerz.com.golden_balance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67172006596-043c0it9rosn89q9vjaensm8n3ioe972.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "groundplayerz.com.golden_balance",
+            "certificate_hash": "d01ece95a279d0b588018f1c848a48ed549697c5"
+          }
+        },
+        {
+          "client_id": "67172006596-3e1epka0ivt91u5oo52c2rc2eqcejccs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8aC15vI_Qcgaz40XWUZE1ghmUEW926ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67172006596-3e1epka0ivt91u5oo52c2rc2eqcejccs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "67172006596-2oovv1b8a6o2nmg02snkbua9g4glcd56.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.groundplayerz.goldenBalance"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67172006596:android:929763945af26f43472791",
+        "android_client_info": {
+          "package_name": "groundplayerz.com.golden_balance_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67172006596-3e1epka0ivt91u5oo52c2rc2eqcejccs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8aC15vI_Qcgaz40XWUZE1ghmUEW926ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67172006596-3e1epka0ivt91u5oo52c2rc2eqcejccs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "67172006596-2oovv1b8a6o2nmg02snkbua9g4glcd56.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.groundplayerz.goldenBalance"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
