@@ -1,9 +1,7 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 
-import '../api_provider/user_api_provider.dart';
 import '../api_provider/user_api_provider.dart';
 
 class UserRepository {
@@ -26,4 +24,7 @@ class UserRepository {
           firstMediaType: firstMediaType,
           secondMedia: secondMedia,
           secondMediaType: secondMediaType);
+
+  Future<Response> getHomeFeed({int? cursor}) async =>
+      await userApiProvider.getHomeFeed(cursor: cursor);
 }

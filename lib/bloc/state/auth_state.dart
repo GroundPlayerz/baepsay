@@ -6,17 +6,23 @@ import 'package:golden_balance_flutter/model/user/user.dart';
 @immutable
 abstract class AuthState extends Equatable {}
 
+class Checking extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
 class SignedOut extends AuthState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class Error extends AuthState {
+class AuthError extends AuthState {
   final String message;
   final int? statusCode;
 
-  Error({required this.message, this.statusCode});
+  AuthError({required this.message, this.statusCode});
 
   @override
   // TODO: implement props

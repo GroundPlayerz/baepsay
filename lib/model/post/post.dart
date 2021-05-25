@@ -17,8 +17,8 @@ class Post with _$Post {
     required int firstContentVoteCount,
     required int secondContentVoteCount,
     required bool isLikeButtonPressed,
-    Media? firstContentMedia,
-    Media? secondContentMedia,
+    required bool isVoted,
+    required List<Media> mediaList,
     required String createdAt,
   }) = _Post;
 
@@ -35,7 +35,6 @@ class Media with _$Media {
     required int contentOrder,
     required String url,
     required double size,
-    double? length,
   }) = _Media;
 
   factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);

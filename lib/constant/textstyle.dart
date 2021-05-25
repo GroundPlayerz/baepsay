@@ -53,6 +53,22 @@ const TextStyle kNoto16B = TextStyle(
   color: kWhiteColor,
 );
 
+const TextStyle kPermanentMarker60R = TextStyle(
+  fontFamily: 'PermanentMarker',
+  fontSize: 60.0,
+  fontWeight: FontWeight.w400,
+  letterSpacing: -1.2,
+  color: kWhiteColor,
+);
+
+const TextStyle kNoto50B = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 50,
+  fontWeight: FontWeight.w700,
+  letterSpacing: -1,
+  color: kWhiteColor,
+);
+
 TextStyle kDefaultBody2TextStyle = kNoto12R;
 
 TextStyle kHomeScreenSelectedTabTextStyle = kNoto18B;
@@ -61,8 +77,10 @@ TextStyle kHomeScreenUnselectedTabTextStyle =
 
 TextStyle kPostTitleTextStyle = kNoto18B;
 TextStyle kPostContentTextStyle = kNoto18R;
+TextStyle kPostVSTextStyle = kPermanentMarker60R;
 TextStyle kPostInfoTextStyle = kNoto12R;
 TextStyle kPostInfoNumberTextStyle = kSkia16R;
+TextStyle kPostVoteResultPercentTextStyle = kNoto50B;
 
 TextStyle kAppBarTitleTextStyle = kNoto16R;
 TextStyle kAppBarButtonTextStyle = kNoto16B.copyWith(color: Colors.red);

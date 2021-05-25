@@ -60,6 +60,10 @@ flutter:
       fonts:
         - asset: fonts/Skia/Skia.ttf
           weight: 400
+    - family: PermanentMarker
+      fonts:
+        - asset: fonts/PermanentMarker/PermanentMarker-Regular.ttf
+          weight: 400
 
   assets:
     - images/

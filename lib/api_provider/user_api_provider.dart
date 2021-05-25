@@ -70,4 +70,14 @@ class UserApiProvider {
 
     return downloadURL;
   }
+
+  Future<Response> getHomeFeed({int? cursor}) async {
+    Map<String, dynamic> queryParameters = {};
+    if (cursor != null) queryParameters['cursor'] = cursor;
+    queryParameters['type'] = 'home';
+    Response response =
+        await _dio.get('user/feed', queryParameters: queryParameters);
+
+    return response;
+  }
 }

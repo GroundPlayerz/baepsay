@@ -10,7 +10,7 @@ class AuthCubit extends Cubit<AuthState> {
   final AuthRepository repository;
   final FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
-  AuthCubit({required this.repository}) : super(SignedOut());
+  AuthCubit({required this.repository}) : super(Checking());
 
   signUp({required String profileName}) async {
     try {
@@ -18,9 +18,9 @@ class AuthCubit extends Cubit<AuthState> {
       signInFlask();
     } catch (e) {
       if (e is DioError && e.response!.statusCode == 409) {
-        emit(Error(message: 'User already exists.'));
+        emit(AuthError(message: 'User already exists.'));
       } else {
-        emit(Error(message: e.toString()));
+        emit(AuthError(message: e.toString()));
       }
     }
   }
@@ -28,7 +28,6 @@ class AuthCubit extends Cubit<AuthState> {
   signInGoogle() async {
     try {
       await this.repository.googleSignIn();
-      print('asfasdfasd');
       emit(FirebaseSignedIn());
     } catch (e) {
       emit(SignedOut());
@@ -39,33 +38,34 @@ class AuthCubit extends Cubit<AuthState> {
 
   checkIsFirebaseSignedIn() async {
     try {
+      emit(Checking());
       if (this.repository.isFirebaseSignedIn()) {
         emit(FirebaseSignedIn());
       } else {
         emit(SignedOut());
       }
     } catch (e) {
-      emit(Error(message: e.toString()));
+      emit(AuthError(message: e.toString()));
     }
   }
 
   signInFlask() async {
     try {
       final resp = await this.repository.flaskSignIn();
-
-      final user = User.fromJson(resp.data['user']);
-      final accessToken = Token.fromJson(resp.data['access_token']);
-      secureStorage.write(key: 'access_token', value: accessToken.accessToken);
-      emit(FlaskSignedIn(
-        accessToken: accessToken,
-        user: user,
-      ));
-    } catch (e) {
-      if (e is DioError && e.response!.statusCode == 404) {
+      if (resp.data['msg'] == 'Registration is required.') {
         emit(FlaskSignInFailed());
       } else {
-        emit(SignedOut());
+        final user = User.fromJson(resp.data['user']);
+        final accessToken = Token.fromJson(resp.data['access_token']);
+        secureStorage.write(
+            key: 'access_token', value: accessToken.accessToken);
+        emit(FlaskSignedIn(
+          accessToken: accessToken,
+          user: user,
+        ));
       }
+    } catch (e) {
+      emit(SignedOut());
     }
   }
 
@@ -75,7 +75,7 @@ class AuthCubit extends Cubit<AuthState> {
       secureStorage.delete(key: 'access_token');
       emit(SignedOut());
     } catch (e) {
-      emit(Error(message: e.toString()));
+      emit(AuthError(message: e.toString()));
     }
   }
 }

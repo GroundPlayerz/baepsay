@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
-import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/screen/home/following_feed_screen.dart';
@@ -12,25 +11,24 @@ import 'package:golden_balance_flutter/screen/notification_screen.dart';
 import 'package:golden_balance_flutter/screen/profile/my_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class UnauthorizedHomeScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _UnauthorizedHomeScreenState createState() => _UnauthorizedHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _UnauthorizedHomeScreenState extends State<UnauthorizedHomeScreen> {
   bool isForYouSelected = true;
   bool isStateChecked = false;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HomeFeedCubit>(context).getUserHomeFeed();
+    BlocProvider.of<HomeFeedCubit>(context).getUnauthorizedUserHomeFeed();
   }
 
   @override
   Widget build(BuildContext context) {
-    final PageController pageController = PageController(initialPage: 0);
-    return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
+    return BlocBuilder<AuthCubit, AuthState>(builder: (context, state) {
       return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -52,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => FollowingFeedScreen()));
+                            builder: (context) => MyProfileScreen()));
                   },
                   child: Text('팔로잉',
                       style: !isForYouSelected
@@ -64,8 +62,10 @@ class _HomeScreenState extends State<HomeScreen> {
             IconButton(
                 icon: Icon(Icons.add),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UploadScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => MyProfileScreen()));
                 }),
             IconButton(
                 icon: Icon(Icons.notifications),
@@ -73,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NotificationScreen()));
+                          builder: (context) => MyProfileScreen()));
                 }),
             IconButton(
                 icon: Icon(Icons.person),
@@ -86,27 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         backgroundColor: kBackgroundNavyColor,
-        body: BlocBuilder<HomeFeedCubit, HomeFeedState>(
-            builder: (context, feedState) {
-          if (feedState is Loaded) {
-            return PageView.builder(
-              scrollDirection: Axis.horizontal,
-              controller: pageController,
-              itemCount: feedState.feed.length,
-              itemBuilder: (BuildContext context, int index) {
-                return PostWidget(
-                  post: feedState.feed[index],
-                );
-              },
-            );
-          } else if (feedState is FeedError) {
-            print(feedState.message);
-          } else if (feedState is Loading) {
-            return Text('스켈레톤 띄우기');
-          }
-
-          return Text(feedState.toString());
-        }),
+        body: Text('Unauthorized'),
       );
     });
   }

@@ -441,37 +441,40 @@ class _UploadScreenState extends State<UploadScreen> {
     return BlocListener<UploadCubit, UploadState>(
       listener: (context, state) {
         if (state is Uploading) {
-          Navigator.pop(context);
+          Fluttertoast.showToast(
+            msg: '게시물을 업로드 중입니다.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        } else if (state is Compressing) {
+          Fluttertoast.showToast(
+            msg: '미디어 파일을 압축중입니다.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
+        } else if (state is Uploaded) {
+          Fluttertoast.showToast(
+            msg: '게시물이 성공적으로 업로드되었습니다.',
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0,
+          );
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => HomeScreen()),
               (route) => false);
-        } else if (state is Compressing) {
-          showModalBottomSheet(
-              context: context,
-              isDismissible: false,
-              builder: (BuildContext context) {
-                return Container(
-                  height: 100,
-                  child: Row(
-                    children: [
-                      CircularProgressIndicator(),
-                      Text('미디어 파일을 압축중입니다.')
-                    ],
-                  ),
-                );
-              });
-        } else if (state is Uploaded) {
-          // Fluttertoast.showToast(
-          //   msg: "게시물이 성공적으로 업로드되었습니다.",
-          //   toastLength: Toast.LENGTH_SHORT,
-          //   gravity: ToastGravity.CENTER,
-          //   timeInSecForIosWeb: 1,
-          //   backgroundColor: Colors.red,
-          //   textColor: Colors.white,
-          //   fontSize: 16.0,
-          // );
         } else if (state is Error) {
           showModalBottomSheet(
               isDismissible: false,
@@ -487,8 +490,8 @@ class _UploadScreenState extends State<UploadScreen> {
               context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
       },
-      child: AbsorbPointer(
-        absorbing: !isScreenTouchable,
+      child: IgnorePointer(
+        ignoring: !isScreenTouchable,
         child: Scaffold(
           // resizeToAvoidBottomInset: false,
           appBar: AppBar(
@@ -504,6 +507,9 @@ class _UploadScreenState extends State<UploadScreen> {
             actionsIconTheme: IconThemeData(color: Colors.white),
             actions: [
               TextButton(
+                child: Text(
+                  '완료',
+                ),
                 onPressed: () async {
                   BlocProvider.of<UploadCubit>(context).setCompressingState();
                   setState(() {
@@ -556,9 +562,6 @@ class _UploadScreenState extends State<UploadScreen> {
                     secondMediaType: secondMediaType,
                   );
                 },
-                child: Text(
-                  '완료',
-                ),
               )
             ],
           ),

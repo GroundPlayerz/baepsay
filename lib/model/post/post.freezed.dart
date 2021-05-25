@@ -31,8 +31,8 @@ class _$PostTearOff {
       required int firstContentVoteCount,
       required int secondContentVoteCount,
       required bool isLikeButtonPressed,
-      Media? firstContentMedia,
-      Media? secondContentMedia,
+      required bool isVoted,
+      required List<Media> mediaList,
       required String createdAt}) {
     return _Post(
       id: id,
@@ -45,8 +45,8 @@ class _$PostTearOff {
       firstContentVoteCount: firstContentVoteCount,
       secondContentVoteCount: secondContentVoteCount,
       isLikeButtonPressed: isLikeButtonPressed,
-      firstContentMedia: firstContentMedia,
-      secondContentMedia: secondContentMedia,
+      isVoted: isVoted,
+      mediaList: mediaList,
       createdAt: createdAt,
     );
   }
@@ -71,8 +71,8 @@ mixin _$Post {
   int get firstContentVoteCount => throw _privateConstructorUsedError;
   int get secondContentVoteCount => throw _privateConstructorUsedError;
   bool get isLikeButtonPressed => throw _privateConstructorUsedError;
-  Media? get firstContentMedia => throw _privateConstructorUsedError;
-  Media? get secondContentMedia => throw _privateConstructorUsedError;
+  bool get isVoted => throw _privateConstructorUsedError;
+  List<Media> get mediaList => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -95,13 +95,11 @@ abstract class $PostCopyWith<$Res> {
       int firstContentVoteCount,
       int secondContentVoteCount,
       bool isLikeButtonPressed,
-      Media? firstContentMedia,
-      Media? secondContentMedia,
+      bool isVoted,
+      List<Media> mediaList,
       String createdAt});
 
   $UserCopyWith<$Res> get author;
-  $MediaCopyWith<$Res>? get firstContentMedia;
-  $MediaCopyWith<$Res>? get secondContentMedia;
 }
 
 /// @nodoc
@@ -124,8 +122,8 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
     Object? firstContentVoteCount = freezed,
     Object? secondContentVoteCount = freezed,
     Object? isLikeButtonPressed = freezed,
-    Object? firstContentMedia = freezed,
-    Object? secondContentMedia = freezed,
+    Object? isVoted = freezed,
+    Object? mediaList = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_value.copyWith(
@@ -169,14 +167,14 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
           ? _value.isLikeButtonPressed
           : isLikeButtonPressed // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstContentMedia: firstContentMedia == freezed
-          ? _value.firstContentMedia
-          : firstContentMedia // ignore: cast_nullable_to_non_nullable
-              as Media?,
-      secondContentMedia: secondContentMedia == freezed
-          ? _value.secondContentMedia
-          : secondContentMedia // ignore: cast_nullable_to_non_nullable
-              as Media?,
+      isVoted: isVoted == freezed
+          ? _value.isVoted
+          : isVoted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      mediaList: mediaList == freezed
+          ? _value.mediaList
+          : mediaList // ignore: cast_nullable_to_non_nullable
+              as List<Media>,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -188,28 +186,6 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
   $UserCopyWith<$Res> get author {
     return $UserCopyWith<$Res>(_value.author, (value) {
       return _then(_value.copyWith(author: value));
-    });
-  }
-
-  @override
-  $MediaCopyWith<$Res>? get firstContentMedia {
-    if (_value.firstContentMedia == null) {
-      return null;
-    }
-
-    return $MediaCopyWith<$Res>(_value.firstContentMedia!, (value) {
-      return _then(_value.copyWith(firstContentMedia: value));
-    });
-  }
-
-  @override
-  $MediaCopyWith<$Res>? get secondContentMedia {
-    if (_value.secondContentMedia == null) {
-      return null;
-    }
-
-    return $MediaCopyWith<$Res>(_value.secondContentMedia!, (value) {
-      return _then(_value.copyWith(secondContentMedia: value));
     });
   }
 }
@@ -230,16 +206,12 @@ abstract class _$PostCopyWith<$Res> implements $PostCopyWith<$Res> {
       int firstContentVoteCount,
       int secondContentVoteCount,
       bool isLikeButtonPressed,
-      Media? firstContentMedia,
-      Media? secondContentMedia,
+      bool isVoted,
+      List<Media> mediaList,
       String createdAt});
 
   @override
   $UserCopyWith<$Res> get author;
-  @override
-  $MediaCopyWith<$Res>? get firstContentMedia;
-  @override
-  $MediaCopyWith<$Res>? get secondContentMedia;
 }
 
 /// @nodoc
@@ -263,8 +235,8 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
     Object? firstContentVoteCount = freezed,
     Object? secondContentVoteCount = freezed,
     Object? isLikeButtonPressed = freezed,
-    Object? firstContentMedia = freezed,
-    Object? secondContentMedia = freezed,
+    Object? isVoted = freezed,
+    Object? mediaList = freezed,
     Object? createdAt = freezed,
   }) {
     return _then(_Post(
@@ -308,14 +280,14 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
           ? _value.isLikeButtonPressed
           : isLikeButtonPressed // ignore: cast_nullable_to_non_nullable
               as bool,
-      firstContentMedia: firstContentMedia == freezed
-          ? _value.firstContentMedia
-          : firstContentMedia // ignore: cast_nullable_to_non_nullable
-              as Media?,
-      secondContentMedia: secondContentMedia == freezed
-          ? _value.secondContentMedia
-          : secondContentMedia // ignore: cast_nullable_to_non_nullable
-              as Media?,
+      isVoted: isVoted == freezed
+          ? _value.isVoted
+          : isVoted // ignore: cast_nullable_to_non_nullable
+              as bool,
+      mediaList: mediaList == freezed
+          ? _value.mediaList
+          : mediaList // ignore: cast_nullable_to_non_nullable
+              as List<Media>,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -339,8 +311,8 @@ class _$_Post implements _Post {
       required this.firstContentVoteCount,
       required this.secondContentVoteCount,
       required this.isLikeButtonPressed,
-      this.firstContentMedia,
-      this.secondContentMedia,
+      required this.isVoted,
+      required this.mediaList,
       required this.createdAt});
 
   factory _$_Post.fromJson(Map<String, dynamic> json) =>
@@ -367,15 +339,15 @@ class _$_Post implements _Post {
   @override
   final bool isLikeButtonPressed;
   @override
-  final Media? firstContentMedia;
+  final bool isVoted;
   @override
-  final Media? secondContentMedia;
+  final List<Media> mediaList;
   @override
   final String createdAt;
 
   @override
   String toString() {
-    return 'Post(id: $id, author: $author, title: $title, firstContentText: $firstContentText, secondContentText: $secondContentText, likeCount: $likeCount, viewCount: $viewCount, firstContentVoteCount: $firstContentVoteCount, secondContentVoteCount: $secondContentVoteCount, isLikeButtonPressed: $isLikeButtonPressed, firstContentMedia: $firstContentMedia, secondContentMedia: $secondContentMedia, createdAt: $createdAt)';
+    return 'Post(id: $id, author: $author, title: $title, firstContentText: $firstContentText, secondContentText: $secondContentText, likeCount: $likeCount, viewCount: $viewCount, firstContentVoteCount: $firstContentVoteCount, secondContentVoteCount: $secondContentVoteCount, isLikeButtonPressed: $isLikeButtonPressed, isVoted: $isVoted, mediaList: $mediaList, createdAt: $createdAt)';
   }
 
   @override
@@ -409,12 +381,12 @@ class _$_Post implements _Post {
             (identical(other.isLikeButtonPressed, isLikeButtonPressed) ||
                 const DeepCollectionEquality()
                     .equals(other.isLikeButtonPressed, isLikeButtonPressed)) &&
-            (identical(other.firstContentMedia, firstContentMedia) ||
+            (identical(other.isVoted, isVoted) ||
                 const DeepCollectionEquality()
-                    .equals(other.firstContentMedia, firstContentMedia)) &&
-            (identical(other.secondContentMedia, secondContentMedia) ||
+                    .equals(other.isVoted, isVoted)) &&
+            (identical(other.mediaList, mediaList) ||
                 const DeepCollectionEquality()
-                    .equals(other.secondContentMedia, secondContentMedia)) &&
+                    .equals(other.mediaList, mediaList)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)));
@@ -433,8 +405,8 @@ class _$_Post implements _Post {
       const DeepCollectionEquality().hash(firstContentVoteCount) ^
       const DeepCollectionEquality().hash(secondContentVoteCount) ^
       const DeepCollectionEquality().hash(isLikeButtonPressed) ^
-      const DeepCollectionEquality().hash(firstContentMedia) ^
-      const DeepCollectionEquality().hash(secondContentMedia) ^
+      const DeepCollectionEquality().hash(isVoted) ^
+      const DeepCollectionEquality().hash(mediaList) ^
       const DeepCollectionEquality().hash(createdAt);
 
   @JsonKey(ignore: true)
@@ -460,8 +432,8 @@ abstract class _Post implements Post {
       required int firstContentVoteCount,
       required int secondContentVoteCount,
       required bool isLikeButtonPressed,
-      Media? firstContentMedia,
-      Media? secondContentMedia,
+      required bool isVoted,
+      required List<Media> mediaList,
       required String createdAt}) = _$_Post;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$_Post.fromJson;
@@ -487,9 +459,9 @@ abstract class _Post implements Post {
   @override
   bool get isLikeButtonPressed => throw _privateConstructorUsedError;
   @override
-  Media? get firstContentMedia => throw _privateConstructorUsedError;
+  bool get isVoted => throw _privateConstructorUsedError;
   @override
-  Media? get secondContentMedia => throw _privateConstructorUsedError;
+  List<Media> get mediaList => throw _privateConstructorUsedError;
   @override
   String get createdAt => throw _privateConstructorUsedError;
   @override
@@ -511,8 +483,7 @@ class _$MediaTearOff {
       required String type,
       required int contentOrder,
       required String url,
-      required double size,
-      double? length}) {
+      required double size}) {
     return _Media(
       id: id,
       postId: postId,
@@ -520,7 +491,6 @@ class _$MediaTearOff {
       contentOrder: contentOrder,
       url: url,
       size: size,
-      length: length,
     );
   }
 
@@ -540,7 +510,6 @@ mixin _$Media {
   int get contentOrder => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   double get size => throw _privateConstructorUsedError;
-  double? get length => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -557,8 +526,7 @@ abstract class $MediaCopyWith<$Res> {
       String type,
       int contentOrder,
       String url,
-      double size,
-      double? length});
+      double size});
 }
 
 /// @nodoc
@@ -577,7 +545,6 @@ class _$MediaCopyWithImpl<$Res> implements $MediaCopyWith<$Res> {
     Object? contentOrder = freezed,
     Object? url = freezed,
     Object? size = freezed,
-    Object? length = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -604,10 +571,6 @@ class _$MediaCopyWithImpl<$Res> implements $MediaCopyWith<$Res> {
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as double,
-      length: length == freezed
-          ? _value.length
-          : length // ignore: cast_nullable_to_non_nullable
-              as double?,
     ));
   }
 }
@@ -623,8 +586,7 @@ abstract class _$MediaCopyWith<$Res> implements $MediaCopyWith<$Res> {
       String type,
       int contentOrder,
       String url,
-      double size,
-      double? length});
+      double size});
 }
 
 /// @nodoc
@@ -644,7 +606,6 @@ class __$MediaCopyWithImpl<$Res> extends _$MediaCopyWithImpl<$Res>
     Object? contentOrder = freezed,
     Object? url = freezed,
     Object? size = freezed,
-    Object? length = freezed,
   }) {
     return _then(_Media(
       id: id == freezed
@@ -671,10 +632,6 @@ class __$MediaCopyWithImpl<$Res> extends _$MediaCopyWithImpl<$Res>
           ? _value.size
           : size // ignore: cast_nullable_to_non_nullable
               as double,
-      length: length == freezed
-          ? _value.length
-          : length // ignore: cast_nullable_to_non_nullable
-              as double?,
     ));
   }
 }
@@ -689,8 +646,7 @@ class _$_Media implements _Media {
       required this.type,
       required this.contentOrder,
       required this.url,
-      required this.size,
-      this.length});
+      required this.size});
 
   factory _$_Media.fromJson(Map<String, dynamic> json) =>
       _$_$_MediaFromJson(json);
@@ -707,12 +663,10 @@ class _$_Media implements _Media {
   final String url;
   @override
   final double size;
-  @override
-  final double? length;
 
   @override
   String toString() {
-    return 'Media(id: $id, postId: $postId, type: $type, contentOrder: $contentOrder, url: $url, size: $size, length: $length)';
+    return 'Media(id: $id, postId: $postId, type: $type, contentOrder: $contentOrder, url: $url, size: $size)';
   }
 
   @override
@@ -731,9 +685,7 @@ class _$_Media implements _Media {
             (identical(other.url, url) ||
                 const DeepCollectionEquality().equals(other.url, url)) &&
             (identical(other.size, size) ||
-                const DeepCollectionEquality().equals(other.size, size)) &&
-            (identical(other.length, length) ||
-                const DeepCollectionEquality().equals(other.length, length)));
+                const DeepCollectionEquality().equals(other.size, size)));
   }
 
   @override
@@ -744,8 +696,7 @@ class _$_Media implements _Media {
       const DeepCollectionEquality().hash(type) ^
       const DeepCollectionEquality().hash(contentOrder) ^
       const DeepCollectionEquality().hash(url) ^
-      const DeepCollectionEquality().hash(size) ^
-      const DeepCollectionEquality().hash(length);
+      const DeepCollectionEquality().hash(size);
 
   @JsonKey(ignore: true)
   @override
@@ -765,8 +716,7 @@ abstract class _Media implements Media {
       required String type,
       required int contentOrder,
       required String url,
-      required double size,
-      double? length}) = _$_Media;
+      required double size}) = _$_Media;
 
   factory _Media.fromJson(Map<String, dynamic> json) = _$_Media.fromJson;
 
@@ -782,8 +732,6 @@ abstract class _Media implements Media {
   String get url => throw _privateConstructorUsedError;
   @override
   double get size => throw _privateConstructorUsedError;
-  @override
-  double? get length => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$MediaCopyWith<_Media> get copyWith => throw _privateConstructorUsedError;

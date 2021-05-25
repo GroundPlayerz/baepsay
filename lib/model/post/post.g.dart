@@ -18,12 +18,10 @@ _$_Post _$_$_PostFromJson(Map<String, dynamic> json) {
     firstContentVoteCount: json['first_content_vote_count'] as int,
     secondContentVoteCount: json['second_content_vote_count'] as int,
     isLikeButtonPressed: json['is_like_button_pressed'] as bool,
-    firstContentMedia: json['first_content_media'] == null
-        ? null
-        : Media.fromJson(json['first_content_media'] as Map<String, dynamic>),
-    secondContentMedia: json['second_content_media'] == null
-        ? null
-        : Media.fromJson(json['second_content_media'] as Map<String, dynamic>),
+    isVoted: json['is_voted'] as bool,
+    mediaList: (json['media_list'] as List<dynamic>)
+        .map((e) => Media.fromJson(e as Map<String, dynamic>))
+        .toList(),
     createdAt: json['created_at'] as String,
   );
 }
@@ -39,8 +37,8 @@ Map<String, dynamic> _$_$_PostToJson(_$_Post instance) => <String, dynamic>{
       'first_content_vote_count': instance.firstContentVoteCount,
       'second_content_vote_count': instance.secondContentVoteCount,
       'is_like_button_pressed': instance.isLikeButtonPressed,
-      'first_content_media': instance.firstContentMedia,
-      'second_content_media': instance.secondContentMedia,
+      'is_voted': instance.isVoted,
+      'media_list': instance.mediaList,
       'created_at': instance.createdAt,
     };
 
@@ -52,7 +50,6 @@ _$_Media _$_$_MediaFromJson(Map<String, dynamic> json) {
     contentOrder: json['content_order'] as int,
     url: json['url'] as String,
     size: (json['size'] as num).toDouble(),
-    length: (json['length'] as num?)?.toDouble(),
   );
 }
 
@@ -63,5 +60,4 @@ Map<String, dynamic> _$_$_MediaToJson(_$_Media instance) => <String, dynamic>{
       'content_order': instance.contentOrder,
       'url': instance.url,
       'size': instance.size,
-      'length': instance.length,
     };
