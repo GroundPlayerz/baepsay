@@ -1,11 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:golden_balance_flutter/screen/upload/video_trimmer_screen.dart';
-import 'package:video_trimmer/video_trimmer.dart';
 
 class UploadScreenMediaModel {
   File? mediaFile;
@@ -35,21 +31,6 @@ class UploadScreenMediaModel {
     if (file != null && file.isNotEmpty) {
       mediaFile = File(file[0].path!);
       mediaFileType = 'image';
-    }
-  }
-
-  Future<void> setVideoFile(BuildContext context,
-      {required Trimmer trimmer}) async {
-    final List<PlatformFile>? file = await _openFileExplorer(FileType.video);
-    if (file != null && file.isNotEmpty) {
-      await trimmer.loadVideo(videoFile: File(file[0].path!));
-      File? videoFile = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) {
-          return VideoTrimmerScreen(trimmer);
-        },
-      ));
-      mediaFile = videoFile;
-      mediaFileType = 'video';
     }
   }
 

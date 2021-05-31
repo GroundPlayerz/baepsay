@@ -7,7 +7,6 @@ import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
-import 'package:golden_balance_flutter/screen/post/video_network_viewer.dart';
 
 class PostWidgetNew extends StatefulWidget {
   final int postIndex;
@@ -27,21 +26,6 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
   void initState() {
     super.initState();
     postIndex = widget.postIndex;
-  }
-
-  Widget _videoWidget({required String url, required String thumbnailUrl}) {
-    return ClipRect(
-      child: SizedBox.expand(
-        child: FittedBox(
-          fit: BoxFit.cover,
-          //alignment: Alignment.center,
-          child: VideoNetworkViewer(
-            videoUrl: url,
-            thumbnailUrl: thumbnailUrl,
-          ),
-        ),
-      ),
-    );
   }
 
   Widget _imageWidget({required String url}) {
@@ -401,12 +385,7 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
                           Expanded(
                             child: Builder(
                               builder: (context) {
-                                if (mediaList[0]['type'] == 'video') {
-                                  return _videoWidget(
-                                      url: mediaList[0]['url'],
-                                      thumbnailUrl: mediaList[0]
-                                          ['thumbnail_url']);
-                                } else if (mediaList[0]['type'] == 'image') {
+                                if (mediaList[0]['type'] == 'image') {
                                   return _imageWidget(url: mediaList[0]['url']);
                                 }
                                 return Container();
@@ -416,12 +395,7 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
                           Expanded(
                             child: Builder(
                               builder: (context) {
-                                if (mediaList[1]['type'] == 'video') {
-                                  return _videoWidget(
-                                      url: mediaList[1]['url'],
-                                      thumbnailUrl: mediaList[1]
-                                          ['thumbnail_url']);
-                                } else if (mediaList[1]['type'] == 'image') {
+                                if (mediaList[1]['type'] == 'image') {
                                   return _imageWidget(url: mediaList[1]['url']);
                                 }
                                 return Container();

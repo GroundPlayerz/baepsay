@@ -7,12 +7,9 @@ import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/media_for_upload.dart';
 import 'package:golden_balance_flutter/screen/home/home_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen_media_model.dart';
-import 'package:golden_balance_flutter/screen/upload/video_preview.dart';
 import 'package:golden_balance_flutter/util/widget.dart';
 import 'package:pedantic/pedantic.dart';
 
-import 'package:video_compress/video_compress.dart';
-import 'package:video_trimmer/video_trimmer.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../bloc/cubit/upload_cubit.dart';
@@ -27,18 +24,10 @@ class UploadScreen extends StatefulWidget {
 class _UploadScreenState extends State<UploadScreen> {
   FocusNode? myFocusNode;
   final TextEditingController postTitleController = TextEditingController();
-
   final TextEditingController firstContentController = TextEditingController();
-  VideoPreview? firstVideoPreview;
-
   final TextEditingController secondContentController = TextEditingController();
-  VideoPreview? secondVideoPreview;
-
-  final Trimmer _trimmer = Trimmer();
-
   UploadScreenMediaModel firstUploadMediaModel = UploadScreenMediaModel();
   UploadScreenMediaModel secondUploadMediaModel = UploadScreenMediaModel();
-
   bool isScreenTouchable = true;
 
   Widget _contentTextField(double _convertRatio,
@@ -126,36 +115,6 @@ class _UploadScreenState extends State<UploadScreen> {
                 isScreenTouchable = true;
               });
             }),
-        IconButton(
-            icon: Icon(
-              Icons.videocam_outlined,
-              color: Colors.white,
-            ),
-            onPressed: () async {
-              setState(() {
-                isScreenTouchable = false;
-              });
-              unawaited(Fluttertoast.showToast(
-                msg: '파일을 불러오는 중입니다.',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0,
-              ));
-
-              if (whichMedia == 1) {
-                await firstUploadMediaModel.setVideoFile(context,
-                    trimmer: _trimmer);
-              } else {
-                await secondUploadMediaModel.setVideoFile(context,
-                    trimmer: _trimmer);
-              }
-              setState(() {
-                isScreenTouchable = true;
-              });
-            }),
       ],
     );
   }
@@ -191,46 +150,6 @@ class _UploadScreenState extends State<UploadScreen> {
     );
   }
 
-  Widget _videoPreview({required File videoFile, required int whichMedia}) {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: ClipRect(
-              child: SizedBox.expand(
-                child: FittedBox(
-                  fit: BoxFit.cover,
-                  //alignment: Alignment.center,
-                  child: VideoPreview(videoFile: videoFile),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 5,
-            right: 5,
-            child: IconButton(
-                icon: Icon(
-                  Icons.close,
-                ),
-                onPressed: () {
-                  if (whichMedia == 1) {
-                    firstUploadMediaModel.deleteMediaFile();
-                  } else {
-                    secondUploadMediaModel.deleteMediaFile();
-                  }
-                  setState(() {});
-                }),
-          )
-        ],
-      ),
-    );
-  }
-
   Widget _emptyMediaWidget() {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -258,13 +177,8 @@ class _UploadScreenState extends State<UploadScreen> {
               if (firstUploadMediaModel.mediaFile == null) {
                 return _emptyMediaWidget();
               } else {
-                return firstUploadMediaModel.mediaFileType == 'video'
-                    ? _videoPreview(
-                        videoFile: firstUploadMediaModel.mediaFile!,
-                        whichMedia: 1)
-                    : _imagePreview(
-                        imageFile: firstUploadMediaModel.mediaFile!,
-                        whichMedia: 1);
+                return _imagePreview(
+                    imageFile: firstUploadMediaModel.mediaFile!, whichMedia: 1);
               }
             },
           ),
@@ -307,13 +221,9 @@ class _UploadScreenState extends State<UploadScreen> {
               if (secondUploadMediaModel.mediaFile == null) {
                 return _emptyMediaWidget();
               } else {
-                return secondUploadMediaModel.mediaFileType == 'video'
-                    ? _videoPreview(
-                        videoFile: secondUploadMediaModel.mediaFile!,
-                        whichMedia: 2)
-                    : _imagePreview(
-                        imageFile: secondUploadMediaModel.mediaFile!,
-                        whichMedia: 2);
+                return _imagePreview(
+                    imageFile: secondUploadMediaModel.mediaFile!,
+                    whichMedia: 2);
               }
             },
           ),
@@ -446,30 +356,7 @@ class _UploadScreenState extends State<UploadScreen> {
                           isScreenTouchable = false;
                         });
                         List<MediaForUpload> mediaList = [];
-                        if (firstUploadMediaModel.mediaFileType == 'video') {
-                          MediaInfo? compressedVideo =
-                              await BlocProvider.of<UploadCubit>(context)
-                                  .compressVideo(
-                                      videoFile:
-                                          firstUploadMediaModel.mediaFile!);
-                          if (compressedVideo != null) {
-                            mediaList.add(MediaForUpload(
-                                media: compressedVideo.file!.readAsBytesSync(),
-                                type: 'video',
-                                contentOrder: 1));
-                            Uint8List? firstThumbnail =
-                                (await BlocProvider.of<UploadCubit>(context)
-                                    .getVideoThumbnailFile(
-                                        firstUploadMediaModel.mediaFile!));
-                            if (firstThumbnail != null) {
-                              mediaList.add(MediaForUpload(
-                                  media: firstThumbnail,
-                                  type: 'thumbnail',
-                                  contentOrder: 1));
-                            }
-                          }
-                        } else if (firstUploadMediaModel.mediaFileType ==
-                            'image') {
+                        if (firstUploadMediaModel.mediaFileType == 'image') {
                           Uint8List? firstImage =
                               await BlocProvider.of<UploadCubit>(context)
                                   .compressImage(
@@ -482,30 +369,7 @@ class _UploadScreenState extends State<UploadScreen> {
                                 contentOrder: 1));
                           }
                         }
-                        if (secondUploadMediaModel.mediaFileType == 'video') {
-                          MediaInfo? compressedVideo =
-                              await BlocProvider.of<UploadCubit>(context)
-                                  .compressVideo(
-                                      videoFile:
-                                          secondUploadMediaModel.mediaFile!);
-                          if (compressedVideo != null) {
-                            mediaList.add(MediaForUpload(
-                                media: compressedVideo.file!.readAsBytesSync(),
-                                type: 'video',
-                                contentOrder: 2));
-                            Uint8List? secondThumbnail =
-                                (await BlocProvider.of<UploadCubit>(context)
-                                    .getVideoThumbnailFile(
-                                        secondUploadMediaModel.mediaFile!));
-                            if (secondThumbnail != null) {
-                              mediaList.add(MediaForUpload(
-                                  media: secondThumbnail,
-                                  type: 'thumbnail',
-                                  contentOrder: 2));
-                            }
-                          }
-                        } else if (firstUploadMediaModel.mediaFileType ==
-                            'image') {
+                        if (firstUploadMediaModel.mediaFileType == 'image') {
                           Uint8List? secondImage =
                               await BlocProvider.of<UploadCubit>(context)
                                   .compressImage(

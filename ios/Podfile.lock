@@ -4,6 +4,10 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - cached_video_player (0.0.2):
+    - Flutter
+    - KTVHTTPCache (~> 2.0.0)
+  - CocoaAsyncSocket (7.6.5)
   - DKImagePickerController/Core (4.3.2):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -183,6 +187,10 @@ PODS:
   - GTMSessionFetcher/Core (1.5.0)
   - image_gallery_saver (1.5.0):
     - Flutter
+  - KTVCocoaHTTPServer (1.0.0):
+    - CocoaAsyncSocket
+  - KTVHTTPCache (2.0.1):
+    - KTVCocoaHTTPServer
   - libwebp (1.2.0):
     - libwebp/demux (= 1.2.0)
     - libwebp/mux (= 1.2.0)
@@ -217,13 +225,12 @@ PODS:
   - Toast (4.0.0)
   - video_compress (0.3.0):
     - Flutter
-  - video_player (0.0.1):
-    - Flutter
   - video_thumbnail (0.0.1):
     - Flutter
     - libwebp
 
 DEPENDENCIES:
+  - cached_video_player (from `.symlinks/plugins/cached_video_player/ios`)
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
@@ -239,12 +246,12 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - video_compress (from `.symlinks/plugins/video_compress/ios`)
-  - video_player (from `.symlinks/plugins/video_player/ios`)
   - video_thumbnail (from `.symlinks/plugins/video_thumbnail/ios`)
 
 SPEC REPOS:
   trunk:
     - AppAuth
+    - CocoaAsyncSocket
     - DKImagePickerController
     - DKPhotoGallery
     - Firebase
@@ -261,6 +268,8 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
+    - KTVCocoaHTTPServer
+    - KTVHTTPCache
     - libwebp
     - Mantle
     - mobile-ffmpeg-https
@@ -272,6 +281,8 @@ SPEC REPOS:
     - Toast
 
 EXTERNAL SOURCES:
+  cached_video_player:
+    :path: ".symlinks/plugins/cached_video_player/ios"
   file_picker:
     :path: ".symlinks/plugins/file_picker/ios"
   firebase_analytics:
@@ -302,13 +313,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   video_compress:
     :path: ".symlinks/plugins/video_compress/ios"
-  video_player:
-    :path: ".symlinks/plugins/video_player/ios"
   video_thumbnail:
     :path: ".symlinks/plugins/video_thumbnail/ios"
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  cached_video_player: 3c7f810b292db65c0d3bb1ed780f207af483234b
+  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
@@ -337,6 +348,8 @@ SPEC CHECKSUMS:
   GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   image_gallery_saver: 259eab68fb271cfd57d599904f7acdc7832e7ef2
+  KTVCocoaHTTPServer: df8d7b861e603ff8037e9b2138aca2563a6b768d
+  KTVHTTPCache: 588c3eb16f6bd1e6fde1e230dabfb7bd4e490a4d
   libwebp: e90b9c01d99205d03b6bb8f2c8c415e5a4ef66f0
   Mantle: 4c0ed6ce47c96eccc4dc3bb071deb3def0e2c3be
   mobile-ffmpeg-https: 311fc4a8f671cf36d1d6b8f421e8246b790978d9
@@ -349,7 +362,6 @@ SPEC CHECKSUMS:
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   video_compress: fce97e4fb1dfd88175aa07d2ffc8a2f297f87fbe
-  video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   video_thumbnail: c4e2a3c539e247d4de13cd545344fd2d26ffafd1
 
 PODFILE CHECKSUM: fac7dad42b4c4b38df3770ad0368421cd3faf3a0
