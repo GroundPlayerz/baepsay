@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
-import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
-import 'package:golden_balance_flutter/screen/auth/profile_name_setting_screen.dart';
 import 'home/home_screen.dart';
-import 'home/unauthorized_home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -39,14 +36,20 @@ class _SplashScreenState extends State<SplashScreen> {
               ]),
             ),
           );
-        } else if (state is FirebaseSignedIn) {
-          BlocProvider.of<AuthCubit>(context).signInFlask();
-        } else if (state is FlaskSignedIn) {
+        } else if (state is FirebaseSignedOut) {
+          BlocProvider.of<AuthCubit>(context)
+              .checkUserIdExistsInSecureStorage();
+        } else if (state is DeviceUserIdExists) {
+          BlocProvider.of<AuthCubit>(context)
+              .getUnauthenticatedUserAccessToken();
+        } else if (state is DeviceSignedIn) {
           return HomeScreen();
-        } else if (state is SignedOut) {
-          return UnauthorizedHomeScreen();
-        } else if (state is FlaskSignInFailed) {
-          return ProfileNameSettingScreen();
+        } else if (state is FirebaseSigningIn) {
+          BlocProvider.of<AuthCubit>(context).getAuthenticatedUserAccessToken();
+        } else if (state is FirebaseSignedIn) {
+          return HomeScreen();
+        } else if (state is AuthError) {
+          return Text(state.message);
         }
         return Scaffold(
           backgroundColor: Colors.red,

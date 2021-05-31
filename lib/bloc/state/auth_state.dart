@@ -12,7 +12,42 @@ class Checking extends AuthState {
   List<Object?> get props => [];
 }
 
-class SignedOut extends AuthState {
+class DeviceUserIdExists extends AuthState {
+  final String userId;
+
+  DeviceUserIdExists(this.userId);
+
+  @override
+// TODO: implement props
+  List<Object?> get props => [userId];
+}
+
+class DeviceSignedIn extends AuthState {
+  final User user;
+
+  DeviceSignedIn(this.user);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [user];
+}
+
+class FirebaseSigningIn extends AuthState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class FirebaseSignedIn extends AuthState {
+  final User user;
+  FirebaseSignedIn(this.user);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [user];
+}
+
+class FirebaseSignedOut extends AuthState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
@@ -26,31 +61,5 @@ class AuthError extends AuthState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [this.message];
-}
-
-class FirebaseSignedIn extends AuthState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
-}
-
-class FlaskSignedIn extends AuthState {
-  final Token accessToken;
-  final User user;
-
-  FlaskSignedIn({
-    required this.accessToken,
-    required this.user,
-  });
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [this.accessToken];
-}
-
-class FlaskSignInFailed extends AuthState {
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
+  List<Object?> get props => [message];
 }

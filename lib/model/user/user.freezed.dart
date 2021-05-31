@@ -22,9 +22,9 @@ class _$UserTearOff {
 
   _User call(
       {required int id,
-      required String email,
+      String? email,
       required String profileName,
-      required String profilePhotoUrl,
+      String? profilePhotoUrl,
       required String role,
       required String createdAt,
       String? updatedAt}) {
@@ -50,9 +50,9 @@ const $User = _$UserTearOff();
 /// @nodoc
 mixin _$User {
   int get id => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
   String get profileName => throw _privateConstructorUsedError;
-  String get profilePhotoUrl => throw _privateConstructorUsedError;
+  String? get profilePhotoUrl => throw _privateConstructorUsedError;
   String get role =>
       throw _privateConstructorUsedError; //admin, general_free, general_paid, expert
   String get createdAt => throw _privateConstructorUsedError;
@@ -69,9 +69,9 @@ abstract class $UserCopyWith<$Res> {
       _$UserCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      String email,
+      String? email,
       String profileName,
-      String profilePhotoUrl,
+      String? profilePhotoUrl,
       String role,
       String createdAt,
       String? updatedAt});
@@ -103,7 +103,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       profileName: profileName == freezed
           ? _value.profileName
           : profileName // ignore: cast_nullable_to_non_nullable
@@ -111,7 +111,7 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
       profilePhotoUrl: profilePhotoUrl == freezed
           ? _value.profilePhotoUrl
           : profilePhotoUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       role: role == freezed
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
@@ -135,9 +135,9 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   @override
   $Res call(
       {int id,
-      String email,
+      String? email,
       String profileName,
-      String profilePhotoUrl,
+      String? profilePhotoUrl,
       String role,
       String createdAt,
       String? updatedAt});
@@ -170,7 +170,7 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
       email: email == freezed
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       profileName: profileName == freezed
           ? _value.profileName
           : profileName // ignore: cast_nullable_to_non_nullable
@@ -178,7 +178,7 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
       profilePhotoUrl: profilePhotoUrl == freezed
           ? _value.profilePhotoUrl
           : profilePhotoUrl // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       role: role == freezed
           ? _value.role
           : role // ignore: cast_nullable_to_non_nullable
@@ -201,9 +201,9 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 class _$_User implements _User {
   _$_User(
       {required this.id,
-      required this.email,
+      this.email,
       required this.profileName,
-      required this.profilePhotoUrl,
+      this.profilePhotoUrl,
       required this.role,
       required this.createdAt,
       this.updatedAt});
@@ -214,11 +214,11 @@ class _$_User implements _User {
   @override
   final int id;
   @override
-  final String email;
+  final String? email;
   @override
   final String profileName;
   @override
-  final String profilePhotoUrl;
+  final String? profilePhotoUrl;
   @override
   final String role;
   @override //admin, general_free, general_paid, expert
@@ -280,9 +280,9 @@ class _$_User implements _User {
 abstract class _User implements User {
   factory _User(
       {required int id,
-      required String email,
+      String? email,
       required String profileName,
-      required String profilePhotoUrl,
+      String? profilePhotoUrl,
       required String role,
       required String createdAt,
       String? updatedAt}) = _$_User;
@@ -292,11 +292,11 @@ abstract class _User implements User {
   @override
   int get id => throw _privateConstructorUsedError;
   @override
-  String get email => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
   @override
   String get profileName => throw _privateConstructorUsedError;
   @override
-  String get profilePhotoUrl => throw _privateConstructorUsedError;
+  String? get profilePhotoUrl => throw _privateConstructorUsedError;
   @override
   String get role => throw _privateConstructorUsedError;
   @override //admin, general_free, general_paid, expert

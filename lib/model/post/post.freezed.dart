@@ -26,28 +26,34 @@ class _$PostTearOff {
       required String title,
       required String firstContentText,
       required String secondContentText,
+      required int commentCount,
       required int likeCount,
       required int viewCount,
       required int firstContentVoteCount,
       required int secondContentVoteCount,
       required bool isLikeButtonPressed,
       required bool isVoted,
-      required List<Media> mediaList,
-      required String createdAt}) {
+      required List<ImageMedia>? imageMediaList,
+      required List<VideoMedia>? videoMediaList,
+      required String createdAt,
+      Vote? vote}) {
     return _Post(
       id: id,
       author: author,
       title: title,
       firstContentText: firstContentText,
       secondContentText: secondContentText,
+      commentCount: commentCount,
       likeCount: likeCount,
       viewCount: viewCount,
       firstContentVoteCount: firstContentVoteCount,
       secondContentVoteCount: secondContentVoteCount,
       isLikeButtonPressed: isLikeButtonPressed,
       isVoted: isVoted,
-      mediaList: mediaList,
+      imageMediaList: imageMediaList,
+      videoMediaList: videoMediaList,
       createdAt: createdAt,
+      vote: vote,
     );
   }
 
@@ -66,14 +72,17 @@ mixin _$Post {
   String get title => throw _privateConstructorUsedError;
   String get firstContentText => throw _privateConstructorUsedError;
   String get secondContentText => throw _privateConstructorUsedError;
+  int get commentCount => throw _privateConstructorUsedError;
   int get likeCount => throw _privateConstructorUsedError;
   int get viewCount => throw _privateConstructorUsedError;
   int get firstContentVoteCount => throw _privateConstructorUsedError;
   int get secondContentVoteCount => throw _privateConstructorUsedError;
   bool get isLikeButtonPressed => throw _privateConstructorUsedError;
   bool get isVoted => throw _privateConstructorUsedError;
-  List<Media> get mediaList => throw _privateConstructorUsedError;
+  List<ImageMedia>? get imageMediaList => throw _privateConstructorUsedError;
+  List<VideoMedia>? get videoMediaList => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
+  Vote? get vote => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -90,16 +99,20 @@ abstract class $PostCopyWith<$Res> {
       String title,
       String firstContentText,
       String secondContentText,
+      int commentCount,
       int likeCount,
       int viewCount,
       int firstContentVoteCount,
       int secondContentVoteCount,
       bool isLikeButtonPressed,
       bool isVoted,
-      List<Media> mediaList,
-      String createdAt});
+      List<ImageMedia>? imageMediaList,
+      List<VideoMedia>? videoMediaList,
+      String createdAt,
+      Vote? vote});
 
   $UserCopyWith<$Res> get author;
+  $VoteCopyWith<$Res>? get vote;
 }
 
 /// @nodoc
@@ -117,14 +130,17 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
     Object? title = freezed,
     Object? firstContentText = freezed,
     Object? secondContentText = freezed,
+    Object? commentCount = freezed,
     Object? likeCount = freezed,
     Object? viewCount = freezed,
     Object? firstContentVoteCount = freezed,
     Object? secondContentVoteCount = freezed,
     Object? isLikeButtonPressed = freezed,
     Object? isVoted = freezed,
-    Object? mediaList = freezed,
+    Object? imageMediaList = freezed,
+    Object? videoMediaList = freezed,
     Object? createdAt = freezed,
+    Object? vote = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -147,6 +163,10 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
           ? _value.secondContentText
           : secondContentText // ignore: cast_nullable_to_non_nullable
               as String,
+      commentCount: commentCount == freezed
+          ? _value.commentCount
+          : commentCount // ignore: cast_nullable_to_non_nullable
+              as int,
       likeCount: likeCount == freezed
           ? _value.likeCount
           : likeCount // ignore: cast_nullable_to_non_nullable
@@ -171,14 +191,22 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
           ? _value.isVoted
           : isVoted // ignore: cast_nullable_to_non_nullable
               as bool,
-      mediaList: mediaList == freezed
-          ? _value.mediaList
-          : mediaList // ignore: cast_nullable_to_non_nullable
-              as List<Media>,
+      imageMediaList: imageMediaList == freezed
+          ? _value.imageMediaList
+          : imageMediaList // ignore: cast_nullable_to_non_nullable
+              as List<ImageMedia>?,
+      videoMediaList: videoMediaList == freezed
+          ? _value.videoMediaList
+          : videoMediaList // ignore: cast_nullable_to_non_nullable
+              as List<VideoMedia>?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
+      vote: vote == freezed
+          ? _value.vote
+          : vote // ignore: cast_nullable_to_non_nullable
+              as Vote?,
     ));
   }
 
@@ -186,6 +214,17 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
   $UserCopyWith<$Res> get author {
     return $UserCopyWith<$Res>(_value.author, (value) {
       return _then(_value.copyWith(author: value));
+    });
+  }
+
+  @override
+  $VoteCopyWith<$Res>? get vote {
+    if (_value.vote == null) {
+      return null;
+    }
+
+    return $VoteCopyWith<$Res>(_value.vote!, (value) {
+      return _then(_value.copyWith(vote: value));
     });
   }
 }
@@ -201,17 +240,22 @@ abstract class _$PostCopyWith<$Res> implements $PostCopyWith<$Res> {
       String title,
       String firstContentText,
       String secondContentText,
+      int commentCount,
       int likeCount,
       int viewCount,
       int firstContentVoteCount,
       int secondContentVoteCount,
       bool isLikeButtonPressed,
       bool isVoted,
-      List<Media> mediaList,
-      String createdAt});
+      List<ImageMedia>? imageMediaList,
+      List<VideoMedia>? videoMediaList,
+      String createdAt,
+      Vote? vote});
 
   @override
   $UserCopyWith<$Res> get author;
+  @override
+  $VoteCopyWith<$Res>? get vote;
 }
 
 /// @nodoc
@@ -230,14 +274,17 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
     Object? title = freezed,
     Object? firstContentText = freezed,
     Object? secondContentText = freezed,
+    Object? commentCount = freezed,
     Object? likeCount = freezed,
     Object? viewCount = freezed,
     Object? firstContentVoteCount = freezed,
     Object? secondContentVoteCount = freezed,
     Object? isLikeButtonPressed = freezed,
     Object? isVoted = freezed,
-    Object? mediaList = freezed,
+    Object? imageMediaList = freezed,
+    Object? videoMediaList = freezed,
     Object? createdAt = freezed,
+    Object? vote = freezed,
   }) {
     return _then(_Post(
       id: id == freezed
@@ -260,6 +307,10 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
           ? _value.secondContentText
           : secondContentText // ignore: cast_nullable_to_non_nullable
               as String,
+      commentCount: commentCount == freezed
+          ? _value.commentCount
+          : commentCount // ignore: cast_nullable_to_non_nullable
+              as int,
       likeCount: likeCount == freezed
           ? _value.likeCount
           : likeCount // ignore: cast_nullable_to_non_nullable
@@ -284,14 +335,22 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
           ? _value.isVoted
           : isVoted // ignore: cast_nullable_to_non_nullable
               as bool,
-      mediaList: mediaList == freezed
-          ? _value.mediaList
-          : mediaList // ignore: cast_nullable_to_non_nullable
-              as List<Media>,
+      imageMediaList: imageMediaList == freezed
+          ? _value.imageMediaList
+          : imageMediaList // ignore: cast_nullable_to_non_nullable
+              as List<ImageMedia>?,
+      videoMediaList: videoMediaList == freezed
+          ? _value.videoMediaList
+          : videoMediaList // ignore: cast_nullable_to_non_nullable
+              as List<VideoMedia>?,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
+      vote: vote == freezed
+          ? _value.vote
+          : vote // ignore: cast_nullable_to_non_nullable
+              as Vote?,
     ));
   }
 }
@@ -306,14 +365,17 @@ class _$_Post implements _Post {
       required this.title,
       required this.firstContentText,
       required this.secondContentText,
+      required this.commentCount,
       required this.likeCount,
       required this.viewCount,
       required this.firstContentVoteCount,
       required this.secondContentVoteCount,
       required this.isLikeButtonPressed,
       required this.isVoted,
-      required this.mediaList,
-      required this.createdAt});
+      required this.imageMediaList,
+      required this.videoMediaList,
+      required this.createdAt,
+      this.vote});
 
   factory _$_Post.fromJson(Map<String, dynamic> json) =>
       _$_$_PostFromJson(json);
@@ -329,6 +391,8 @@ class _$_Post implements _Post {
   @override
   final String secondContentText;
   @override
+  final int commentCount;
+  @override
   final int likeCount;
   @override
   final int viewCount;
@@ -341,13 +405,17 @@ class _$_Post implements _Post {
   @override
   final bool isVoted;
   @override
-  final List<Media> mediaList;
+  final List<ImageMedia>? imageMediaList;
+  @override
+  final List<VideoMedia>? videoMediaList;
   @override
   final String createdAt;
+  @override
+  final Vote? vote;
 
   @override
   String toString() {
-    return 'Post(id: $id, author: $author, title: $title, firstContentText: $firstContentText, secondContentText: $secondContentText, likeCount: $likeCount, viewCount: $viewCount, firstContentVoteCount: $firstContentVoteCount, secondContentVoteCount: $secondContentVoteCount, isLikeButtonPressed: $isLikeButtonPressed, isVoted: $isVoted, mediaList: $mediaList, createdAt: $createdAt)';
+    return 'Post(id: $id, author: $author, title: $title, firstContentText: $firstContentText, secondContentText: $secondContentText, commentCount: $commentCount, likeCount: $likeCount, viewCount: $viewCount, firstContentVoteCount: $firstContentVoteCount, secondContentVoteCount: $secondContentVoteCount, isLikeButtonPressed: $isLikeButtonPressed, isVoted: $isVoted, imageMediaList: $imageMediaList, videoMediaList: $videoMediaList, createdAt: $createdAt, vote: $vote)';
   }
 
   @override
@@ -366,6 +434,9 @@ class _$_Post implements _Post {
             (identical(other.secondContentText, secondContentText) ||
                 const DeepCollectionEquality()
                     .equals(other.secondContentText, secondContentText)) &&
+            (identical(other.commentCount, commentCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.commentCount, commentCount)) &&
             (identical(other.likeCount, likeCount) ||
                 const DeepCollectionEquality()
                     .equals(other.likeCount, likeCount)) &&
@@ -384,12 +455,17 @@ class _$_Post implements _Post {
             (identical(other.isVoted, isVoted) ||
                 const DeepCollectionEquality()
                     .equals(other.isVoted, isVoted)) &&
-            (identical(other.mediaList, mediaList) ||
+            (identical(other.imageMediaList, imageMediaList) ||
                 const DeepCollectionEquality()
-                    .equals(other.mediaList, mediaList)) &&
+                    .equals(other.imageMediaList, imageMediaList)) &&
+            (identical(other.videoMediaList, videoMediaList) ||
+                const DeepCollectionEquality()
+                    .equals(other.videoMediaList, videoMediaList)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
-                    .equals(other.createdAt, createdAt)));
+                    .equals(other.createdAt, createdAt)) &&
+            (identical(other.vote, vote) ||
+                const DeepCollectionEquality().equals(other.vote, vote)));
   }
 
   @override
@@ -400,14 +476,17 @@ class _$_Post implements _Post {
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(firstContentText) ^
       const DeepCollectionEquality().hash(secondContentText) ^
+      const DeepCollectionEquality().hash(commentCount) ^
       const DeepCollectionEquality().hash(likeCount) ^
       const DeepCollectionEquality().hash(viewCount) ^
       const DeepCollectionEquality().hash(firstContentVoteCount) ^
       const DeepCollectionEquality().hash(secondContentVoteCount) ^
       const DeepCollectionEquality().hash(isLikeButtonPressed) ^
       const DeepCollectionEquality().hash(isVoted) ^
-      const DeepCollectionEquality().hash(mediaList) ^
-      const DeepCollectionEquality().hash(createdAt);
+      const DeepCollectionEquality().hash(imageMediaList) ^
+      const DeepCollectionEquality().hash(videoMediaList) ^
+      const DeepCollectionEquality().hash(createdAt) ^
+      const DeepCollectionEquality().hash(vote);
 
   @JsonKey(ignore: true)
   @override
@@ -427,14 +506,17 @@ abstract class _Post implements Post {
       required String title,
       required String firstContentText,
       required String secondContentText,
+      required int commentCount,
       required int likeCount,
       required int viewCount,
       required int firstContentVoteCount,
       required int secondContentVoteCount,
       required bool isLikeButtonPressed,
       required bool isVoted,
-      required List<Media> mediaList,
-      required String createdAt}) = _$_Post;
+      required List<ImageMedia>? imageMediaList,
+      required List<VideoMedia>? videoMediaList,
+      required String createdAt,
+      Vote? vote}) = _$_Post;
 
   factory _Post.fromJson(Map<String, dynamic> json) = _$_Post.fromJson;
 
@@ -449,6 +531,8 @@ abstract class _Post implements Post {
   @override
   String get secondContentText => throw _privateConstructorUsedError;
   @override
+  int get commentCount => throw _privateConstructorUsedError;
+  @override
   int get likeCount => throw _privateConstructorUsedError;
   @override
   int get viewCount => throw _privateConstructorUsedError;
@@ -461,30 +545,268 @@ abstract class _Post implements Post {
   @override
   bool get isVoted => throw _privateConstructorUsedError;
   @override
-  List<Media> get mediaList => throw _privateConstructorUsedError;
+  List<ImageMedia>? get imageMediaList => throw _privateConstructorUsedError;
+  @override
+  List<VideoMedia>? get videoMediaList => throw _privateConstructorUsedError;
   @override
   String get createdAt => throw _privateConstructorUsedError;
+  @override
+  Vote? get vote => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$PostCopyWith<_Post> get copyWith => throw _privateConstructorUsedError;
 }
 
-Media _$MediaFromJson(Map<String, dynamic> json) {
-  return _Media.fromJson(json);
+Vote _$VoteFromJson(Map<String, dynamic> json) {
+  return _Vote.fromJson(json);
 }
 
 /// @nodoc
-class _$MediaTearOff {
-  const _$MediaTearOff();
+class _$VoteTearOff {
+  const _$VoteTearOff();
 
-  _Media call(
+  _Vote call(
+      {required int id,
+      required int postId,
+      required int choice,
+      required int userId,
+      required String createdAt}) {
+    return _Vote(
+      id: id,
+      postId: postId,
+      choice: choice,
+      userId: userId,
+      createdAt: createdAt,
+    );
+  }
+
+  Vote fromJson(Map<String, Object> json) {
+    return Vote.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $Vote = _$VoteTearOff();
+
+/// @nodoc
+mixin _$Vote {
+  int get id => throw _privateConstructorUsedError;
+  int get postId => throw _privateConstructorUsedError;
+  int get choice => throw _privateConstructorUsedError;
+  int get userId => throw _privateConstructorUsedError;
+  String get createdAt => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $VoteCopyWith<Vote> get copyWith => throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $VoteCopyWith<$Res> {
+  factory $VoteCopyWith(Vote value, $Res Function(Vote) then) =
+      _$VoteCopyWithImpl<$Res>;
+  $Res call({int id, int postId, int choice, int userId, String createdAt});
+}
+
+/// @nodoc
+class _$VoteCopyWithImpl<$Res> implements $VoteCopyWith<$Res> {
+  _$VoteCopyWithImpl(this._value, this._then);
+
+  final Vote _value;
+  // ignore: unused_field
+  final $Res Function(Vote) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? postId = freezed,
+    Object? choice = freezed,
+    Object? userId = freezed,
+    Object? createdAt = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      postId: postId == freezed
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as int,
+      choice: choice == freezed
+          ? _value.choice
+          : choice // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$VoteCopyWith<$Res> implements $VoteCopyWith<$Res> {
+  factory _$VoteCopyWith(_Vote value, $Res Function(_Vote) then) =
+      __$VoteCopyWithImpl<$Res>;
+  @override
+  $Res call({int id, int postId, int choice, int userId, String createdAt});
+}
+
+/// @nodoc
+class __$VoteCopyWithImpl<$Res> extends _$VoteCopyWithImpl<$Res>
+    implements _$VoteCopyWith<$Res> {
+  __$VoteCopyWithImpl(_Vote _value, $Res Function(_Vote) _then)
+      : super(_value, (v) => _then(v as _Vote));
+
+  @override
+  _Vote get _value => super._value as _Vote;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? postId = freezed,
+    Object? choice = freezed,
+    Object? userId = freezed,
+    Object? createdAt = freezed,
+  }) {
+    return _then(_Vote(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      postId: postId == freezed
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as int,
+      choice: choice == freezed
+          ? _value.choice
+          : choice // ignore: cast_nullable_to_non_nullable
+              as int,
+      userId: userId == freezed
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
+              as int,
+      createdAt: createdAt == freezed
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class _$_Vote implements _Vote {
+  _$_Vote(
+      {required this.id,
+      required this.postId,
+      required this.choice,
+      required this.userId,
+      required this.createdAt});
+
+  factory _$_Vote.fromJson(Map<String, dynamic> json) =>
+      _$_$_VoteFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final int postId;
+  @override
+  final int choice;
+  @override
+  final int userId;
+  @override
+  final String createdAt;
+
+  @override
+  String toString() {
+    return 'Vote(id: $id, postId: $postId, choice: $choice, userId: $userId, createdAt: $createdAt)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _Vote &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.postId, postId) ||
+                const DeepCollectionEquality().equals(other.postId, postId)) &&
+            (identical(other.choice, choice) ||
+                const DeepCollectionEquality().equals(other.choice, choice)) &&
+            (identical(other.userId, userId) ||
+                const DeepCollectionEquality().equals(other.userId, userId)) &&
+            (identical(other.createdAt, createdAt) ||
+                const DeepCollectionEquality()
+                    .equals(other.createdAt, createdAt)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(postId) ^
+      const DeepCollectionEquality().hash(choice) ^
+      const DeepCollectionEquality().hash(userId) ^
+      const DeepCollectionEquality().hash(createdAt);
+
+  @JsonKey(ignore: true)
+  @override
+  _$VoteCopyWith<_Vote> get copyWith =>
+      __$VoteCopyWithImpl<_Vote>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_VoteToJson(this);
+  }
+}
+
+abstract class _Vote implements Vote {
+  factory _Vote(
+      {required int id,
+      required int postId,
+      required int choice,
+      required int userId,
+      required String createdAt}) = _$_Vote;
+
+  factory _Vote.fromJson(Map<String, dynamic> json) = _$_Vote.fromJson;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  int get postId => throw _privateConstructorUsedError;
+  @override
+  int get choice => throw _privateConstructorUsedError;
+  @override
+  int get userId => throw _privateConstructorUsedError;
+  @override
+  String get createdAt => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$VoteCopyWith<_Vote> get copyWith => throw _privateConstructorUsedError;
+}
+
+ImageMedia _$ImageMediaFromJson(Map<String, dynamic> json) {
+  return _ImageMedia.fromJson(json);
+}
+
+/// @nodoc
+class _$ImageMediaTearOff {
+  const _$ImageMediaTearOff();
+
+  _ImageMedia call(
       {required int id,
       required int postId,
       required String type,
       required int contentOrder,
       required String url,
       required double size}) {
-    return _Media(
+    return _ImageMedia(
       id: id,
       postId: postId,
       type: type,
@@ -494,32 +816,35 @@ class _$MediaTearOff {
     );
   }
 
-  Media fromJson(Map<String, Object> json) {
-    return Media.fromJson(json);
+  ImageMedia fromJson(Map<String, Object> json) {
+    return ImageMedia.fromJson(json);
   }
 }
 
 /// @nodoc
-const $Media = _$MediaTearOff();
+const $ImageMedia = _$ImageMediaTearOff();
 
 /// @nodoc
-mixin _$Media {
+mixin _$ImageMedia {
   int get id => throw _privateConstructorUsedError;
   int get postId => throw _privateConstructorUsedError;
-  String get type => throw _privateConstructorUsedError; //video, image
+  String get type =>
+      throw _privateConstructorUsedError; //video, image, thumbnail
   int get contentOrder => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   double get size => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $MediaCopyWith<Media> get copyWith => throw _privateConstructorUsedError;
+  $ImageMediaCopyWith<ImageMedia> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MediaCopyWith<$Res> {
-  factory $MediaCopyWith(Media value, $Res Function(Media) then) =
-      _$MediaCopyWithImpl<$Res>;
+abstract class $ImageMediaCopyWith<$Res> {
+  factory $ImageMediaCopyWith(
+          ImageMedia value, $Res Function(ImageMedia) then) =
+      _$ImageMediaCopyWithImpl<$Res>;
   $Res call(
       {int id,
       int postId,
@@ -530,12 +855,12 @@ abstract class $MediaCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$MediaCopyWithImpl<$Res> implements $MediaCopyWith<$Res> {
-  _$MediaCopyWithImpl(this._value, this._then);
+class _$ImageMediaCopyWithImpl<$Res> implements $ImageMediaCopyWith<$Res> {
+  _$ImageMediaCopyWithImpl(this._value, this._then);
 
-  final Media _value;
+  final ImageMedia _value;
   // ignore: unused_field
-  final $Res Function(Media) _then;
+  final $Res Function(ImageMedia) _then;
 
   @override
   $Res call({
@@ -576,9 +901,10 @@ class _$MediaCopyWithImpl<$Res> implements $MediaCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$MediaCopyWith<$Res> implements $MediaCopyWith<$Res> {
-  factory _$MediaCopyWith(_Media value, $Res Function(_Media) then) =
-      __$MediaCopyWithImpl<$Res>;
+abstract class _$ImageMediaCopyWith<$Res> implements $ImageMediaCopyWith<$Res> {
+  factory _$ImageMediaCopyWith(
+          _ImageMedia value, $Res Function(_ImageMedia) then) =
+      __$ImageMediaCopyWithImpl<$Res>;
   @override
   $Res call(
       {int id,
@@ -590,13 +916,14 @@ abstract class _$MediaCopyWith<$Res> implements $MediaCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$MediaCopyWithImpl<$Res> extends _$MediaCopyWithImpl<$Res>
-    implements _$MediaCopyWith<$Res> {
-  __$MediaCopyWithImpl(_Media _value, $Res Function(_Media) _then)
-      : super(_value, (v) => _then(v as _Media));
+class __$ImageMediaCopyWithImpl<$Res> extends _$ImageMediaCopyWithImpl<$Res>
+    implements _$ImageMediaCopyWith<$Res> {
+  __$ImageMediaCopyWithImpl(
+      _ImageMedia _value, $Res Function(_ImageMedia) _then)
+      : super(_value, (v) => _then(v as _ImageMedia));
 
   @override
-  _Media get _value => super._value as _Media;
+  _ImageMedia get _value => super._value as _ImageMedia;
 
   @override
   $Res call({
@@ -607,7 +934,7 @@ class __$MediaCopyWithImpl<$Res> extends _$MediaCopyWithImpl<$Res>
     Object? url = freezed,
     Object? size = freezed,
   }) {
-    return _then(_Media(
+    return _then(_ImageMedia(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -639,8 +966,8 @@ class __$MediaCopyWithImpl<$Res> extends _$MediaCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$_Media implements _Media {
-  _$_Media(
+class _$_ImageMedia implements _ImageMedia {
+  _$_ImageMedia(
       {required this.id,
       required this.postId,
       required this.type,
@@ -648,8 +975,8 @@ class _$_Media implements _Media {
       required this.url,
       required this.size});
 
-  factory _$_Media.fromJson(Map<String, dynamic> json) =>
-      _$_$_MediaFromJson(json);
+  factory _$_ImageMedia.fromJson(Map<String, dynamic> json) =>
+      _$_$_ImageMediaFromJson(json);
 
   @override
   final int id;
@@ -657,7 +984,7 @@ class _$_Media implements _Media {
   final int postId;
   @override
   final String type;
-  @override //video, image
+  @override //video, image, thumbnail
   final int contentOrder;
   @override
   final String url;
@@ -666,13 +993,13 @@ class _$_Media implements _Media {
 
   @override
   String toString() {
-    return 'Media(id: $id, postId: $postId, type: $type, contentOrder: $contentOrder, url: $url, size: $size)';
+    return 'ImageMedia(id: $id, postId: $postId, type: $type, contentOrder: $contentOrder, url: $url, size: $size)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _Media &&
+        (other is _ImageMedia &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.postId, postId) ||
@@ -700,25 +1027,26 @@ class _$_Media implements _Media {
 
   @JsonKey(ignore: true)
   @override
-  _$MediaCopyWith<_Media> get copyWith =>
-      __$MediaCopyWithImpl<_Media>(this, _$identity);
+  _$ImageMediaCopyWith<_ImageMedia> get copyWith =>
+      __$ImageMediaCopyWithImpl<_ImageMedia>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_MediaToJson(this);
+    return _$_$_ImageMediaToJson(this);
   }
 }
 
-abstract class _Media implements Media {
-  factory _Media(
+abstract class _ImageMedia implements ImageMedia {
+  factory _ImageMedia(
       {required int id,
       required int postId,
       required String type,
       required int contentOrder,
       required String url,
-      required double size}) = _$_Media;
+      required double size}) = _$_ImageMedia;
 
-  factory _Media.fromJson(Map<String, dynamic> json) = _$_Media.fromJson;
+  factory _ImageMedia.fromJson(Map<String, dynamic> json) =
+      _$_ImageMedia.fromJson;
 
   @override
   int get id => throw _privateConstructorUsedError;
@@ -726,7 +1054,7 @@ abstract class _Media implements Media {
   int get postId => throw _privateConstructorUsedError;
   @override
   String get type => throw _privateConstructorUsedError;
-  @override //video, image
+  @override //video, image, thumbnail
   int get contentOrder => throw _privateConstructorUsedError;
   @override
   String get url => throw _privateConstructorUsedError;
@@ -734,5 +1062,318 @@ abstract class _Media implements Media {
   double get size => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$MediaCopyWith<_Media> get copyWith => throw _privateConstructorUsedError;
+  _$ImageMediaCopyWith<_ImageMedia> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+VideoMedia _$VideoMediaFromJson(Map<String, dynamic> json) {
+  return _VideoMedia.fromJson(json);
+}
+
+/// @nodoc
+class _$VideoMediaTearOff {
+  const _$VideoMediaTearOff();
+
+  _VideoMedia call(
+      {required int id,
+      required int postId,
+      required String type,
+      required int contentOrder,
+      required String url,
+      required double size,
+      required ImageMedia thumbnail}) {
+    return _VideoMedia(
+      id: id,
+      postId: postId,
+      type: type,
+      contentOrder: contentOrder,
+      url: url,
+      size: size,
+      thumbnail: thumbnail,
+    );
+  }
+
+  VideoMedia fromJson(Map<String, Object> json) {
+    return VideoMedia.fromJson(json);
+  }
+}
+
+/// @nodoc
+const $VideoMedia = _$VideoMediaTearOff();
+
+/// @nodoc
+mixin _$VideoMedia {
+  int get id => throw _privateConstructorUsedError;
+  int get postId => throw _privateConstructorUsedError;
+  String get type =>
+      throw _privateConstructorUsedError; //video, image, thumbnail
+  int get contentOrder => throw _privateConstructorUsedError;
+  String get url => throw _privateConstructorUsedError;
+  double get size => throw _privateConstructorUsedError;
+  ImageMedia get thumbnail => throw _privateConstructorUsedError;
+
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $VideoMediaCopyWith<VideoMedia> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $VideoMediaCopyWith<$Res> {
+  factory $VideoMediaCopyWith(
+          VideoMedia value, $Res Function(VideoMedia) then) =
+      _$VideoMediaCopyWithImpl<$Res>;
+  $Res call(
+      {int id,
+      int postId,
+      String type,
+      int contentOrder,
+      String url,
+      double size,
+      ImageMedia thumbnail});
+
+  $ImageMediaCopyWith<$Res> get thumbnail;
+}
+
+/// @nodoc
+class _$VideoMediaCopyWithImpl<$Res> implements $VideoMediaCopyWith<$Res> {
+  _$VideoMediaCopyWithImpl(this._value, this._then);
+
+  final VideoMedia _value;
+  // ignore: unused_field
+  final $Res Function(VideoMedia) _then;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? postId = freezed,
+    Object? type = freezed,
+    Object? contentOrder = freezed,
+    Object? url = freezed,
+    Object? size = freezed,
+    Object? thumbnail = freezed,
+  }) {
+    return _then(_value.copyWith(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      postId: postId == freezed
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as int,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      contentOrder: contentOrder == freezed
+          ? _value.contentOrder
+          : contentOrder // ignore: cast_nullable_to_non_nullable
+              as int,
+      url: url == freezed
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as double,
+      thumbnail: thumbnail == freezed
+          ? _value.thumbnail
+          : thumbnail // ignore: cast_nullable_to_non_nullable
+              as ImageMedia,
+    ));
+  }
+
+  @override
+  $ImageMediaCopyWith<$Res> get thumbnail {
+    return $ImageMediaCopyWith<$Res>(_value.thumbnail, (value) {
+      return _then(_value.copyWith(thumbnail: value));
+    });
+  }
+}
+
+/// @nodoc
+abstract class _$VideoMediaCopyWith<$Res> implements $VideoMediaCopyWith<$Res> {
+  factory _$VideoMediaCopyWith(
+          _VideoMedia value, $Res Function(_VideoMedia) then) =
+      __$VideoMediaCopyWithImpl<$Res>;
+  @override
+  $Res call(
+      {int id,
+      int postId,
+      String type,
+      int contentOrder,
+      String url,
+      double size,
+      ImageMedia thumbnail});
+
+  @override
+  $ImageMediaCopyWith<$Res> get thumbnail;
+}
+
+/// @nodoc
+class __$VideoMediaCopyWithImpl<$Res> extends _$VideoMediaCopyWithImpl<$Res>
+    implements _$VideoMediaCopyWith<$Res> {
+  __$VideoMediaCopyWithImpl(
+      _VideoMedia _value, $Res Function(_VideoMedia) _then)
+      : super(_value, (v) => _then(v as _VideoMedia));
+
+  @override
+  _VideoMedia get _value => super._value as _VideoMedia;
+
+  @override
+  $Res call({
+    Object? id = freezed,
+    Object? postId = freezed,
+    Object? type = freezed,
+    Object? contentOrder = freezed,
+    Object? url = freezed,
+    Object? size = freezed,
+    Object? thumbnail = freezed,
+  }) {
+    return _then(_VideoMedia(
+      id: id == freezed
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as int,
+      postId: postId == freezed
+          ? _value.postId
+          : postId // ignore: cast_nullable_to_non_nullable
+              as int,
+      type: type == freezed
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as String,
+      contentOrder: contentOrder == freezed
+          ? _value.contentOrder
+          : contentOrder // ignore: cast_nullable_to_non_nullable
+              as int,
+      url: url == freezed
+          ? _value.url
+          : url // ignore: cast_nullable_to_non_nullable
+              as String,
+      size: size == freezed
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as double,
+      thumbnail: thumbnail == freezed
+          ? _value.thumbnail
+          : thumbnail // ignore: cast_nullable_to_non_nullable
+              as ImageMedia,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class _$_VideoMedia implements _VideoMedia {
+  _$_VideoMedia(
+      {required this.id,
+      required this.postId,
+      required this.type,
+      required this.contentOrder,
+      required this.url,
+      required this.size,
+      required this.thumbnail});
+
+  factory _$_VideoMedia.fromJson(Map<String, dynamic> json) =>
+      _$_$_VideoMediaFromJson(json);
+
+  @override
+  final int id;
+  @override
+  final int postId;
+  @override
+  final String type;
+  @override //video, image, thumbnail
+  final int contentOrder;
+  @override
+  final String url;
+  @override
+  final double size;
+  @override
+  final ImageMedia thumbnail;
+
+  @override
+  String toString() {
+    return 'VideoMedia(id: $id, postId: $postId, type: $type, contentOrder: $contentOrder, url: $url, size: $size, thumbnail: $thumbnail)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _VideoMedia &&
+            (identical(other.id, id) ||
+                const DeepCollectionEquality().equals(other.id, id)) &&
+            (identical(other.postId, postId) ||
+                const DeepCollectionEquality().equals(other.postId, postId)) &&
+            (identical(other.type, type) ||
+                const DeepCollectionEquality().equals(other.type, type)) &&
+            (identical(other.contentOrder, contentOrder) ||
+                const DeepCollectionEquality()
+                    .equals(other.contentOrder, contentOrder)) &&
+            (identical(other.url, url) ||
+                const DeepCollectionEquality().equals(other.url, url)) &&
+            (identical(other.size, size) ||
+                const DeepCollectionEquality().equals(other.size, size)) &&
+            (identical(other.thumbnail, thumbnail) ||
+                const DeepCollectionEquality()
+                    .equals(other.thumbnail, thumbnail)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(id) ^
+      const DeepCollectionEquality().hash(postId) ^
+      const DeepCollectionEquality().hash(type) ^
+      const DeepCollectionEquality().hash(contentOrder) ^
+      const DeepCollectionEquality().hash(url) ^
+      const DeepCollectionEquality().hash(size) ^
+      const DeepCollectionEquality().hash(thumbnail);
+
+  @JsonKey(ignore: true)
+  @override
+  _$VideoMediaCopyWith<_VideoMedia> get copyWith =>
+      __$VideoMediaCopyWithImpl<_VideoMedia>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_VideoMediaToJson(this);
+  }
+}
+
+abstract class _VideoMedia implements VideoMedia {
+  factory _VideoMedia(
+      {required int id,
+      required int postId,
+      required String type,
+      required int contentOrder,
+      required String url,
+      required double size,
+      required ImageMedia thumbnail}) = _$_VideoMedia;
+
+  factory _VideoMedia.fromJson(Map<String, dynamic> json) =
+      _$_VideoMedia.fromJson;
+
+  @override
+  int get id => throw _privateConstructorUsedError;
+  @override
+  int get postId => throw _privateConstructorUsedError;
+  @override
+  String get type => throw _privateConstructorUsedError;
+  @override //video, image, thumbnail
+  int get contentOrder => throw _privateConstructorUsedError;
+  @override
+  String get url => throw _privateConstructorUsedError;
+  @override
+  double get size => throw _privateConstructorUsedError;
+  @override
+  ImageMedia get thumbnail => throw _privateConstructorUsedError;
+  @override
+  @JsonKey(ignore: true)
+  _$VideoMediaCopyWith<_VideoMedia> get copyWith =>
+      throw _privateConstructorUsedError;
 }

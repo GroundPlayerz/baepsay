@@ -78,7 +78,7 @@ class GoldenBalance extends StatelessWidget {
           ),
           primarySwatch: createMaterialColor(kAccentYellowColor),
         ),
-        home: HomeScreen(),
+        home: SplashScreen(),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:golden_balance_flutter/model/media_for_upload.dart';
 import '../configuration.dart';
 import '../util/dio_logging_interceptor.dart';
 
@@ -22,40 +23,39 @@ class UserApiProvider {
     required String title,
     required String firstContentText,
     required String secondContentText,
-    Uint8List? firstMedia,
-    String? firstMediaType,
-    Uint8List? secondMedia,
-    String? secondMediaType,
+    required List<MediaForUpload> mediaList,
   }) async {
     Reference videoRef = _firebaseStorage.ref().child('videos');
     Reference imageRef = _firebaseStorage.ref().child('images');
-    String? firstMediaDownloadURL;
-    String? secondMediaDownloadURL;
-    if (firstMedia != null) {
-      firstMediaDownloadURL = firstMediaType == 'video'
-          ? await _uploadToStorageAndGetDownloadURL(videoRef, firstMedia)
-          : await _uploadToStorageAndGetDownloadURL(imageRef, firstMedia);
-    }
-    if (secondMedia != null) {
-      secondMediaDownloadURL = secondMediaType == 'video'
-          ? await _uploadToStorageAndGetDownloadURL(videoRef, secondMedia)
-          : await _uploadToStorageAndGetDownloadURL(imageRef, secondMedia);
+    Reference thumbnailRef = _firebaseStorage.ref().child('thumbnail');
+    List mediaMetaDataList = [];
+    if (mediaList.isNotEmpty) {
+      for (MediaForUpload media in mediaList) {
+        Map<String, dynamic> metaData = {};
+        String mediaDownloadUrl;
+        if (media.type == 'video') {
+          mediaDownloadUrl =
+              await _uploadToStorageAndGetDownloadURL(videoRef, media.media);
+        } else if (media.type == 'image') {
+          mediaDownloadUrl =
+              await _uploadToStorageAndGetDownloadURL(imageRef, media.media);
+        } else {
+          mediaDownloadUrl = await _uploadToStorageAndGetDownloadURL(
+              thumbnailRef, media.media);
+        }
+        metaData['url'] = mediaDownloadUrl;
+        metaData['type'] = media.type;
+        metaData['size'] = media.media.length;
+        metaData['content_order'] = media.contentOrder;
+        mediaMetaDataList.add(metaData);
+      }
     }
 
     Map<String, dynamic> data = {};
     data['title'] = title;
     data['first_content_text'] = firstContentText;
     data['second_content_text'] = secondContentText;
-    if (firstMedia != null) {
-      data['first_media_size'] = firstMedia.length;
-      data['first_media_type'] = firstMediaType;
-      data['first_media_url'] = firstMediaDownloadURL;
-    }
-    if (secondMedia != null) {
-      data['second_media_size'] = secondMedia.length;
-      data['second_media_type'] = secondMediaType;
-      data['second_media_url'] = secondMediaDownloadURL;
-    }
+    data['media_list'] = mediaMetaDataList;
 
     Response response = await _dio.post('user/post', data: data);
     return response;
@@ -63,10 +63,10 @@ class UserApiProvider {
 
   Future<String> _uploadToStorageAndGetDownloadURL(
       Reference storageRef, Uint8List bytes) async {
-    Reference fileRef = storageRef.child(DateTime.now().toIso8601String());
-    UploadTask storageUploadTask = fileRef.putData(bytes);
+    var fileRef = storageRef.child(DateTime.now().toIso8601String());
+    var storageUploadTask = fileRef.putData(bytes);
     await storageUploadTask.whenComplete(() {});
-    String downloadURL = await fileRef.getDownloadURL();
+    var downloadURL = await fileRef.getDownloadURL();
 
     return downloadURL;
   }
@@ -75,9 +75,31 @@ class UserApiProvider {
     Map<String, dynamic> queryParameters = {};
     if (cursor != null) queryParameters['cursor'] = cursor;
     queryParameters['type'] = 'home';
-    Response response =
+    var response =
         await _dio.get('user/feed', queryParameters: queryParameters);
 
+    return response;
+  }
+
+  Future<Response> viewPost({required int postId}) async {
+    Response response = await _dio.post('user/post/$postId/view');
+    return response;
+  }
+
+  Future<Response> likePost({required int postId}) async {
+    Response response = await _dio.post('user/post/$postId/like');
+    return response;
+  }
+
+  Future<Response> cancelLikePost({required int postId}) async {
+    Response response = await _dio.delete('user/post/$postId/like');
+    return response;
+  }
+
+  Future<Response> voteToPost(
+      {required int postId, required int choice}) async {
+    Response response =
+        await _dio.post('user/post/$postId/vote', data: {'choice': choice});
     return response;
   }
 }

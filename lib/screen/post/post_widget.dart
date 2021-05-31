@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
+import 'package:golden_balance_flutter/screen/post/video_network_viewer.dart';
 
 class PostWidget extends StatefulWidget {
   Post post;
@@ -13,7 +15,7 @@ class PostWidget extends StatefulWidget {
 }
 
 class _PostWidgetState extends State<PostWidget> {
-  //Todo: 포스트 넘겨받기
+  late Post post;
 
   late final String _title;
   late final String _firstContentText;
@@ -24,20 +26,89 @@ class _PostWidgetState extends State<PostWidget> {
   late int _firstContentVoteCount;
   late int _secondContentVoteCount;
   late bool _isLikeButtonPressed;
-
   late bool _isVoted;
   late String _userName;
-
-  final double _titleAreaHeight = 56;
-  bool _isTitleStretched = false;
-
+  late List<ImageMedia> _imageMediaList;
+  late List<VideoMedia> _videoMediaList;
+  //Todo: initState에서 결정해야하는 변수
+  late Widget _firstMediaWidget;
+  late Widget _secondMediaWidget;
   late bool _isFirstMediaExist;
   late bool _isSecondMediaExist;
-
-  Widget _firstMedia = Container(color: Colors.deepPurple);
-  Widget _secondMedia = Container(color: Colors.blue);
-
+  //Todo: stateful 위젯 내에서 변하는 변수
+  final double _titleAreaHeight = 56;
+  bool _isTitleStretched = false;
   String _votedContent = '';
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    post = widget.post;
+
+    _title = widget.post.title;
+    _isVoted = widget.post.isVoted;
+    _firstContentVoteCount = widget.post.firstContentVoteCount;
+    _secondContentVoteCount = widget.post.secondContentVoteCount;
+    _firstContentText = widget.post.firstContentText;
+    _secondContentText = widget.post.secondContentText;
+    _isLikeButtonPressed = widget.post.isLikeButtonPressed;
+    _likeCount = widget.post.likeCount;
+    _voteCount = _firstContentVoteCount + _secondContentVoteCount;
+    _userName = widget.post.author.profileName;
+    if (widget.post.imageMediaList != null) {
+      for (ImageMedia imageMedia in widget.post.imageMediaList!) {
+        if (imageMedia.contentOrder == 1) {
+          _firstMediaWidget = _imageWidget(imageMedia);
+          _isFirstMediaExist = true;
+        } else if (imageMedia.contentOrder == 2) {
+          _secondMediaWidget = _imageWidget(imageMedia);
+          _isSecondMediaExist = true;
+        }
+      }
+    }
+
+    if (widget.post.videoMediaList != null) {
+      for (VideoMedia videoMedia in widget.post.videoMediaList!) {
+        if (videoMedia.contentOrder == 1) {
+          _firstMediaWidget = _videoWidget(videoMedia);
+          _isFirstMediaExist = true;
+        } else if (videoMedia.contentOrder == 2) {
+          _secondMediaWidget = _videoWidget(videoMedia);
+          _isSecondMediaExist = true;
+        }
+      }
+    }
+  }
+
+
+  Widget _videoWidget(VideoMedia videoMedia) {
+    return ClipRect(
+      child: SizedBox.expand(
+        child: FittedBox(
+          fit: BoxFit.cover,
+          //alignment: Alignment.center,
+          child: VideoNetworkViewer(
+            videoUrl: videoMedia.url,
+            thumbnailUrl: videoMedia.thumbnail.url,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _imageWidget(ImageMedia imageMedia) {
+    return Stack(children: [
+      Positioned.fill(
+        child: CachedNetworkImage(
+          imageUrl: imageMedia.url,
+          fit: BoxFit.cover,
+        ),
+      ),
+      _topBlackGradient,
+      _bottomBlackGradient,
+    ]);
+  }
 
   Widget _likeButtonDeactivated() => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
@@ -211,7 +282,7 @@ class _PostWidgetState extends State<PostWidget> {
         ],
       );
 
-  Widget _topBlackGradient = Positioned.fill(
+  final Widget _topBlackGradient = Positioned.fill(
     child: Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -224,7 +295,7 @@ class _PostWidgetState extends State<PostWidget> {
       ),
     ),
   );
-  Widget _bottomBlackGradient = Positioned.fill(
+  final Widget _bottomBlackGradient = Positioned.fill(
     child: Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -344,21 +415,6 @@ class _PostWidgetState extends State<PostWidget> {
     );
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _title = widget.post.title;
-    _isVoted = widget.post.isVoted;
-    _firstContentVoteCount = widget.post.firstContentVoteCount;
-    _secondContentVoteCount = widget.post.secondContentVoteCount;
-    _firstContentText = widget.post.firstContentText;
-    _secondContentText = widget.post.secondContentText;
-    _isLikeButtonPressed = widget.post.isLikeButtonPressed;
-    _likeCount = widget.post.likeCount;
-    _voteCount = _firstContentVoteCount + _secondContentVoteCount;
-    _userName = widget.post.author.profileName;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -376,22 +432,14 @@ class _PostWidgetState extends State<PostWidget> {
               children: [
                 Expanded(
                   child: _isFirstMediaExist
-                      ? Stack(children: [
-                          _firstMedia,
-                          _topBlackGradient,
-                          _bottomBlackGradient,
-                        ])
+                      ? _firstMediaWidget
                       : Container(
                           color: Colors.red.withOpacity(0.1),
                         ),
                 ),
                 Expanded(
                   child: _isSecondMediaExist
-                      ? Stack(children: [
-                          _secondMedia,
-                          _topBlackGradient,
-                          _bottomBlackGradient,
-                        ])
+                      ? _secondMediaWidget
                       : Container(
                           color: Colors.red.withOpacity(0.1),
                         ),

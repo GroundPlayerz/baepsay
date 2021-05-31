@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:golden_balance_flutter/model/token/token.dart';
 import 'package:golden_balance_flutter/repository/auth_repository.dart';
@@ -6,6 +8,7 @@ import 'package:golden_balance_flutter/repository/auth_repository.dart';
 class DioLoggingInterceptors extends dio.Interceptor {
   final dio.Dio _dio;
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   DioLoggingInterceptors(this._dio);
 
@@ -28,7 +31,7 @@ class DioLoggingInterceptors extends dio.Interceptor {
 
     if (options.headers.containsKey('requirestoken')) {
       options.headers.remove('requirestoken');
-      print('accessToken: ${_secureStorage.read(key: 'access_token')}');
+      print('user_id: ${_secureStorage.read(key: 'user_id')}');
       String? accessToken = await _secureStorage.read(key: 'access_token');
       options.headers.addAll({'Authorization': 'Bearer $accessToken'});
     }
@@ -61,13 +64,28 @@ class DioLoggingInterceptors extends dio.Interceptor {
     if (oldAccessToken != null && responseCode == 401) {
       _dio.interceptors.requestLock.lock();
       _dio.interceptors.responseLock.lock();
-
-      AuthRepository apiAuthRepository = AuthRepository();
-      final resp = await apiAuthRepository.flaskSignIn();
-      final token = Token.fromJson(resp.data['access_token']);
+      String? userId = await _secureStorage.read(key: 'user_id');
+      User? currentUser = _auth.currentUser;
+      dio.Response? resp;
+      if (userId == null && currentUser != null) {
+        resp = await Dio(dio.BaseOptions(
+          baseUrl: 'http://34.64.204.217:5000/api/',
+          connectTimeout: 5000,
+          receiveTimeout: 3000,
+        )).post('auth/authenticated/access-token',
+            data: {'email': currentUser.email});
+      } else if (userId != null && currentUser == null) {
+        resp = await Dio(BaseOptions(
+          baseUrl: 'http://34.64.204.217:5000/api/',
+          connectTimeout: 5000,
+          receiveTimeout: 3000,
+        )).post('auth/unauthenticated/access-token', data: {'user_id': userId});
+      }
+      //ToDO: 고쳐야됨
+      final token = Token.fromJson(resp!.data['access_token']);
       String newAccessToken = token.accessToken;
-      _secureStorage.delete(key: 'access_token');
-      _secureStorage.write(key: 'access_token', value: newAccessToken);
+      await _secureStorage.delete(key: 'access_token');
+      await _secureStorage.write(key: 'access_token', value: newAccessToken);
 
       dio.RequestOptions requestOptions = dioError.response!.requestOptions;
       requestOptions.headers.addAll({'requirestoken': true});

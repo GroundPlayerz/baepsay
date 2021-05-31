@@ -12,30 +12,65 @@ class Post with _$Post {
     required String title,
     required String firstContentText,
     required String secondContentText,
+    required int commentCount,
     required int likeCount,
     required int viewCount,
     required int firstContentVoteCount,
     required int secondContentVoteCount,
     required bool isLikeButtonPressed,
     required bool isVoted,
-    required List<Media> mediaList,
+    required List<ImageMedia>? imageMediaList,
+    required List<VideoMedia>? videoMediaList,
     required String createdAt,
+    Vote? vote,
   }) = _Post;
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 }
 
 @freezed
-class Media with _$Media {
+class Vote with _$Vote {
   @JsonSerializable(fieldRename: FieldRename.snake)
-  factory Media({
+  factory Vote({
     required int id,
     required int postId,
-    required String type, //video, image
+    required int choice,
+    required int userId,
+    required String createdAt,
+  }) = _Vote;
+
+  factory Vote.fromJson(Map<String, dynamic> json) => _$VoteFromJson(json);
+}
+
+@freezed
+class ImageMedia with _$ImageMedia {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  factory ImageMedia({
+    required int id,
+    required int postId,
+    required String type, //video, image, thumbnail
     required int contentOrder,
     required String url,
     required double size,
-  }) = _Media;
+  }) = _ImageMedia;
 
-  factory Media.fromJson(Map<String, dynamic> json) => _$MediaFromJson(json);
+  factory ImageMedia.fromJson(Map<String, dynamic> json) =>
+      _$ImageMediaFromJson(json);
+}
+
+@freezed
+class VideoMedia with _$VideoMedia {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  factory VideoMedia({
+    required int id,
+    required int postId,
+    required String type, //video, image, thumbnail
+    required int contentOrder,
+    required String url,
+    required double size,
+    required ImageMedia thumbnail,
+  }) = _VideoMedia;
+
+  factory VideoMedia.fromJson(Map<String, dynamic> json) =>
+      _$VideoMediaFromJson(json);
 }

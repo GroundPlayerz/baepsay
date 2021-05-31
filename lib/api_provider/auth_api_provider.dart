@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:golden_balance_flutter/configuration.dart';
 import 'package:golden_balance_flutter/util/dio_logging_interceptor.dart';
 
@@ -12,17 +13,22 @@ class AuthApiProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final Dio _dio = Dio();
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   AuthApiProvider() {
     _dio.options = dioOptions;
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
   }
 
-  Future<Response> signUp({
-    required String profileName,
-  }) async {
-    var response = await _dio.post('/auth/signup',
-        data: {'email': _auth.currentUser!.email, 'profile_name': profileName});
+  Future<Response> unauthenticatedSignUp() async {
+    Response response = await _dio.post('auth/unauthenticated/signup');
+    return response;
+  }
+
+  Future<Response> authenticatedSignUp() async {
+    Response response = await _dio.post('auth/authenticated/signup', data: {
+      'email': _auth.currentUser!.email,
+    });
 
     return response;
   }
@@ -38,14 +44,22 @@ class AuthApiProvider {
     return false;
   }
 
-  Future<Response> flaskSignIn() async {
-    var response = await _dio.post('/auth/signin', data: {
+  Future<Response> getUnauthenticatedUserAccessToken() async {
+    String? userId = await _secureStorage.read(key: 'user_id');
+    var response = await _dio.post('auth/unauthenticated/access-token', data: {
+      'user_id': userId,
+    });
+    return response;
+  }
+
+  Future<Response> getAuthenticatedUserAccessToken() async {
+    var response = await _dio.post('auth/authenticated/access-token', data: {
       'email': _auth.currentUser!.email,
     });
     return response;
   }
 
-  Future<void> signOut() async {
+  Future<void> firebaseSignOut() async {
     await _signOutGoogle();
     await _auth.signOut();
   }

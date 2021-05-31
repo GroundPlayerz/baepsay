@@ -8,9 +8,9 @@ class User with _$User {
   @JsonSerializable(fieldRename: FieldRename.snake)
   factory User({
     required int id,
-    required String email,
+    String? email,
     required String profileName,
-    required String profilePhotoUrl,
+    String? profilePhotoUrl,
     required String role, //admin, general_free, general_paid, expert
     required String createdAt,
     String? updatedAt, //[nullable]

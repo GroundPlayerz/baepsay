@@ -9,9 +9,9 @@ part of 'user.dart';
 _$_User _$_$_UserFromJson(Map<String, dynamic> json) {
   return _$_User(
     id: json['id'] as int,
-    email: json['email'] as String,
+    email: json['email'] as String?,
     profileName: json['profile_name'] as String,
-    profilePhotoUrl: json['profile_photo_url'] as String,
+    profilePhotoUrl: json['profile_photo_url'] as String?,
     role: json['role'] as String,
     createdAt: json['created_at'] as String,
     updatedAt: json['updated_at'] as String?,

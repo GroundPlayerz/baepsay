@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
-import 'package:golden_balance_flutter/constant/textstyle.dart';
-import 'package:golden_balance_flutter/screen/home/following_feed_screen.dart';
-import 'package:golden_balance_flutter/screen/home/post_widget.dart';
-import 'package:golden_balance_flutter/screen/notification_screen.dart';
+import 'package:golden_balance_flutter/screen/post/post_widget.dart';
+import 'package:golden_balance_flutter/screen/post/post_widget_new.dart';
 import 'package:golden_balance_flutter/screen/profile/my_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen.dart';
 
@@ -37,44 +36,27 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: kBackgroundNavyColor,
           leadingWidth: 0,
           titleSpacing: 0,
-          title: Row(
-            children: [
-              TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    '추천',
-                    style: isForYouSelected
-                        ? kHomeScreenSelectedTabTextStyle
-                        : kHomeScreenUnselectedTabTextStyle,
-                  )),
-              TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => FollowingFeedScreen()));
-                  },
-                  child: Text('팔로잉',
-                      style: !isForYouSelected
-                          ? kHomeScreenSelectedTabTextStyle
-                          : kHomeScreenUnselectedTabTextStyle)),
-            ],
-          ),
           actions: [
             IconButton(
                 icon: Icon(Icons.add),
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => UploadScreen()));
-                }),
-            IconButton(
-                icon: Icon(Icons.notifications),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => NotificationScreen()));
-                }),
+                onPressed: authState is FirebaseSignedIn
+                    ? () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => UploadScreen()));
+                      }
+                    : () {
+                        Fluttertoast.showToast(
+                          msg: '업로드를 하기 위해서는 로그인 해야합니다.',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.CENTER,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }),
             IconButton(
                 icon: Icon(Icons.person),
                 onPressed: () {
@@ -90,12 +72,13 @@ class _HomeScreenState extends State<HomeScreen> {
             builder: (context, feedState) {
           if (feedState is Loaded) {
             return PageView.builder(
+              allowImplicitScrolling: true,
               scrollDirection: Axis.horizontal,
               controller: pageController,
               itemCount: feedState.feed.length,
               itemBuilder: (BuildContext context, int index) {
-                return PostWidget(
-                  post: feedState.feed[index],
+                return PostWidgetNew(
+                  postIndex: index,
                 );
               },
             );

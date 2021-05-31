@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fa;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:bloc/bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
@@ -8,72 +9,94 @@ import 'package:golden_balance_flutter/repository/auth_repository.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository repository;
-  final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final fa.FirebaseAuth _auth = fa.FirebaseAuth.instance;
 
   AuthCubit({required this.repository}) : super(Checking());
 
-  signUp({required String profileName}) async {
+  void checkUserIdExistsInSecureStorage() async {
     try {
-      await this.repository.signUp(profileName: profileName);
-      signInFlask();
-    } catch (e) {
-      if (e is DioError && e.response!.statusCode == 409) {
-        emit(AuthError(message: 'User already exists.'));
+      String? userId = await _secureStorage.read(key: 'user_id');
+      print(userId);
+      if (userId != null) {
+        emit(DeviceUserIdExists(userId));
       } else {
-        emit(AuthError(message: e.toString()));
+        Response response = await repository.unauthenticatedSignUp();
+        final user = User.fromJson(response.data);
+        print(user.toString());
+        await _secureStorage.write(key: 'user_id', value: user.id.toString());
+        checkUserIdExistsInSecureStorage();
       }
-    }
-  }
-
-  signInGoogle() async {
-    try {
-      await this.repository.googleSignIn();
-      emit(FirebaseSignedIn());
     } catch (e) {
-      emit(SignedOut());
+      print(e.toString());
+      emit(AuthError(message: e.toString()));
     }
   }
 
-  signInApple() async {}
-
-  checkIsFirebaseSignedIn() async {
+  void signInGoogle() async {
     try {
-      emit(Checking());
-      if (this.repository.isFirebaseSignedIn()) {
-        emit(FirebaseSignedIn());
-      } else {
-        emit(SignedOut());
+      if (state is DeviceSignedIn) {
+        await repository.googleSignIn();
+        if (_auth.currentUser != null) {
+          emit(FirebaseSigningIn());
+        }
       }
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
   }
 
-  signInFlask() async {
+  void checkIsFirebaseSignedIn() async {
     try {
-      final resp = await this.repository.flaskSignIn();
-      if (resp.data['msg'] == 'Registration is required.') {
-        emit(FlaskSignInFailed());
+      if (repository.isFirebaseSignedIn()) {
+        emit(FirebaseSigningIn());
       } else {
-        final user = User.fromJson(resp.data['user']);
-        final accessToken = Token.fromJson(resp.data['access_token']);
-        secureStorage.write(
-            key: 'access_token', value: accessToken.accessToken);
-        emit(FlaskSignedIn(
-          accessToken: accessToken,
-          user: user,
-        ));
+        emit(FirebaseSignedOut());
       }
     } catch (e) {
-      emit(SignedOut());
+      emit(AuthError(message: e.toString()));
     }
   }
 
-  signOut() async {
+  Future<void> getUnauthenticatedUserAccessToken() async {
     try {
-      await this.repository.signOut();
-      secureStorage.delete(key: 'access_token');
-      emit(SignedOut());
+      final resp = await repository.getUnauthenticatedUserAccessToken();
+      final accessToken = Token.fromJson(resp.data['access_token']);
+      final User user = User.fromJson(resp.data['user']);
+      await _secureStorage.delete(key: 'access_token');
+      await _secureStorage.write(
+          key: 'access_token', value: accessToken.accessToken);
+      emit(DeviceSignedIn(user));
+    } catch (e) {
+      emit(AuthError(
+        message: e.toString(),
+      ));
+    }
+  }
+
+  Future<void> getAuthenticatedUserAccessToken() async {
+    try {
+      final resp = await repository.getAuthenticatedUserAccessToken();
+      final accessToken = Token.fromJson(resp.data['access_token']);
+      final User user = User.fromJson(resp.data['user']);
+      await _secureStorage.delete(key: 'access_token');
+      await _secureStorage.delete(key: 'user_id');
+      await _secureStorage.write(
+          key: 'access_token', value: accessToken.accessToken);
+      emit(FirebaseSignedIn(user));
+    } catch (e) {
+      emit(AuthError(
+        message: e.toString(),
+      ));
+    }
+  }
+
+  void firebaseSignOut() async {
+    try {
+      if (state is FirebaseSignedIn) {
+        await repository.firebaseSignOut();
+        emit(FirebaseSignedOut());
+      }
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
