@@ -8,15 +8,15 @@ import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
 
-class PostWidgetNew extends StatefulWidget {
+class PostWidget extends StatefulWidget {
   final int postIndex;
-  PostWidgetNew({required this.postIndex});
+  PostWidget({required this.postIndex});
 
   @override
-  _PostWidgetNewState createState() => _PostWidgetNewState();
+  _PostWidgetState createState() => _PostWidgetState();
 }
 
-class _PostWidgetNewState extends State<PostWidgetNew> {
+class _PostWidgetState extends State<PostWidget> {
   late int postIndex;
 
   final double _titleAreaHeight = 56;
@@ -26,6 +26,7 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
   void initState() {
     super.initState();
     postIndex = widget.postIndex;
+    BlocProvider.of<HomeFeedCubit>(context).viewPost(postIndex: postIndex);
   }
 
   Widget _imageWidget({required String url}) {
