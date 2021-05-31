@@ -33,7 +33,7 @@ dependencies:
   video_thumbnail: ^0.3.3
   path_provider: ^2.0.2
   pedantic: ^1.11.0
-  cached_video_player: ^2.0.0-dev.1
+  video_player: ^2.1.4
 
 dev_dependencies:
   flutter_test:

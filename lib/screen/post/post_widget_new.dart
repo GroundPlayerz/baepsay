@@ -29,46 +29,26 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
     postIndex = widget.postIndex;
   }
 
-  Widget decideMedia(Post post, int whichMedia) {
-    if (post.imageMediaList != null) {
-      for (ImageMedia imageMedia in post.imageMediaList!) {
-        if (imageMedia.contentOrder == whichMedia) {
-          return _imageWidget(imageMedia);
-        }
-      }
-    }
-    if (post.videoMediaList != null) {
-      for (VideoMedia videoMedia in post.videoMediaList!) {
-        if (videoMedia.contentOrder == whichMedia) {
-          return _videoWidget(videoMedia);
-        }
-      }
-    }
-    return Container(
-      color: Colors.red.withOpacity(0.1),
-    );
-  }
-
-  Widget _videoWidget(VideoMedia videoMedia) {
+  Widget _videoWidget({required String url, required String thumbnailUrl}) {
     return ClipRect(
       child: SizedBox.expand(
         child: FittedBox(
           fit: BoxFit.cover,
           //alignment: Alignment.center,
           child: VideoNetworkViewer(
-            videoUrl: videoMedia.url,
-            thumbnailUrl: videoMedia.thumbnail.url,
+            videoUrl: url,
+            thumbnailUrl: thumbnailUrl,
           ),
         ),
       ),
     );
   }
 
-  Widget _imageWidget(ImageMedia imageMedia) {
+  Widget _imageWidget({required String url}) {
     return Stack(children: [
       Positioned.fill(
         child: CachedNetworkImage(
-          imageUrl: imageMedia.url,
+          imageUrl: url,
           fit: BoxFit.cover,
         ),
       ),
@@ -99,7 +79,7 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
         behavior: HitTestBehavior.opaque,
         onTap: () {
           setState(() {
-            if (!post.isLikeButtonPressed) {
+            if (post.userLikeCount == 0) {
               //ToDo: 큐빗에서 좋아요하기!
               BlocProvider.of<HomeFeedCubit>(context)
                   .pressLikeButton(postIndex: postIndex);
@@ -114,17 +94,13 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
             children: [
-              !post.isLikeButtonPressed
+              post.userLikeCount == 0
                   ? Icon(Icons.favorite_border_rounded,
                       size: 35, color: kWhiteColor)
                   : Icon(Icons.favorite_rounded,
                       size: 35, color: kAccentYellowColor),
               SizedBox(width: 11),
-              !post.isLikeButtonPressed
-                  ? Text(post.likeCount.toString(),
-                      style: kPostInfoNumberTextStyle)
-                  : Text((post.likeCount + 1).toString(),
-                      style: kPostInfoNumberTextStyle),
+              Text(post.likeCount.toString()),
             ],
           ),
         ),
@@ -192,7 +168,7 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
                     ),
                   ),
                   SizedBox(width: 11),
-                  Text(post.author.profileName),
+                  Text(post.profileName),
                 ],
               ),
             ),
@@ -200,10 +176,10 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                !post.isVoted
+                post.userVoteChoice == null
                     ? _likeButtonDeactivated(post)
                     : _likeButton(post),
-                !post.isVoted
+                post.userVoteChoice == null
                     ? _commentButtonDeactivated(post)
                     : _commentButton(post),
               ],
@@ -344,7 +320,7 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
   }
 
   Widget _voteCompleteIconWidget(int whichContent, {required Post post}) {
-    if (post.isVoted == true && post.vote!.choice == whichContent) {
+    if (post.userVoteChoice != null && post.userVoteChoice == whichContent) {
       return Container(
           height: 40,
           width: 40,
@@ -386,6 +362,27 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
       builder: (context, state) {
         if (state is Loaded) {
           Post post = state.feed[postIndex];
+          List<Map<String, dynamic>> mediaList = [{}, {}];
+
+          if (post.mediaContentOrders != null) {
+            List<String> mediaContentOrdersList =
+                post.mediaContentOrders!.split(',');
+            List<String> mediaTypesList = post.mediaTypes!.split(',');
+            List<String> mediaUrlsList = post.mediaUrls!.split(',');
+
+            for (int i = 0; i < mediaContentOrdersList.length; i++) {
+              if (mediaTypesList[i] == 'thumbnail') {
+                mediaList[int.parse(mediaContentOrdersList[i]) - 1]
+                    ['thumbnail_url'] = mediaUrlsList[i];
+              } else {
+                mediaList[int.parse(mediaContentOrdersList[i]) - 1]['type'] =
+                    mediaTypesList[i];
+                mediaList[int.parse(mediaContentOrdersList[i]) - 1]['url'] =
+                    mediaUrlsList[i];
+              }
+            }
+          }
+
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -402,16 +399,40 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
                       child: Column(
                         children: [
                           Expanded(
-                            child: decideMedia(post, 1),
+                            child: Builder(
+                              builder: (context) {
+                                if (mediaList[0]['type'] == 'video') {
+                                  return _videoWidget(
+                                      url: mediaList[0]['url'],
+                                      thumbnailUrl: mediaList[0]
+                                          ['thumbnail_url']);
+                                } else if (mediaList[0]['type'] == 'image') {
+                                  return _imageWidget(url: mediaList[0]['url']);
+                                }
+                                return Container();
+                              },
+                            ),
                           ),
                           Expanded(
-                            child: decideMedia(post, 2),
+                            child: Builder(
+                              builder: (context) {
+                                if (mediaList[1]['type'] == 'video') {
+                                  return _videoWidget(
+                                      url: mediaList[1]['url'],
+                                      thumbnailUrl: mediaList[1]
+                                          ['thumbnail_url']);
+                                } else if (mediaList[1]['type'] == 'image') {
+                                  return _imageWidget(url: mediaList[1]['url']);
+                                }
+                                return Container();
+                              },
+                            ),
                           ),
                         ],
                       ),
                     ),
                     //투표비율위젯
-                    post.isVoted
+                    post.userVoteChoice != null
                         ? _voteResultWidget(
                             firstContentVoteCount: post.firstContentVoteCount,
                             secondContentVoteCount: post.secondContentVoteCount)
@@ -476,7 +497,7 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
                             child: Container(
                               alignment: Alignment.centerRight,
                               padding: EdgeInsets.only(right: 20),
-                              child: !post.isVoted
+                              child: post.userVoteChoice == null
                                   ? _voteButton(1)
                                   : _voteCompleteIconWidget(1, post: post),
                             ),
@@ -486,7 +507,7 @@ class _PostWidgetNewState extends State<PostWidgetNew> {
                             child: Container(
                               alignment: Alignment.centerRight,
                               padding: EdgeInsets.only(right: 20),
-                              child: !post.isVoted
+                              child: post.userVoteChoice == null
                                   ? _voteButton(2)
                                   : _voteCompleteIconWidget(2, post: post),
                             ),

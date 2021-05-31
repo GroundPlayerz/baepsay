@@ -6,7 +6,6 @@ import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
-import 'package:golden_balance_flutter/screen/post/post_widget.dart';
 import 'package:golden_balance_flutter/screen/post/post_widget_new.dart';
 import 'package:golden_balance_flutter/screen/profile/my_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen.dart';

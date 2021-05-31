@@ -18,7 +18,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
       emit(Loading());
 
       final Response response =
-          await this.unauthorizedUserRepository.getHomeFeed(cursor: cursor);
+          await unauthorizedUserRepository.getHomeFeed(cursor: cursor);
 
       final feed = response.data
           .map<Post>(
@@ -36,7 +36,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
     try {
       emit(Loading());
       final Response response =
-          await this.userRepository.getHomeFeed(cursor: cursor);
+          await userRepository.getHomeFeed(cursor: cursor);
       final feed = response.data['feed']
           .map<Post>(
             (e) => Post.fromJson(e),
@@ -68,23 +68,11 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         Post changedPost;
         if (choice == 1) {
           changedPost = feed[postIndex].copyWith(
-              isVoted: true,
-              vote: Vote(
-                  id: 0,
-                  postId: feed[postIndex].id,
-                  userId: 0,
-                  choice: 1,
-                  createdAt: ''),
+              userVoteChoice: 1,
               firstContentVoteCount: feed[postIndex].firstContentVoteCount + 1);
         } else {
           changedPost = feed[postIndex].copyWith(
-              isVoted: true,
-              vote: Vote(
-                  id: 0,
-                  postId: feed[postIndex].id,
-                  userId: 0,
-                  choice: 2,
-                  createdAt: ''),
+              userVoteChoice: 2,
               secondContentVoteCount:
                   feed[postIndex].secondContentVoteCount + 1);
         }
@@ -107,14 +95,14 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         List<Post> feed = [...parsedState.feed];
 
         Post changedPost;
-        if (feed[postIndex].isLikeButtonPressed == false) {
-          changedPost = feed[postIndex].copyWith(isLikeButtonPressed: true);
+        if (feed[postIndex].userLikeCount == 0) {
+          changedPost = feed[postIndex].copyWith(userLikeCount: 1, likeCount: feed[postIndex].likeCount+1);
         } else {
-          changedPost = feed[postIndex].copyWith(isLikeButtonPressed: false);
+          changedPost = feed[postIndex].copyWith(userLikeCount: 0, likeCount: feed[postIndex].likeCount-1);
         }
         feed[postIndex] = changedPost;
         emit(Loaded(feed: feed));
-        if (changedPost.isLikeButtonPressed == false) {
+        if (changedPost.userLikeCount == 0) {
           await userRepository.cancelLikePost(postId: changedPost.id);
         } else {
           await userRepository.likePost(postId: changedPost.id);
