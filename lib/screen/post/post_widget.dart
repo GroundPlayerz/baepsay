@@ -106,8 +106,12 @@ class _PostWidgetState extends State<PostWidget> {
   Widget _commentButton(Post post) => GestureDetector(
         onTap: () {
           //Todo : 댓글 화면으로 넘어가기
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => CommentScreen()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CommentScreen(
+                        postIndex: postIndex,
+                      )));
         },
         behavior: HitTestBehavior.opaque,
         child: Padding(

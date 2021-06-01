@@ -23,6 +23,7 @@ class _$PostTearOff {
   _Post call(
       {required int id,
       required int authorId,
+      required double score,
       required String profileName,
       required String title,
       required String firstContentText,
@@ -41,6 +42,7 @@ class _$PostTearOff {
     return _Post(
       id: id,
       authorId: authorId,
+      score: score,
       profileName: profileName,
       title: title,
       firstContentText: firstContentText,
@@ -71,6 +73,7 @@ const $Post = _$PostTearOff();
 mixin _$Post {
   int get id => throw _privateConstructorUsedError;
   int get authorId => throw _privateConstructorUsedError;
+  double get score => throw _privateConstructorUsedError;
   String get profileName => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get firstContentText => throw _privateConstructorUsedError;
@@ -99,6 +102,7 @@ abstract class $PostCopyWith<$Res> {
   $Res call(
       {int id,
       int authorId,
+      double score,
       String profileName,
       String title,
       String firstContentText,
@@ -128,6 +132,7 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
   $Res call({
     Object? id = freezed,
     Object? authorId = freezed,
+    Object? score = freezed,
     Object? profileName = freezed,
     Object? title = freezed,
     Object? firstContentText = freezed,
@@ -153,6 +158,10 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
           ? _value.authorId
           : authorId // ignore: cast_nullable_to_non_nullable
               as int,
+      score: score == freezed
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as double,
       profileName: profileName == freezed
           ? _value.profileName
           : profileName // ignore: cast_nullable_to_non_nullable
@@ -225,6 +234,7 @@ abstract class _$PostCopyWith<$Res> implements $PostCopyWith<$Res> {
   $Res call(
       {int id,
       int authorId,
+      double score,
       String profileName,
       String title,
       String firstContentText,
@@ -255,6 +265,7 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? authorId = freezed,
+    Object? score = freezed,
     Object? profileName = freezed,
     Object? title = freezed,
     Object? firstContentText = freezed,
@@ -280,6 +291,10 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
           ? _value.authorId
           : authorId // ignore: cast_nullable_to_non_nullable
               as int,
+      score: score == freezed
+          ? _value.score
+          : score // ignore: cast_nullable_to_non_nullable
+              as double,
       profileName: profileName == freezed
           ? _value.profileName
           : profileName // ignore: cast_nullable_to_non_nullable
@@ -351,6 +366,7 @@ class _$_Post implements _Post {
   _$_Post(
       {required this.id,
       required this.authorId,
+      required this.score,
       required this.profileName,
       required this.title,
       required this.firstContentText,
@@ -374,6 +390,8 @@ class _$_Post implements _Post {
   final int id;
   @override
   final int authorId;
+  @override
+  final double score;
   @override
   final String profileName;
   @override
@@ -407,7 +425,7 @@ class _$_Post implements _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, authorId: $authorId, profileName: $profileName, title: $title, firstContentText: $firstContentText, secondContentText: $secondContentText, commentCount: $commentCount, likeCount: $likeCount, viewCount: $viewCount, firstContentVoteCount: $firstContentVoteCount, secondContentVoteCount: $secondContentVoteCount, userLikeCount: $userLikeCount, userVoteChoice: $userVoteChoice, createdAt: $createdAt, mediaContentOrders: $mediaContentOrders, mediaTypes: $mediaTypes, mediaUrls: $mediaUrls)';
+    return 'Post(id: $id, authorId: $authorId, score: $score, profileName: $profileName, title: $title, firstContentText: $firstContentText, secondContentText: $secondContentText, commentCount: $commentCount, likeCount: $likeCount, viewCount: $viewCount, firstContentVoteCount: $firstContentVoteCount, secondContentVoteCount: $secondContentVoteCount, userLikeCount: $userLikeCount, userVoteChoice: $userVoteChoice, createdAt: $createdAt, mediaContentOrders: $mediaContentOrders, mediaTypes: $mediaTypes, mediaUrls: $mediaUrls)';
   }
 
   @override
@@ -419,6 +437,8 @@ class _$_Post implements _Post {
             (identical(other.authorId, authorId) ||
                 const DeepCollectionEquality()
                     .equals(other.authorId, authorId)) &&
+            (identical(other.score, score) ||
+                const DeepCollectionEquality().equals(other.score, score)) &&
             (identical(other.profileName, profileName) ||
                 const DeepCollectionEquality()
                     .equals(other.profileName, profileName)) &&
@@ -470,6 +490,7 @@ class _$_Post implements _Post {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(authorId) ^
+      const DeepCollectionEquality().hash(score) ^
       const DeepCollectionEquality().hash(profileName) ^
       const DeepCollectionEquality().hash(title) ^
       const DeepCollectionEquality().hash(firstContentText) ^
@@ -501,6 +522,7 @@ abstract class _Post implements Post {
   factory _Post(
       {required int id,
       required int authorId,
+      required double score,
       required String profileName,
       required String title,
       required String firstContentText,
@@ -523,6 +545,8 @@ abstract class _Post implements Post {
   int get id => throw _privateConstructorUsedError;
   @override
   int get authorId => throw _privateConstructorUsedError;
+  @override
+  double get score => throw _privateConstructorUsedError;
   @override
   String get profileName => throw _privateConstructorUsedError;
   @override

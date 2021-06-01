@@ -42,10 +42,12 @@ class _SplashScreenState extends State<SplashScreen> {
         } else if (state is DeviceUserIdExists) {
           BlocProvider.of<AuthCubit>(context)
               .getUnauthenticatedUserAccessToken();
+          Duration(seconds: 1);
         } else if (state is DeviceSignedIn) {
           return HomeScreen();
         } else if (state is FirebaseSigningIn) {
           BlocProvider.of<AuthCubit>(context).getAuthenticatedUserAccessToken();
+          Duration(seconds: 1);
         } else if (state is FirebaseSignedIn) {
           return HomeScreen();
         } else if (state is AuthError) {

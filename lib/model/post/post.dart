@@ -9,6 +9,7 @@ class Post with _$Post {
   factory Post({
     required int id,
     required int authorId,
+    required double score,
     required String profileName,
     required String title,
     required String firstContentText,

@@ -10,6 +10,7 @@ _$_Post _$_$_PostFromJson(Map<String, dynamic> json) {
   return _$_Post(
     id: json['id'] as int,
     authorId: json['author_id'] as int,
+    score: (json['score'] as num).toDouble(),
     profileName: json['profile_name'] as String,
     title: json['title'] as String,
     firstContentText: json['first_content_text'] as String,
@@ -31,6 +32,7 @@ _$_Post _$_$_PostFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$_$_PostToJson(_$_Post instance) => <String, dynamic>{
       'id': instance.id,
       'author_id': instance.authorId,
+      'score': instance.score,
       'profile_name': instance.profileName,
       'title': instance.title,
       'first_content_text': instance.firstContentText,

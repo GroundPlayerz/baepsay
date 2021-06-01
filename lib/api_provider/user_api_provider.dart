@@ -71,10 +71,10 @@ class UserApiProvider {
     return downloadURL;
   }
 
-  Future<Response> getHomeFeed({int? cursor}) async {
+  Future<Response> getHomeFeed({int? idCursor, double? scoreCursor}) async {
     Map<String, dynamic> queryParameters = {};
-    if (cursor != null) queryParameters['cursor'] = cursor;
-    queryParameters['type'] = 'home';
+    if (scoreCursor != null) queryParameters['score_cursor'] = scoreCursor;
+    if (idCursor != null) queryParameters['id_cursor'] = idCursor;
     var response =
         await _dio.get('user/feed', queryParameters: queryParameters);
 

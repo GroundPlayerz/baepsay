@@ -21,7 +21,7 @@ class UserRepository {
           mediaList: mediaList);
 
   Future<Response> getHomeFeed({int? cursor}) async =>
-      await userApiProvider.getHomeFeed(cursor: cursor);
+      await userApiProvider.getHomeFeed(idCursor: cursor);
 
   Future<Response> viewPost({required int postId}) async =>
       await userApiProvider.viewPost(postId: postId);
