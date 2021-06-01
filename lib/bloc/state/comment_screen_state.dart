@@ -31,9 +31,7 @@ class Loading extends CommentScreenState {
 class Loaded extends CommentScreenState {
   final List<Comment> commentList;
 
-  Loaded({
-    required this.commentList,
-  });
+  Loaded({required this.commentList});
 
   @override
   // TODO: implement props

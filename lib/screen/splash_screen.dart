@@ -10,6 +10,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool _isAccessTokenRequested = false;
   @override
   void initState() {
     super.initState();
@@ -40,14 +41,21 @@ class _SplashScreenState extends State<SplashScreen> {
           BlocProvider.of<AuthCubit>(context)
               .checkUserIdExistsInSecureStorage();
         } else if (state is DeviceUserIdExists) {
-          BlocProvider.of<AuthCubit>(context)
-              .getUnauthenticatedUserAccessToken();
-          Duration(seconds: 1);
+          if (_isAccessTokenRequested == false) {
+            BlocProvider.of<AuthCubit>(context)
+                .getUnauthenticatedUserAccessToken();
+
+            _isAccessTokenRequested = true;
+          }
         } else if (state is DeviceSignedIn) {
           return HomeScreen();
         } else if (state is FirebaseSigningIn) {
-          BlocProvider.of<AuthCubit>(context).getAuthenticatedUserAccessToken();
-          Duration(seconds: 1);
+          if (_isAccessTokenRequested == false) {
+            BlocProvider.of<AuthCubit>(context)
+                .getAuthenticatedUserAccessToken();
+
+            _isAccessTokenRequested = true;
+          }
         } else if (state is FirebaseSignedIn) {
           return HomeScreen();
         } else if (state is AuthError) {

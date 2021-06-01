@@ -25,14 +25,6 @@ class AuthApiProvider {
     return response;
   }
 
-  Future<Response> authenticatedSignUp() async {
-    Response response = await _dio.post('auth/authenticated/signup', data: {
-      'email': _auth.currentUser!.email,
-    });
-
-    return response;
-  }
-
   Future<void> googleSignIn() async {
     await _signInWithGoogle();
   }

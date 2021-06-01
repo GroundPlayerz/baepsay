@@ -4,10 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
+import 'package:golden_balance_flutter/repository/admin_repository.dart';
 import 'package:golden_balance_flutter/repository/unauthorized_user_repository.dart';
 import 'package:golden_balance_flutter/screen/home/home_screen.dart';
 import 'package:golden_balance_flutter/screen/splash_screen.dart';
 
+import 'bloc/cubit/admin_feed_cubit.dart';
 import 'bloc/cubit/auth_cubit.dart';
 import 'bloc/cubit/upload_cubit.dart';
 import 'constant/color.dart';
@@ -56,6 +58,8 @@ class GoldenBalance extends StatelessWidget {
             create: (_) => HomeFeedCubit(
                 userRepository: UserRepository(),
                 unauthorizedUserRepository: UnauthorizedUserRepository())),
+        BlocProvider<AdminFeedCubit>(
+            create: (_) => AdminFeedCubit(adminRepository: AdminRepository())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

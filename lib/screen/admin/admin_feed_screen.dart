@@ -19,7 +19,10 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text('Admin Screen'),
+      ),
+      //backgroundColor: Colors.white,
       body: BlocBuilder<AdminFeedCubit, AdminFeedState>(
           builder: (context, state) {
         if (state is Loaded) {
