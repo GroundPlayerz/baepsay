@@ -108,6 +108,7 @@ class _PostWidgetState extends State<PostWidget> {
               MaterialPageRoute(
                   builder: (context) => CommentScreen(
                         postId: postId,
+                        postCommentCount: post.commentCount,
                       )));
         },
         behavior: HitTestBehavior.opaque,
