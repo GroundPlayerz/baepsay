@@ -18,7 +18,7 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
   //Todo: 나중에 실제 Comment에 맞게 바꾸기
   late int nestedCommentIndex;
 
-  final double leftPadding = 16;
+  final double leftPadding = 16 + 31;
   final double photoWidth = 20;
   final double sizeboxWidthBetweenPhotoAndName = 11;
   final double sizeboxWidthBetweenTextAndLikeButton = 8;

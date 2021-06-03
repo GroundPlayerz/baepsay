@@ -120,14 +120,15 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('대댓', style: kNoto18B.copyWith(fontSize: 20.0)),
+        title: Text('대댓', style: kNoto18B),
+        centerTitle: false,
+        titleSpacing: 0,
         elevation: 0,
       ),
       body: SafeArea(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(height: 10),
             //로딩 circularindicator
             !_isUploadingNestedComment
                 ? Container()
@@ -136,65 +137,86 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                     height: 15,
                     child: CircularProgressIndicator(),
                   ),
+            //divider
+            Container(
+              width: double.infinity,
+              height: 1,
+              color: kWhiteColor.withOpacity(0.3),
+            ),
+            //원래 댓글
             BlocBuilder<CommentScreenCubit, CommentScreenState>(
                 builder: (context, state) {
               if (state is CommentPageLoaded) {
                 Comment comment = state.commentList[commentIndex];
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
+                return Container(
+                  color: kWhiteColor.withOpacity(0.1),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 20,
-                          height: 20,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(7.0),
-                              color: Colors.grey),
-                          child: comment.profilePhotoUrl != null
-                              ? Image.network(comment.profilePhotoUrl!)
-                              : Image.asset('images/default_profile_photo.png'),
-                        ),
-                        SizedBox(width: sizeboxWidthBetweenPhotoAndName),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width -
-                              sumConstantsWidth,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                comment.profileName +
-                                    '     ' +
-                                    _createdOrUpdatedAt(comment: comment)
-                                        .split(' ')[0]
-                                        .split('T')[0]
-                                        .replaceAll('-', '/'),
-                                style: kCommentInfoTextStyle.copyWith(
-                                    color: kWhiteColor.withOpacity(0.7)),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 20,
+                              height: 20,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(7.0),
+                                  color: Colors.grey),
+                              child: comment.profilePhotoUrl != null
+                                  ? Image.network(comment.profilePhotoUrl!)
+                                  : Image.asset(
+                                      'images/default_profile_photo.png'),
+                            ),
+                            SizedBox(width: sizeboxWidthBetweenPhotoAndName),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width -
+                                  sumConstantsWidth,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    comment.profileName +
+                                        '     ' +
+                                        _createdOrUpdatedAt(comment: comment)
+                                            .split(' ')[0]
+                                            .split('T')[0]
+                                            .replaceAll('-', '/'),
+                                    style: kCommentInfoTextStyle.copyWith(
+                                        color: kWhiteColor.withOpacity(0.7)),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    comment.text,
+                                    style: kCommentTextTextStyle,
+                                    softWrap: true,
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 4),
-                              Text(
-                                comment.text,
-                                style: kCommentTextTextStyle,
-                                softWrap: true,
-                              ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(width: 8),
+                          ],
                         ),
-                        SizedBox(width: 8),
+                        _likeButton(comment: comment),
                       ],
                     ),
-                    _likeButton(comment: comment),
-                  ],
+                  ),
                 );
               } else {
                 //Todo: 스켈레톤
                 return Container();
               }
             }),
+
+            //divider
+            Container(
+              width: double.infinity,
+              height: 1,
+              color: kWhiteColor.withOpacity(0.3),
+            ),
 
             //대댓글 listview
             BlocBuilder<NestedCommentScreenCubit, NestedCommentScreenState>(
@@ -217,8 +239,14 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                           nestedCommentScreenState.nestedCommentList.length,
                       itemBuilder:
                           (BuildContext context, int nestedCommentIndex) {
-                        return NestedCommentWidget(
-                            nestedCommentIndex: nestedCommentIndex);
+                        return Padding(
+                          padding: EdgeInsets.only(
+                              left: 16 + 31,
+                              top: nestedCommentIndex == 0 ? 17 : 7,
+                              bottom: 13),
+                          child: NestedCommentWidget(
+                              nestedCommentIndex: nestedCommentIndex),
+                        );
                       },
                     ),
                   );

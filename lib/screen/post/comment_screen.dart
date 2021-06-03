@@ -15,13 +15,15 @@ import 'comment_widget.dart';
 
 class CommentScreen extends StatefulWidget {
   final int postId;
-  CommentScreen({required this.postId});
+  final int postCommentCount;
+  CommentScreen({required this.postId, required this.postCommentCount});
   @override
   _CommentScreenState createState() => _CommentScreenState();
 }
 
 class _CommentScreenState extends State<CommentScreen> {
   late int postId;
+  late int postCommentCount;
 
   FocusNode? _myFocusNode;
   bool isTextFieldTapped = false;
@@ -40,6 +42,8 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   void initState() {
     super.initState();
+    postCommentCount = widget.postCommentCount;
+
     _myFocusNode = FocusNode();
     _textController.addListener(() {
       setState(() => _canPost = _textController.text.isNotEmpty);
@@ -76,7 +80,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 return Row(
                   children: [
                     Text('댓글  ', style: kNoto18B.copyWith(fontSize: 20.0)),
-                    Text(commentScreenState.commentList.length.toString(),
+                    Text(postCommentCount.toString(),
                         style: kSkia18B.copyWith(fontSize: 18.0)),
                   ],
                 );
@@ -112,7 +116,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 height: 75,
                 child: Center(child: Text('광고 영역')),
               ),
-              SizedBox(height: 10),
+              //SizedBox(height: 10),
               //댓글 업로드중 생기는 circularindicator
               !_isUploadingComment
                   ? Container()
@@ -139,8 +143,10 @@ class _CommentScreenState extends State<CommentScreen> {
                         itemCount: commentScreenState.commentList.length,
                         itemBuilder: (BuildContext context, int commentIndex) {
                           return Padding(
-                            padding:
-                                EdgeInsets.only(left: 16, top: 7, bottom: 7),
+                            padding: EdgeInsets.only(
+                                left: 16,
+                                top: commentIndex == 0 ? 17 : 7,
+                                bottom: 7),
                             child: CommentWidget(
                               commentIndex: commentIndex,
                             ),
