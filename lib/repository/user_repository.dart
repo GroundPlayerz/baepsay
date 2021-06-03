@@ -35,4 +35,29 @@ class UserRepository {
 
   Future<Response> cancelLikePost({required int postId}) async =>
       await userApiProvider.cancelLikePost(postId: postId);
+
+  //------댓글------
+  Future<Response> createComment({required int postId, required text}) async =>
+      await userApiProvider.createComment(postId: postId, text: text);
+
+  Future<Response> likeComment({required int commentId}) async =>
+      await userApiProvider.likeComment(commentId: commentId);
+
+  Future<Response> cancelLikeComment({required int commentId}) async =>
+      await userApiProvider.cancelLikeComment(commentId: commentId);
+
+  //------대댓글------
+
+  Future<Response> createNestedComment(
+          {required int commentId, required String text}) async =>
+      await userApiProvider.createNestedComment(
+          commentId: commentId, text: text);
+
+  Future<Response> likeNestedComment({required int nestedCommentId}) async =>
+      await userApiProvider.likeNestedComment(nestedCommentId: nestedCommentId);
+
+  Future<Response> cancelLikeNestedComment(
+          {required int nestedCommentId}) async =>
+      await userApiProvider.cancelLikeNestedComment(
+          nestedCommentId: nestedCommentId);
 }

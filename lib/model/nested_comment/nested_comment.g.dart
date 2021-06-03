@@ -9,24 +9,26 @@ part of 'nested_comment.dart';
 _$_NestedComment _$_$_NestedCommentFromJson(Map<String, dynamic> json) {
   return _$_NestedComment(
     id: json['id'] as int,
-    author: User.fromJson(json['author'] as Map<String, dynamic>),
+    profileName: json['profile_name'] as String,
+    profilePhotoUrl: json['profile_photo_url'] as String?,
     commentId: json['comment_id'] as int,
     text: json['text'] as String,
     likeCount: json['like_count'] as int,
-    isLikeButtonPressed: json['is_like_button_pressed'] as bool,
     createdAt: json['created_at'] as String,
     updatedAt: json['updated_at'] as String?,
+    userLikeCount: json['user_like_count'] as int,
   );
 }
 
 Map<String, dynamic> _$_$_NestedCommentToJson(_$_NestedComment instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'author': instance.author,
+      'profile_name': instance.profileName,
+      'profile_photo_url': instance.profilePhotoUrl,
       'comment_id': instance.commentId,
       'text': instance.text,
       'like_count': instance.likeCount,
-      'is_like_button_pressed': instance.isLikeButtonPressed,
       'created_at': instance.createdAt,
       'updated_at': instance.updatedAt,
+      'user_like_count': instance.userLikeCount,
     };

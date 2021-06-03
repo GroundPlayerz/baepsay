@@ -115,3 +115,6 @@ TextStyle kCommentInfoTextStyle = kNoto12R;
 TextStyle kCommentTextTextStyle = kNoto13R;
 TextStyle kCommentLikeNumberTextStyle = kSkia16R;
 TextStyle kNestedCommentButtonsTextStyle = kNoto12B;
+TextStyle kCommentScreenTextFieldHintTextStyle =
+    kNoto13R.copyWith(color: kWhiteColor.withOpacity(0.7));
+TextStyle kCommentScreenTextFieldTextStyle = kNoto13R;

@@ -13,36 +13,20 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
       {required this.userRepository, required this.unauthorizedUserRepository})
       : super(Empty());
 
-  void getUnauthorizedUserHomeFeed({int? cursor}) async {
-    try {
-      emit(Loading());
-
-      final Response response =
-          await unauthorizedUserRepository.getHomeFeed(cursor: cursor);
-
-      final feed = response.data
-          .map<Post>(
-            (e) => Post.fromJson(e),
-          )
-          .toList();
-
-      emit(Loaded(feed: feed));
-    } catch (e) {
-      emit(FeedError(message: e.toString()));
-    }
-  }
-
   void getUserHomeFeed({int? cursor}) async {
     try {
+      List<Post> prevFeed = [];
+      if (state is Loaded) {
+        final parsedState = (state as Loaded);
+        prevFeed = [...parsedState.feed];
+      }
       emit(Loading());
       final Response response =
           await userRepository.getHomeFeed(cursor: cursor);
-      final feed = response.data['feed']
-          .map<Post>(
-            (e) => Post.fromJson(e),
-          )
-          .toList();
-      emit(Loaded(feed: feed));
+      final feed =
+          response.data['feed'].map<Post>((e) => Post.fromJson(e)).toList();
+      final List<Post> newFeed = [...prevFeed, ...feed];
+      emit(Loaded(feed: newFeed));
     } catch (e) {
       emit(FeedError(message: e.toString()));
     }
@@ -96,9 +80,11 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
 
         Post changedPost;
         if (feed[postIndex].userLikeCount == 0) {
-          changedPost = feed[postIndex].copyWith(userLikeCount: 1, likeCount: feed[postIndex].likeCount+1);
+          changedPost = feed[postIndex].copyWith(
+              userLikeCount: 1, likeCount: feed[postIndex].likeCount + 1);
         } else {
-          changedPost = feed[postIndex].copyWith(userLikeCount: 0, likeCount: feed[postIndex].likeCount-1);
+          changedPost = feed[postIndex].copyWith(
+              userLikeCount: 0, likeCount: feed[postIndex].likeCount - 1);
         }
         feed[postIndex] = changedPost;
         emit(Loaded(feed: feed));

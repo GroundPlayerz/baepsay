@@ -61,7 +61,8 @@ class DioLoggingInterceptors extends dio.Interceptor {
 
     int responseCode = dioError.response!.statusCode!;
     String? oldAccessToken = await _secureStorage.read(key: 'access_token');
-    if (oldAccessToken != null && responseCode == 401) {
+    if (oldAccessToken != null &&
+        (responseCode == 401 || responseCode == 422)) {
       _dio.interceptors.requestLock.lock();
       _dio.interceptors.responseLock.lock();
       String? userId = await _secureStorage.read(key: 'user_id');

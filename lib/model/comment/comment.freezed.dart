@@ -22,24 +22,26 @@ class _$CommentTearOff {
 
   _Comment call(
       {required int id,
-      required User author,
+      required String profileName,
+      required String? profilePhotoUrl,
       required int postId,
       required String text,
       required int likeCount,
-      required bool isLikeButtonPressed,
       required int nestedCommentCount,
       required String createdAt,
-      String? updatedAt}) {
+      String? updatedAt,
+      required int userLikeCount}) {
     return _Comment(
       id: id,
-      author: author,
+      profileName: profileName,
+      profilePhotoUrl: profilePhotoUrl,
       postId: postId,
       text: text,
       likeCount: likeCount,
-      isLikeButtonPressed: isLikeButtonPressed,
       nestedCommentCount: nestedCommentCount,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      userLikeCount: userLikeCount,
     );
   }
 
@@ -54,14 +56,15 @@ const $Comment = _$CommentTearOff();
 /// @nodoc
 mixin _$Comment {
   int get id => throw _privateConstructorUsedError;
-  User get author => throw _privateConstructorUsedError;
+  String get profileName => throw _privateConstructorUsedError;
+  String? get profilePhotoUrl => throw _privateConstructorUsedError;
   int get postId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   int get likeCount => throw _privateConstructorUsedError;
-  bool get isLikeButtonPressed => throw _privateConstructorUsedError;
   int get nestedCommentCount => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
-  String? get updatedAt => throw _privateConstructorUsedError;
+  String? get updatedAt => throw _privateConstructorUsedError; //[nullable]
+  int get userLikeCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -74,16 +77,15 @@ abstract class $CommentCopyWith<$Res> {
       _$CommentCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      User author,
+      String profileName,
+      String? profilePhotoUrl,
       int postId,
       String text,
       int likeCount,
-      bool isLikeButtonPressed,
       int nestedCommentCount,
       String createdAt,
-      String? updatedAt});
-
-  $UserCopyWith<$Res> get author;
+      String? updatedAt,
+      int userLikeCount});
 }
 
 /// @nodoc
@@ -97,24 +99,29 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
   @override
   $Res call({
     Object? id = freezed,
-    Object? author = freezed,
+    Object? profileName = freezed,
+    Object? profilePhotoUrl = freezed,
     Object? postId = freezed,
     Object? text = freezed,
     Object? likeCount = freezed,
-    Object? isLikeButtonPressed = freezed,
     Object? nestedCommentCount = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? userLikeCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      author: author == freezed
-          ? _value.author
-          : author // ignore: cast_nullable_to_non_nullable
-              as User,
+      profileName: profileName == freezed
+          ? _value.profileName
+          : profileName // ignore: cast_nullable_to_non_nullable
+              as String,
+      profilePhotoUrl: profilePhotoUrl == freezed
+          ? _value.profilePhotoUrl
+          : profilePhotoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       postId: postId == freezed
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
@@ -127,10 +134,6 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
           ? _value.likeCount
           : likeCount // ignore: cast_nullable_to_non_nullable
               as int,
-      isLikeButtonPressed: isLikeButtonPressed == freezed
-          ? _value.isLikeButtonPressed
-          : isLikeButtonPressed // ignore: cast_nullable_to_non_nullable
-              as bool,
       nestedCommentCount: nestedCommentCount == freezed
           ? _value.nestedCommentCount
           : nestedCommentCount // ignore: cast_nullable_to_non_nullable
@@ -143,14 +146,11 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      userLikeCount: userLikeCount == freezed
+          ? _value.userLikeCount
+          : userLikeCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
-  }
-
-  @override
-  $UserCopyWith<$Res> get author {
-    return $UserCopyWith<$Res>(_value.author, (value) {
-      return _then(_value.copyWith(author: value));
-    });
   }
 }
 
@@ -161,17 +161,15 @@ abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
   @override
   $Res call(
       {int id,
-      User author,
+      String profileName,
+      String? profilePhotoUrl,
       int postId,
       String text,
       int likeCount,
-      bool isLikeButtonPressed,
       int nestedCommentCount,
       String createdAt,
-      String? updatedAt});
-
-  @override
-  $UserCopyWith<$Res> get author;
+      String? updatedAt,
+      int userLikeCount});
 }
 
 /// @nodoc
@@ -186,24 +184,29 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? author = freezed,
+    Object? profileName = freezed,
+    Object? profilePhotoUrl = freezed,
     Object? postId = freezed,
     Object? text = freezed,
     Object? likeCount = freezed,
-    Object? isLikeButtonPressed = freezed,
     Object? nestedCommentCount = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
+    Object? userLikeCount = freezed,
   }) {
     return _then(_Comment(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      author: author == freezed
-          ? _value.author
-          : author // ignore: cast_nullable_to_non_nullable
-              as User,
+      profileName: profileName == freezed
+          ? _value.profileName
+          : profileName // ignore: cast_nullable_to_non_nullable
+              as String,
+      profilePhotoUrl: profilePhotoUrl == freezed
+          ? _value.profilePhotoUrl
+          : profilePhotoUrl // ignore: cast_nullable_to_non_nullable
+              as String?,
       postId: postId == freezed
           ? _value.postId
           : postId // ignore: cast_nullable_to_non_nullable
@@ -216,10 +219,6 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
           ? _value.likeCount
           : likeCount // ignore: cast_nullable_to_non_nullable
               as int,
-      isLikeButtonPressed: isLikeButtonPressed == freezed
-          ? _value.isLikeButtonPressed
-          : isLikeButtonPressed // ignore: cast_nullable_to_non_nullable
-              as bool,
       nestedCommentCount: nestedCommentCount == freezed
           ? _value.nestedCommentCount
           : nestedCommentCount // ignore: cast_nullable_to_non_nullable
@@ -232,6 +231,10 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
+      userLikeCount: userLikeCount == freezed
+          ? _value.userLikeCount
+          : userLikeCount // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -242,14 +245,15 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
 class _$_Comment implements _Comment {
   _$_Comment(
       {required this.id,
-      required this.author,
+      required this.profileName,
+      required this.profilePhotoUrl,
       required this.postId,
       required this.text,
       required this.likeCount,
-      required this.isLikeButtonPressed,
       required this.nestedCommentCount,
       required this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+      required this.userLikeCount});
 
   factory _$_Comment.fromJson(Map<String, dynamic> json) =>
       _$_$_CommentFromJson(json);
@@ -257,7 +261,9 @@ class _$_Comment implements _Comment {
   @override
   final int id;
   @override
-  final User author;
+  final String profileName;
+  @override
+  final String? profilePhotoUrl;
   @override
   final int postId;
   @override
@@ -265,17 +271,17 @@ class _$_Comment implements _Comment {
   @override
   final int likeCount;
   @override
-  final bool isLikeButtonPressed;
-  @override
   final int nestedCommentCount;
   @override
   final String createdAt;
   @override
   final String? updatedAt;
+  @override //[nullable]
+  final int userLikeCount;
 
   @override
   String toString() {
-    return 'Comment(id: $id, author: $author, postId: $postId, text: $text, likeCount: $likeCount, isLikeButtonPressed: $isLikeButtonPressed, nestedCommentCount: $nestedCommentCount, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Comment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, postId: $postId, text: $text, likeCount: $likeCount, nestedCommentCount: $nestedCommentCount, createdAt: $createdAt, updatedAt: $updatedAt, userLikeCount: $userLikeCount)';
   }
 
   @override
@@ -284,8 +290,12 @@ class _$_Comment implements _Comment {
         (other is _Comment &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.author, author) ||
-                const DeepCollectionEquality().equals(other.author, author)) &&
+            (identical(other.profileName, profileName) ||
+                const DeepCollectionEquality()
+                    .equals(other.profileName, profileName)) &&
+            (identical(other.profilePhotoUrl, profilePhotoUrl) ||
+                const DeepCollectionEquality()
+                    .equals(other.profilePhotoUrl, profilePhotoUrl)) &&
             (identical(other.postId, postId) ||
                 const DeepCollectionEquality().equals(other.postId, postId)) &&
             (identical(other.text, text) ||
@@ -293,9 +303,6 @@ class _$_Comment implements _Comment {
             (identical(other.likeCount, likeCount) ||
                 const DeepCollectionEquality()
                     .equals(other.likeCount, likeCount)) &&
-            (identical(other.isLikeButtonPressed, isLikeButtonPressed) ||
-                const DeepCollectionEquality()
-                    .equals(other.isLikeButtonPressed, isLikeButtonPressed)) &&
             (identical(other.nestedCommentCount, nestedCommentCount) ||
                 const DeepCollectionEquality()
                     .equals(other.nestedCommentCount, nestedCommentCount)) &&
@@ -304,21 +311,25 @@ class _$_Comment implements _Comment {
                     .equals(other.createdAt, createdAt)) &&
             (identical(other.updatedAt, updatedAt) ||
                 const DeepCollectionEquality()
-                    .equals(other.updatedAt, updatedAt)));
+                    .equals(other.updatedAt, updatedAt)) &&
+            (identical(other.userLikeCount, userLikeCount) ||
+                const DeepCollectionEquality()
+                    .equals(other.userLikeCount, userLikeCount)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(author) ^
+      const DeepCollectionEquality().hash(profileName) ^
+      const DeepCollectionEquality().hash(profilePhotoUrl) ^
       const DeepCollectionEquality().hash(postId) ^
       const DeepCollectionEquality().hash(text) ^
       const DeepCollectionEquality().hash(likeCount) ^
-      const DeepCollectionEquality().hash(isLikeButtonPressed) ^
       const DeepCollectionEquality().hash(nestedCommentCount) ^
       const DeepCollectionEquality().hash(createdAt) ^
-      const DeepCollectionEquality().hash(updatedAt);
+      const DeepCollectionEquality().hash(updatedAt) ^
+      const DeepCollectionEquality().hash(userLikeCount);
 
   @JsonKey(ignore: true)
   @override
@@ -334,21 +345,24 @@ class _$_Comment implements _Comment {
 abstract class _Comment implements Comment {
   factory _Comment(
       {required int id,
-      required User author,
+      required String profileName,
+      required String? profilePhotoUrl,
       required int postId,
       required String text,
       required int likeCount,
-      required bool isLikeButtonPressed,
       required int nestedCommentCount,
       required String createdAt,
-      String? updatedAt}) = _$_Comment;
+      String? updatedAt,
+      required int userLikeCount}) = _$_Comment;
 
   factory _Comment.fromJson(Map<String, dynamic> json) = _$_Comment.fromJson;
 
   @override
   int get id => throw _privateConstructorUsedError;
   @override
-  User get author => throw _privateConstructorUsedError;
+  String get profileName => throw _privateConstructorUsedError;
+  @override
+  String? get profilePhotoUrl => throw _privateConstructorUsedError;
   @override
   int get postId => throw _privateConstructorUsedError;
   @override
@@ -356,13 +370,13 @@ abstract class _Comment implements Comment {
   @override
   int get likeCount => throw _privateConstructorUsedError;
   @override
-  bool get isLikeButtonPressed => throw _privateConstructorUsedError;
-  @override
   int get nestedCommentCount => throw _privateConstructorUsedError;
   @override
   String get createdAt => throw _privateConstructorUsedError;
   @override
   String? get updatedAt => throw _privateConstructorUsedError;
+  @override //[nullable]
+  int get userLikeCount => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CommentCopyWith<_Comment> get copyWith =>

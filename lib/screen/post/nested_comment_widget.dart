@@ -1,61 +1,39 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
+import 'package:golden_balance_flutter/model/nested_comment/nested_comment.dart';
 
 class NestedCommentWidget extends StatefulWidget {
-  final String authorProfileName; // Todo: 바꾸기
-  final String authorProfilePhotoUrl;
-  final String text;
-  int likeCount;
-  bool isLikeButtonPressed = false;
+  final int nestedCommentIndex;
+  final NestedComment nestedComment;
 
-  late final String createdAt;
-  late final String? updatedAt;
-
-  NestedCommentWidget({
-    required this.authorProfileName,
-    required this.authorProfilePhotoUrl,
-    required this.text,
-    required this.likeCount,
-    required this.isLikeButtonPressed,
-    required this.createdAt,
-    this.updatedAt = '',
-  });
+  NestedCommentWidget(
+      {required this.nestedCommentIndex, required this.nestedComment});
   @override
   _NestedCommentWidgetState createState() => _NestedCommentWidgetState();
 }
 
 class _NestedCommentWidgetState extends State<NestedCommentWidget> {
   //Todo: 나중에 실제 Comment에 맞게 바꾸기
-  late final String authorProfileName;
-  late final String authorProfilePhotoUrl;
-  late final String text;
-  late int likeCount;
-  late bool isLikeButtonPressed;
-
-  late final String createdAt;
-  late final String? updatedAt;
+  late NestedComment nestedComment;
+  late int nestedCommentIndex;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    authorProfileName = widget.authorProfileName;
-    authorProfilePhotoUrl = widget.authorProfilePhotoUrl;
-    text = widget.text;
-    likeCount = widget.likeCount;
-    isLikeButtonPressed = widget.isLikeButtonPressed;
-
-    createdAt = widget.createdAt;
-    updatedAt = widget.updatedAt;
+    nestedComment = widget.nestedComment;
+    nestedCommentIndex = widget.nestedCommentIndex;
   }
 
   String _createdOrUpdatedAt() {
-    if (updatedAt == null) {
-      return createdAt;
+    if (nestedComment.updatedAt == null) {
+      return nestedComment.createdAt;
     } else {
-      return updatedAt!;
+      return nestedComment.updatedAt!;
     }
   }
 
@@ -63,32 +41,24 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
         behavior: HitTestBehavior.opaque,
         onTap: () {
           setState(() {
-            if (!isLikeButtonPressed) {
-              setState(() {
-                likeCount++;
-              });
-              isLikeButtonPressed = true;
-              //ToDo: 좋아요 누른거 DB와 연동
-            } else {
-              likeCount--;
-              isLikeButtonPressed = false;
-              //ToDo: 좋아요 누른거 DB와 연동
-            }
+            BlocProvider.of<NestedCommentScreenCubit>(context).pressLikeButton(
+                nestedCommentIndex: nestedCommentIndex,
+                userLikeCount: nestedComment.userLikeCount);
           });
         },
         child: Padding(
           padding: const EdgeInsets.only(left: 8, right: 16, top: 2),
           child: Column(
             children: [
-              !isLikeButtonPressed
+              nestedComment.userLikeCount == 0
                   ? Icon(Icons.favorite_border_rounded,
                       size: 20, color: kWhiteColor.withOpacity(0.7))
                   : Icon(Icons.favorite_rounded,
                       size: 20, color: kAccentYellowColor),
               //SizedBox(width: 4),
-              (likeCount == 0)
+              (nestedComment.userLikeCount == 0)
                   ? Text('')
-                  : Text(likeCount.toString(),
+                  : Text(nestedComment.likeCount.toString(),
                       style: kPostInfoNumberTextStyle.copyWith(
                           fontSize: 14.0,
                           color: Colors.white.withOpacity(0.7))),
@@ -112,8 +82,8 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(7.0), color: Colors.grey),
-              child: authorProfilePhotoUrl != ''
-                  ? Image.network(authorProfilePhotoUrl)
+              child: nestedComment.profilePhotoUrl != null
+                  ? Image.network(nestedComment.profilePhotoUrl!)
                   : Image.asset('images/default_profile_photo.png'),
             ),
             SizedBox(width: 11),
@@ -121,13 +91,13 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  authorProfileName + '  ' + _createdOrUpdatedAt(),
+                  nestedComment.profileName + '  ' + _createdOrUpdatedAt(),
                   style: kCommentInfoTextStyle.copyWith(
                       color: kWhiteColor.withOpacity(0.7)),
                 ),
                 SizedBox(height: 4),
                 Text(
-                  text,
+                  nestedComment.text,
                   style: kCommentTextTextStyle,
                 ),
               ],

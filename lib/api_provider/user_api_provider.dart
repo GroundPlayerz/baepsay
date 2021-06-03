@@ -102,4 +102,48 @@ class UserApiProvider {
         await _dio.post('user/post/$postId/vote', data: {'choice': choice});
     return response;
   }
+
+  //------댓글------
+  Future<Response> createComment({required int postId, required text}) async {
+    Response response = await _dio.post('user/post/$postId/comment', data: {
+      'text': text,
+    });
+    return response;
+  }
+
+  Future<Response> likeComment({required int commentId}) async {
+    Response response = await _dio.post('user/comment/$commentId/like');
+    return response;
+  }
+
+  Future<Response> cancelLikeComment({required int commentId}) async {
+    Response response = await _dio.delete('user/comment/$commentId/like');
+    return response;
+  }
+
+  //------대댓글------
+
+  Future<Response> createNestedComment(
+      {required int commentId, required String text}) async {
+    Response response =
+        await _dio.post('user/comment/$commentId/nested', data: {'text': text});
+    return response;
+  }
+
+  Future<Response> likeNestedComment({required int nestedCommentId}) async {
+    Response response =
+        await _dio.post('user/comment/nested/$nestedCommentId/like');
+    return response;
+  }
+
+  Future<Response> cancelLikeNestedComment(
+      {required int nestedCommentId}) async {
+    Response response =
+        await _dio.delete('user/comment/nested/$nestedCommentId/like');
+    return response;
+  }
+
+  //Todo: 자신이 작성한 댓글 수정, 삭제
+
+  //Todo:
 }

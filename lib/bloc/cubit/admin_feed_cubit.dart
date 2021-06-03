@@ -19,11 +19,8 @@ class AdminFeedCubit extends Cubit<AdminFeedState> {
       emit(Loading());
       final Response response = await adminRepository.getAdminFeed(
           idCursor: idCursor, scoreCursor: scoreCursor);
-      final feed = response.data['feed']
-          .map<Post>(
-            (e) => Post.fromJson(e),
-          )
-          .toList();
+      final feed =
+          response.data['feed'].map<Post>((e) => Post.fromJson(e)).toList();
 
       final List<Post> newFeed = [...prevFeed, ...feed];
 

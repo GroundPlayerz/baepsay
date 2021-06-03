@@ -9,14 +9,15 @@ class Comment with _$Comment {
   @JsonSerializable(fieldRename: FieldRename.snake)
   factory Comment({
     required int id,
-    required User author,
+    required String profileName,
+    required String? profilePhotoUrl,
     required int postId,
     required String text,
     required int likeCount,
-    required bool isLikeButtonPressed,
     required int nestedCommentCount,
     required String createdAt,
     String? updatedAt, //[nullable]
+    required int userLikeCount,
   }) = _Comment;
 
   factory Comment.fromJson(Map<String, dynamic> json) =>

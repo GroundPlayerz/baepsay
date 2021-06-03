@@ -369,7 +369,7 @@ class _UploadScreenState extends State<UploadScreen> {
                                 contentOrder: 1));
                           }
                         }
-                        if (firstUploadMediaModel.mediaFileType == 'image') {
+                        if (secondUploadMediaModel.mediaFileType == 'image') {
                           Uint8List? secondImage =
                               await BlocProvider.of<UploadCubit>(context)
                                   .compressImage(

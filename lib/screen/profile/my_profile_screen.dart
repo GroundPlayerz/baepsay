@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:golden_balance_flutter/screen/admin/admin_feed_screen.dart';
 import 'package:golden_balance_flutter/screen/profile/profile_edit_screen.dart';
 import 'package:golden_balance_flutter/screen/setting/settings_screen.dart';
@@ -123,10 +122,11 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                       : Container(),
                 ]),
                 TextButton(
-                    onPressed: () {
-                      BlocProvider.of<AuthCubit>(context).signInGoogle();
-                    },
-                    child: Text('Google Sign In')),
+                  onPressed: () {
+                    BlocProvider.of<AuthCubit>(context).signInGoogle();
+                  },
+                  child: Text('Google Sign In'),
+                ),
               ]);
             } else if (state is AuthError) {
               return Text(state.message);

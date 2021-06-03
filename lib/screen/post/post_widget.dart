@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
+import 'package:golden_balance_flutter/repository/post_repository.dart';
+import 'package:golden_balance_flutter/repository/user_repository.dart';
 import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
 
 class PostWidget extends StatefulWidget {
@@ -64,15 +67,8 @@ class _PostWidgetState extends State<PostWidget> {
         behavior: HitTestBehavior.opaque,
         onTap: () {
           setState(() {
-            if (post.userLikeCount == 0) {
-              //ToDo: 큐빗에서 좋아요하기!
-              BlocProvider.of<HomeFeedCubit>(context)
-                  .pressLikeButton(postIndex: postIndex);
-            } else {
-              //ToDo: 큐빗에서 좋아요 취소하기!
-              BlocProvider.of<HomeFeedCubit>(context)
-                  .pressLikeButton(postIndex: postIndex);
-            }
+            BlocProvider.of<HomeFeedCubit>(context)
+                .pressLikeButton(postIndex: postIndex);
           });
         },
         child: Padding(
@@ -103,14 +99,15 @@ class _PostWidgetState extends State<PostWidget> {
           ],
         ),
       );
-  Widget _commentButton(Post post) => GestureDetector(
+  Widget _commentButton({required Post post, required int postId}) =>
+      GestureDetector(
         onTap: () {
           //Todo : 댓글 화면으로 넘어가기
           Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => CommentScreen(
-                        postIndex: postIndex,
+                        postId: postId,
                       )));
         },
         behavior: HitTestBehavior.opaque,
@@ -126,7 +123,8 @@ class _PostWidgetState extends State<PostWidget> {
           ),
         ),
       );
-  Widget _postInfoWidgetArea(BuildContext context, {required Post post}) =>
+  Widget _postInfoWidgetArea(BuildContext context,
+          {required Post post, required int postId}) =>
       Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.only(
@@ -170,7 +168,7 @@ class _PostWidgetState extends State<PostWidget> {
                     : _likeButton(post),
                 post.userVoteChoice == null
                     ? _commentButtonDeactivated(post)
-                    : _commentButton(post),
+                    : _commentButton(post: post, postId: postId),
               ],
             ),
           ],
@@ -498,7 +496,7 @@ class _PostWidgetState extends State<PostWidget> {
                   ],
                 ),
               ),
-              _postInfoWidgetArea(context, post: post),
+              _postInfoWidgetArea(context, post: post, postId: post.id),
             ],
           );
         } else {

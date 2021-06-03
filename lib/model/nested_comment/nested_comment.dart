@@ -9,13 +9,14 @@ class NestedComment with _$NestedComment {
   @JsonSerializable(fieldRename: FieldRename.snake)
   factory NestedComment({
     required int id,
-    required User author,
+    required String profileName,
+    required String? profilePhotoUrl,
     required int commentId,
     required String text,
     required int likeCount,
-    required bool isLikeButtonPressed,
     required String createdAt,
     String? updatedAt, //[nullable]
+    required int userLikeCount,
   }) = _NestedComment;
 
   factory NestedComment.fromJson(Map<String, dynamic> json) =>
