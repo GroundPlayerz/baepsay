@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:golden_balance_flutter/model/post/admin_feed_post.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 
 @immutable
@@ -29,7 +30,7 @@ class Loading extends AdminFeedState {
 }
 
 class Loaded extends AdminFeedState {
-  final List<Post> feed;
+  final List<AdminFeedPost> feed;
 
   Loaded({
     required this.feed,

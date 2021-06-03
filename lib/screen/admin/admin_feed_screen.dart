@@ -9,11 +9,28 @@ class AdminFeedScreen extends StatefulWidget {
 }
 
 class _AdminFeedScreenState extends State<AdminFeedScreen> {
+  final ScrollController _controller = ScrollController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    BlocProvider.of<AdminFeedCubit>(context).getAdminFeed();
+    _controller.addListener(_onScroll);
+    BlocProvider.of<AdminFeedCubit>(context).getInitialAdminFeed();
+  }
+
+  _onScroll() {
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      BlocProvider.of<AdminFeedCubit>(context).getAdminFeed();
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -26,19 +43,64 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
       body: BlocBuilder<AdminFeedCubit, AdminFeedState>(
           builder: (context, state) {
         if (state is Loaded) {
-          return ListView.builder(
-              itemCount: state.feed.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    Row(
-                      children: [
-                        Text(state.feed[index].title),
-                      ],
-                    )
-                  ],
-                );
-              });
+          if (state.feed.isNotEmpty) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                BlocProvider.of<AdminFeedCubit>(context).getInitialAdminFeed();
+              },
+              child: ListView.builder(
+                  controller: _controller,
+                  itemCount: state.feed.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final post = state.feed[index];
+                    return Card(
+                      color: Colors.green,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(post.title),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      Text(post.firstContentText),
+                                      Text(post.firstContentVoteCount
+                                          .toString()),
+                                    ],
+                                  ),
+                                  Text('vs'),
+                                  Column(
+                                    children: [
+                                      Text(post.secondContentText),
+                                      Text(post.secondContentVoteCount
+                                          .toString()),
+                                    ],
+                                  ),
+                                ]),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(post.viewCount.toString() + ' views'),
+                                Text(post.likeCount.toString() + 'likes'),
+                                Text(post.score.toString() + 'score'),
+                                Text(post.createdAt)
+                              ],
+                            )
+                          ]),
+                    );
+                  }),
+            );
+          } else {
+            return Center(child: Text('No Data'));
+          }
+        } else if (state is FeedError) {
+          return Text(state.message);
+        } else if (state is Loading) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
         }
         return Container();
       }),
