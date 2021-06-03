@@ -21,17 +21,17 @@ class CommentScreen extends StatefulWidget {
 }
 
 class _CommentScreenState extends State<CommentScreen> {
-  FocusNode? myFocusNode;
+  late int postId;
+
+  FocusNode? _myFocusNode;
   bool isTextFieldTapped = false;
   bool _canPost = false;
 
   bool _isUploadingComment = false;
   final TextEditingController _textController = TextEditingController();
 
-  late int postId;
-
   void onTapOutsideOfTextField() {
-    myFocusNode?.unfocus();
+    _myFocusNode?.unfocus();
     setState(() {
       isTextFieldTapped = false;
     });
@@ -40,7 +40,7 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   void initState() {
     super.initState();
-    myFocusNode = FocusNode();
+    _myFocusNode = FocusNode();
     _textController.addListener(() {
       setState(() => _canPost = _textController.text.isNotEmpty);
     });
@@ -55,8 +55,8 @@ class _CommentScreenState extends State<CommentScreen> {
     // TODO: implement dispose
     super.dispose();
     _textController.dispose();
-    myFocusNode?.unfocus();
-    myFocusNode?.dispose();
+    _myFocusNode?.unfocus();
+    _myFocusNode?.dispose();
   }
 
   @override
@@ -72,7 +72,7 @@ class _CommentScreenState extends State<CommentScreen> {
           elevation: 0,
           title: BlocBuilder<CommentScreenCubit, CommentScreenState>(
             builder: (context, commentScreenState) {
-              if (commentScreenState is Loaded) {
+              if (commentScreenState is CommentPageLoaded) {
                 return Row(
                   children: [
                     Text('댓글  ', style: kNoto18B.copyWith(fontSize: 20.0)),
@@ -82,7 +82,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 );
               } else if (commentScreenState is CommentPageError) {
                 print(commentScreenState.message);
-              } else if (commentScreenState is Loading) {
+              } else if (commentScreenState is CommentPageLoading) {
                 return Text('댓글  ', style: kNoto18B.copyWith(fontSize: 20.0));
               }
               return Text(commentScreenState.toString());
@@ -123,7 +123,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     ),
               BlocBuilder<CommentScreenCubit, CommentScreenState>(
                 builder: (context, commentScreenState) {
-                  if (commentScreenState is Loaded) {
+                  if (commentScreenState is CommentPageLoaded) {
                     if (commentScreenState.commentList.length == 0) {
                       return Expanded(
                         child: Container(
@@ -150,7 +150,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     );
                   } else if (commentScreenState is CommentPageError) {
                     print(commentScreenState.message);
-                  } else if (commentScreenState is Loading) {
+                  } else if (commentScreenState is CommentPageLoading) {
                     return CircularProgressIndicator();
                   }
                   return Text(commentScreenState.toString());
@@ -162,8 +162,8 @@ class _CommentScreenState extends State<CommentScreen> {
                 //color: Colors.grey,
                 child: SafeArea(
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(left: 16, right: 16, bottom: 5),
+                    padding: const EdgeInsets.only(
+                        left: 16, right: 16, bottom: 5, top: 5),
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.15),
@@ -179,17 +179,21 @@ class _CommentScreenState extends State<CommentScreen> {
                                   isTextFieldTapped = true;
                                 });
                                 FocusScope.of(context)
-                                    .requestFocus(myFocusNode);
+                                    .requestFocus(_myFocusNode);
                               },
                               child: Container(
-                                constraints: BoxConstraints(maxHeight: 150),
+                                constraints: BoxConstraints(maxHeight: 100),
                                 color: Colors.transparent,
-                                child: IgnorePointer(
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.vertical,
+                                  reverse: true,
                                   child: TextField(
-                                    maxLength: 2200,
-                                    focusNode: myFocusNode,
+                                    focusNode: _myFocusNode,
                                     controller: _textController,
                                     keyboardType: TextInputType.multiline,
+                                    //scrollController: _scrollController,
+                                    style: kCommentScreenTextFieldTextStyle,
+                                    maxLength: 2200,
                                     minLines: 1,
                                     maxLines: null,
                                     decoration: InputDecoration(
@@ -197,7 +201,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                       hintStyle:
                                           kCommentScreenTextFieldHintTextStyle,
                                       contentPadding: EdgeInsets.only(
-                                          left: 18, top: 0, bottom: 0),
+                                          left: 18, top: 3, bottom: 3),
                                       hintText: '댓글 쓰기',
                                       border: InputBorder.none,
                                     ),
@@ -220,7 +224,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                         text: _textController.value.text);
 
                                 _textController.clear();
-                                myFocusNode?.unfocus();
+                                _myFocusNode?.unfocus();
                                 setState(() {
                                   _isUploadingComment = false;
                                 });

@@ -12,11 +12,26 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
   CommentScreenCubit({
     required this.postRepository,
     required this.userRepository,
-  }) : super(Empty());
+  }) : super(CommentPageEmpty());
 
   void setEmptyState() {
     try {
-      emit(Empty());
+      emit(CommentPageEmpty());
+    } catch (e) {
+      emit(CommentPageError(message: e.toString()));
+    }
+  }
+
+  void initialCommentList({required int postId, int? idCursor}) async {
+    try {
+      emit(CommentPageLoading());
+      final Response response = await postRepository.getCommentList(
+          postId: postId, idCursor: idCursor);
+      final List<Comment> commentList = response.data['comment_list']
+          .map<Comment>((e) => Comment.fromJson(e))
+          .toList();
+      final List<Comment> newCommentList = [...commentList];
+      emit(CommentPageLoaded(commentList: newCommentList));
     } catch (e) {
       emit(CommentPageError(message: e.toString()));
     }
@@ -25,18 +40,18 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
   void getCommentList({required int postId, int? idCursor}) async {
     try {
       List<Comment> prevCommentList = [];
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
+      if (state is CommentPageLoaded) {
+        final parsedState = (state as CommentPageLoaded);
         prevCommentList = [...parsedState.commentList];
       }
-      emit(Loading());
+      emit(CommentPageLoading());
       final Response response = await postRepository.getCommentList(
           postId: postId, idCursor: idCursor);
       final List<Comment> commentList = response.data['comment_list']
           .map<Comment>((e) => Comment.fromJson(e))
           .toList();
       final List<Comment> newCommentList = [...prevCommentList, ...commentList];
-      emit(Loaded(commentList: newCommentList));
+      emit(CommentPageLoaded(commentList: newCommentList));
     } catch (e) {
       emit(CommentPageError(message: e.toString()));
     }
@@ -45,8 +60,8 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
   void pressLikeButton(
       {required int commentIndex, required int userLikeCount}) async {
     try {
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
+      if (state is CommentPageLoaded) {
+        final parsedState = (state as CommentPageLoaded);
         List<Comment> commentList = [...parsedState.commentList];
 
         Comment changedComment;
@@ -60,7 +75,7 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
               likeCount: commentList[commentIndex].likeCount - 1);
         }
         commentList[commentIndex] = changedComment;
-        emit(Loaded(commentList: commentList));
+        emit(CommentPageLoaded(commentList: commentList));
         if (changedComment.userLikeCount == 0) {
           await userRepository.cancelLikeComment(commentId: changedComment.id);
         } else {
@@ -71,12 +86,11 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
       emit(CommentPageError(message: e.toString()));
     }
   }
-  //Todo: 댓글 작성하는 큐빗 함수
 
   Future<void> createComment({required int postId, required text}) async {
     try {
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
+      if (state is CommentPageLoaded) {
+        final parsedState = (state as CommentPageLoaded);
         List<Comment> prevCommentList = [...parsedState.commentList];
         final Response response =
             await userRepository.createComment(postId: postId, text: text);
@@ -85,12 +99,11 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
             .map<Comment>((e) => Comment.fromJson(e))
             .toList();
 
-        //Todo: 의문점 - loaded -> loaded로 같은 state인데, 리빌드가 될지?
         final List<Comment> newCommentList = [
           ...prevCommentList,
           ...uploadedCommentList
         ];
-        emit(Loaded(commentList: newCommentList));
+        emit(CommentPageLoaded(commentList: newCommentList));
       }
     } catch (e) {
       emit(CommentPageError(message: e.toString()));

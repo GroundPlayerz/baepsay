@@ -22,16 +22,16 @@ class NestedCommentPageError extends NestedCommentScreenState {
   List<Object?> get props => [this.message];
 }
 
-class Loading extends NestedCommentScreenState {
+class NestedCommentPageLoading extends NestedCommentScreenState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class Loaded extends NestedCommentScreenState {
+class NestedCommentPageLoaded extends NestedCommentScreenState {
   final List<NestedComment> nestedCommentList;
 
-  Loaded({required this.nestedCommentList});
+  NestedCommentPageLoaded({required this.nestedCommentList});
 
   @override
   // TODO: implement props

@@ -8,8 +8,6 @@ import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
 import 'package:golden_balance_flutter/screen/post/nested_comment_screen.dart';
 
-import 'nested_comment_showing_widget.dart';
-
 class CommentWidget extends StatefulWidget {
   //Comment comment;
   int commentIndex;
@@ -34,7 +32,6 @@ class _CommentWidgetState extends State<CommentWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // comment = widget.comment;
     commentIndex = widget.commentIndex;
 
     sumConstantsWidth = leftPadding +
@@ -87,7 +84,7 @@ class _CommentWidgetState extends State<CommentWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<CommentScreenCubit, CommentScreenState>(
         builder: (context, state) {
-      if (state is Loaded) {
+      if (state is CommentPageLoaded) {
         Comment comment = state.commentList[commentIndex];
 
         return Column(
@@ -156,7 +153,9 @@ class _CommentWidgetState extends State<CommentWidget> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => NestedCommentScreen(
-                                          comment: comment)));
+                                            commentId: comment.id,
+                                            commentIndex: commentIndex,
+                                          )));
                             },
                             child: Padding(
                               padding: EdgeInsets.all(6.0),
@@ -173,7 +172,15 @@ class _CommentWidgetState extends State<CommentWidget> {
                       : SizedBox(height: 0),
                   //대댓 쓰기 버튼
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NestedCommentScreen(
+                                    commentId: comment.id,
+                                    commentIndex: commentIndex,
+                                  )));
+                    },
                     child: Padding(
                       padding: EdgeInsets.all(6),
                       child: Text(

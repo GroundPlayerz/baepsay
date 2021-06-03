@@ -26,11 +26,11 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
   void getNestedCommentList({required int commentId, int? idCursor}) async {
     try {
       List<NestedComment> prevNestedCommentList = [];
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
+      if (state is NestedCommentPageLoaded) {
+        final parsedState = (state as NestedCommentPageLoaded);
         prevNestedCommentList = [...parsedState.nestedCommentList];
       }
-      emit(Loading());
+      emit(NestedCommentPageLoading());
       final Response response = await commentRepository.getNestedCommentList(
           commentId: commentId, idCursor: idCursor);
       //Todo: postman에서 형식 체크
@@ -43,7 +43,7 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
         ...prevNestedCommentList,
         ...nestedCommentList
       ];
-      emit(Loaded(nestedCommentList: newNestedCommentList));
+      emit(NestedCommentPageLoaded(nestedCommentList: newNestedCommentList));
     } catch (e) {
       emit(NestedCommentPageError(message: e.toString()));
     }
@@ -52,8 +52,8 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
   void pressLikeButton(
       {required int nestedCommentIndex, required int userLikeCount}) async {
     try {
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
+      if (state is NestedCommentPageLoaded) {
+        final parsedState = (state as NestedCommentPageLoaded);
         List<NestedComment> nestedCommentList = [
           ...parsedState.nestedCommentList
         ];
@@ -69,7 +69,7 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
               likeCount: nestedCommentList[nestedCommentIndex].likeCount - 1);
         }
         nestedCommentList[nestedCommentIndex] = changedNestedComment;
-        emit(Loaded(nestedCommentList: nestedCommentList));
+        emit(NestedCommentPageLoaded(nestedCommentList: nestedCommentList));
 
         if (changedNestedComment.userLikeCount == 0) {
           await userRepository.cancelLikeNestedComment(
@@ -84,6 +84,31 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
     }
   }
 
-  //Todo: 대댓글 작성하는 큐빗 함수
+  Future<void> createNestedComment(
+      {required int commentId, required text}) async {
+    try {
+      if (state is NestedCommentPageLoaded) {
+        final parsedState = (state as NestedCommentPageLoaded);
+        List<NestedComment> prevNestedCommentList = [
+          ...parsedState.nestedCommentList
+        ];
+        final Response response = await userRepository.createNestedComment(
+            commentId: commentId, text: text);
 
+        final List<NestedComment> uploadedNestedCommentList = response
+            .data['nested_comment_list']
+            .map<NestedComment>((e) => NestedComment.fromJson(e))
+            .toList();
+        ;
+
+        final List<NestedComment> newNestedCommentList = [
+          ...prevNestedCommentList,
+          ...uploadedNestedCommentList
+        ];
+        emit(NestedCommentPageLoaded(nestedCommentList: newNestedCommentList));
+      }
+    } catch (e) {
+      emit(NestedCommentPageError(message: e.toString()));
+    }
+  }
 }

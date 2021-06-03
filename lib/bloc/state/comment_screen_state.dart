@@ -5,7 +5,7 @@ import 'package:golden_balance_flutter/model/comment/comment.dart';
 @immutable
 abstract class CommentScreenState extends Equatable {}
 
-class Empty extends CommentScreenState {
+class CommentPageEmpty extends CommentScreenState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
@@ -22,16 +22,16 @@ class CommentPageError extends CommentScreenState {
   List<Object?> get props => [this.message];
 }
 
-class Loading extends CommentScreenState {
+class CommentPageLoading extends CommentScreenState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class Loaded extends CommentScreenState {
+class CommentPageLoaded extends CommentScreenState {
   final List<Comment> commentList;
 
-  Loaded({required this.commentList});
+  CommentPageLoaded({required this.commentList});
 
   @override
   // TODO: implement props
