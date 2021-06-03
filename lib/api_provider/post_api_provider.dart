@@ -22,4 +22,9 @@ class PostApiProvider {
         queryParameters: queryParameters);
     return response;
   }
+
+  Future<Response> getPostById({required int postId}) async {
+    Response response = await _dio.get('post/$postId');
+    return response;
+  }
 }

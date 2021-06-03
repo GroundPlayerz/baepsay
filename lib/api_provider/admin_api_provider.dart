@@ -20,4 +20,62 @@ class AdminApiProvider {
 
     return response;
   }
+
+  Future<Response> getReportedPost(
+      {int? reportCountCursor, int? idCursor}) async {
+    Map<String, dynamic> queryParameters = {};
+    if (reportCountCursor != null) {
+      queryParameters['report_count_cursor'] = reportCountCursor;
+    }
+    if (idCursor != null) queryParameters['id_cursor'] = idCursor;
+    Response response =
+        await _dio.get('admin/report/post', queryParameters: queryParameters);
+
+    return response;
+  }
+
+  Future<Response> getPostReport({required int postId}) async {
+    Response response = await _dio.get('admin/report/post/$postId');
+
+    return response;
+  }
+
+  Future<Response> getReportedComment(
+      {int? reportCountCursor, int? idCursor}) async {
+    Map<String, dynamic> queryParameters = {};
+    if (reportCountCursor != null) {
+      queryParameters['report_count_cursor'] = reportCountCursor;
+    }
+    if (idCursor != null) queryParameters['id_cursor'] = idCursor;
+    Response response = await _dio.get('admin/report/comment',
+        queryParameters: queryParameters);
+
+    return response;
+  }
+
+  Future<Response> getCommentReport({required int commentId}) async {
+    Response response = await _dio.get('admin/report/comment/$commentId');
+
+    return response;
+  }
+
+  Future<Response> getReportedNestedComment(
+      {int? reportCountCursor, int? idCursor}) async {
+    Map<String, dynamic> queryParameters = {};
+    if (reportCountCursor != null) {
+      queryParameters['report_count_cursor'] = reportCountCursor;
+    }
+    if (idCursor != null) queryParameters['id_cursor'] = idCursor;
+    Response response = await _dio.get('admin/report/comment/nested',
+        queryParameters: queryParameters);
+
+    return response;
+  }
+
+  Future<Response> getNestedCommentReportDetail(
+      {required int nestedCommentId}) async {
+    Response response =
+        await _dio.get('admin/report/comment/nested/$nestedCommentId');
+    return response;
+  }
 }

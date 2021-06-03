@@ -5,6 +5,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/repository/admin_repository.dart';
 import 'package:golden_balance_flutter/repository/comment_repository.dart';
@@ -73,6 +74,9 @@ class GoldenBalance extends StatelessWidget {
               commentRepository: CommentRepository(),
               userRepository: UserRepository()),
         ),
+        BlocProvider<ReportedPostCubit>(
+            create: (_) =>
+                ReportedPostCubit(adminRepository: AdminRepository())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
