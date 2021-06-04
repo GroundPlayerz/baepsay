@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
+import 'package:golden_balance_flutter/model/dummy_model.dart';
 import 'package:golden_balance_flutter/repository/post_repository.dart';
 import 'package:golden_balance_flutter/repository/user_repository.dart';
 
@@ -22,38 +23,64 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
     }
   }
 
-  void initialCommentList({required int postId, int? idCursor}) async {
+  void getInitialCommentList({required int postId}) async {
     try {
-      emit(CommentPageLoading());
-      final Response response = await postRepository.getCommentList(
-          postId: postId, idCursor: idCursor);
+      emit(CommentPageInitialLoading());
+      final Response response =
+          await postRepository.getCommentList(postId: postId);
       final List<Comment> commentList = response.data['comment_list']
           .map<Comment>((e) => Comment.fromJson(e))
           .toList();
       final List<Comment> newCommentList = [...commentList];
-      emit(CommentPageLoaded(commentList: newCommentList));
+      bool hasMore = false;
+      if (commentList.isNotEmpty) {
+        hasMore = true;
+      }
+      emit(CommentPageLoaded(
+          commentList: newCommentList, hasMore: hasMore, isLoadingMore: false));
     } catch (e) {
       emit(CommentPageError(message: e.toString()));
     }
   }
 
-  void getCommentList({required int postId, int? idCursor}) async {
-    try {
-      List<Comment> prevCommentList = [];
-      if (state is CommentPageLoaded) {
-        final parsedState = (state as CommentPageLoaded);
-        prevCommentList = [...parsedState.commentList];
+  Future<void> getCommentList({required int postId}) async {
+    if (state is CommentPageLoaded) {
+      final parsedState = (state as CommentPageLoaded);
+      if (parsedState.isLoadingMore == false) {
+        try {
+          final parsedState = (state as CommentPageLoaded);
+          final prevCommentList = [...parsedState.commentList];
+          final prevHasMore = parsedState.hasMore;
+          emit(CommentPageLoaded(
+              commentList: prevCommentList,
+              hasMore: prevHasMore,
+              isLoadingMore: true));
+          final idCursor = prevCommentList.last.id;
+          final Response response = await postRepository.getCommentList(
+              postId: postId, idCursor: idCursor);
+          final List<Comment> commentList = response.data['comment_list']
+              .map<Comment>((e) => Comment.fromJson(e))
+              .toList();
+
+          final bool changedHasMore;
+          if (commentList.isNotEmpty) {
+            changedHasMore = true;
+          } else {
+            changedHasMore = false;
+            commentList.add(dummyComment);
+          }
+          final List<Comment> newCommentList = [
+            ...prevCommentList,
+            ...commentList
+          ];
+          emit(CommentPageLoaded(
+              commentList: newCommentList,
+              hasMore: changedHasMore,
+              isLoadingMore: false));
+        } catch (e) {
+          emit(CommentPageError(message: e.toString()));
+        }
       }
-      emit(CommentPageLoading());
-      final Response response = await postRepository.getCommentList(
-          postId: postId, idCursor: idCursor);
-      final List<Comment> commentList = response.data['comment_list']
-          .map<Comment>((e) => Comment.fromJson(e))
-          .toList();
-      final List<Comment> newCommentList = [...prevCommentList, ...commentList];
-      emit(CommentPageLoaded(commentList: newCommentList));
-    } catch (e) {
-      emit(CommentPageError(message: e.toString()));
     }
   }
 
@@ -62,6 +89,7 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
     try {
       if (state is CommentPageLoaded) {
         final parsedState = (state as CommentPageLoaded);
+        final hasMore = parsedState.hasMore;
         List<Comment> commentList = [...parsedState.commentList];
 
         Comment changedComment;
@@ -75,7 +103,8 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
               likeCount: commentList[commentIndex].likeCount - 1);
         }
         commentList[commentIndex] = changedComment;
-        emit(CommentPageLoaded(commentList: commentList));
+        emit(CommentPageLoaded(
+            commentList: commentList, hasMore: hasMore, isLoadingMore: false));
         if (changedComment.userLikeCount == 0) {
           await userRepository.cancelLikeComment(commentId: changedComment.id);
         } else {
@@ -91,6 +120,7 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
     try {
       if (state is CommentPageLoaded) {
         final parsedState = (state as CommentPageLoaded);
+        final hasMore = parsedState.hasMore;
         List<Comment> prevCommentList = [...parsedState.commentList];
         final Response response =
             await userRepository.createComment(postId: postId, text: text);
@@ -103,7 +133,10 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
           ...prevCommentList,
           ...uploadedCommentList
         ];
-        emit(CommentPageLoaded(commentList: newCommentList));
+        emit(CommentPageLoaded(
+            commentList: newCommentList,
+            hasMore: hasMore,
+            isLoadingMore: false));
       }
     } catch (e) {
       emit(CommentPageError(message: e.toString()));

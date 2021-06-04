@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,9 +5,6 @@ import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
-import 'package:golden_balance_flutter/model/post/post.dart';
-import 'package:golden_balance_flutter/repository/post_repository.dart';
-import 'package:golden_balance_flutter/repository/user_repository.dart';
 
 import 'comment_widget.dart';
 
@@ -24,12 +19,12 @@ class CommentScreen extends StatefulWidget {
 class _CommentScreenState extends State<CommentScreen> {
   late int postId;
   late int postCommentCount;
-
   FocusNode? _myFocusNode;
   bool isTextFieldTapped = false;
   bool _canPost = false;
 
   bool _isUploadingComment = false;
+  bool isLoadingMore = false;
   final TextEditingController _textController = TextEditingController();
 
   void onTapOutsideOfTextField() {
@@ -48,10 +43,10 @@ class _CommentScreenState extends State<CommentScreen> {
     _textController.addListener(() {
       setState(() => _canPost = _textController.text.isNotEmpty);
     });
-
     postId = widget.postId;
     BlocProvider.of<CommentScreenCubit>(context).setEmptyState();
-    BlocProvider.of<CommentScreenCubit>(context).getCommentList(postId: postId);
+    BlocProvider.of<CommentScreenCubit>(context)
+        .getInitialCommentList(postId: postId);
   }
 
   @override
@@ -86,7 +81,7 @@ class _CommentScreenState extends State<CommentScreen> {
                 );
               } else if (commentScreenState is CommentPageError) {
                 print(commentScreenState.message);
-              } else if (commentScreenState is CommentPageLoading) {
+              } else if (commentScreenState is CommentPageInitialLoading) {
                 return Text('댓글  ', style: kNoto18B.copyWith(fontSize: 20.0));
               }
               return Text(commentScreenState.toString());
@@ -128,35 +123,66 @@ class _CommentScreenState extends State<CommentScreen> {
               BlocBuilder<CommentScreenCubit, CommentScreenState>(
                 builder: (context, commentScreenState) {
                   if (commentScreenState is CommentPageLoaded) {
-                    if (commentScreenState.commentList.length == 0) {
+                    if (commentScreenState.commentList.isEmpty) {
                       return Expanded(
                         child: Container(
                           //height: 100,
                           width: MediaQuery.of(context).size.width,
                           //color: Colors.red,
-                          //child: Text('아직 댓글이 없습니다.'),
+                          child: Text('아직 댓글이 없습니다.'),
                         ),
                       );
                     }
                     return Expanded(
-                      child: ListView.builder(
-                        itemCount: commentScreenState.commentList.length,
-                        itemBuilder: (BuildContext context, int commentIndex) {
-                          return Padding(
-                            padding: EdgeInsets.only(
-                                left: 16,
-                                top: commentIndex == 0 ? 17 : 7,
-                                bottom: 7),
-                            child: CommentWidget(
-                              commentIndex: commentIndex,
-                            ),
-                          );
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          BlocProvider.of<CommentScreenCubit>(context)
+                              .getInitialCommentList(postId: postId);
                         },
+                        child: ListView.builder(
+                          itemCount: commentScreenState.commentList.length + 1,
+                          itemBuilder:
+                              (BuildContext context, int commentIndex) {
+                            if (commentIndex <
+                                commentScreenState.commentList.length - 1) {
+                              return Padding(
+                                padding: EdgeInsets.only(
+                                    left: 16,
+                                    top: commentIndex == 0 ? 17 : 7,
+                                    bottom: 7),
+                                child: CommentWidget(
+                                  commentIndex: commentIndex,
+                                ),
+                              );
+                            }
+
+                            if (commentScreenState
+                                    .commentList[commentIndex - 1].id ==
+                                -1) {
+                              return Container();
+                            }
+
+                            if (commentScreenState.isLoadingMore == false &&
+                                commentScreenState.hasMore) {
+                              BlocProvider.of<CommentScreenCubit>(context)
+                                  .getCommentList(postId: postId);
+                            }
+
+                            if (commentScreenState.hasMore) {
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else {
+                              print(commentScreenState.hasMore);
+                              return Container();
+                            }
+                          },
+                        ),
                       ),
                     );
                   } else if (commentScreenState is CommentPageError) {
                     print(commentScreenState.message);
-                  } else if (commentScreenState is CommentPageLoading) {
+                  } else if (commentScreenState is CommentPageInitialLoading) {
                     return CircularProgressIndicator();
                   }
                   return Text(commentScreenState.toString());

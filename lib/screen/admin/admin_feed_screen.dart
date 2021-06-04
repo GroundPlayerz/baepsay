@@ -9,19 +9,31 @@ class AdminFeedScreen extends StatefulWidget {
 }
 
 class _AdminFeedScreenState extends State<AdminFeedScreen> {
-  final ScrollController _controller = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _controller.addListener(_onScroll);
+    addListenerToScrollController(context);
     BlocProvider.of<AdminFeedCubit>(context).getInitialAdminFeed();
   }
 
+  addListenerToScrollController(BuildContext context) {
+    _scrollController.addListener(() {
+      double maxScroll = _scrollController.position.maxScrollExtent;
+      double currentScroll = _scrollController.position.pixels;
+      double delta = MediaQuery.of(context).size.height * 0.20;
+      if (maxScroll - currentScroll <= delta) {
+        BlocProvider.of<AdminFeedCubit>(context).getAdminFeed();
+      }
+    });
+  }
+
   _onScroll() {
-    if (_controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange) {
+    if (_scrollController.offset >=
+            _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
       BlocProvider.of<AdminFeedCubit>(context).getAdminFeed();
     }
   }
@@ -30,7 +42,7 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _controller.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -49,7 +61,7 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
                 BlocProvider.of<AdminFeedCubit>(context).getInitialAdminFeed();
               },
               child: ListView.builder(
-                  controller: _controller,
+                  controller: _scrollController,
                   itemCount: state.feed.length,
                   itemBuilder: (BuildContext context, int index) {
                     final post = state.feed[index];

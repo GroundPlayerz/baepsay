@@ -10,27 +10,32 @@ class ReportedPostScreen extends StatefulWidget {
 }
 
 class _ReportedPostScreenState extends State<ReportedPostScreen> {
-  final ScrollController _controller = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<ReportedPostCubit>(context).getInitialReportedPost();
+    addListenerToScrollController(context);
   }
 
-  _onScroll() {
-    if (_controller.offset >= _controller.position.maxScrollExtent &&
-        !_controller.position.outOfRange) {
-      BlocProvider.of<ReportedPostCubit>(context).getReportedPost();
-    }
+  addListenerToScrollController(BuildContext context) {
+    _scrollController.addListener(() {
+      double maxScroll = _scrollController.position.maxScrollExtent;
+      double currentScroll = _scrollController.position.pixels;
+      double delta = MediaQuery.of(context).size.height * 0.20;
+      if (maxScroll - currentScroll <= delta) {
+        BlocProvider.of<ReportedPostCubit>(context).getReportedPost();
+      }
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _controller.dispose();
+    _scrollController.dispose();
   }
 
   @override
@@ -49,6 +54,7 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
                           .getInitialReportedPost();
                     },
                     child: ListView.builder(
+                        controller: _scrollController,
                         itemCount: state.feed.length,
                         itemBuilder: (BuildContext context, int index) {
                           final post = state.feed[index];
