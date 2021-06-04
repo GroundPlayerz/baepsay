@@ -50,5 +50,5 @@ class CommentPageLoaded extends CommentScreenState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [commentList];
+  List<Object?> get props => [commentList, hasMore, isLoadingMore];
 }

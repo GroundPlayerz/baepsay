@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
-import 'package:golden_balance_flutter/model/dummy_model.dart';
 import 'package:golden_balance_flutter/repository/post_repository.dart';
 import 'package:golden_balance_flutter/repository/user_repository.dart';
 
@@ -45,41 +44,32 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
 
   Future<void> getCommentList({required int postId}) async {
     if (state is CommentPageLoaded) {
-      final parsedState = (state as CommentPageLoaded);
-      if (parsedState.isLoadingMore == false) {
-        try {
-          final parsedState = (state as CommentPageLoaded);
-          final prevCommentList = [...parsedState.commentList];
-          final prevHasMore = parsedState.hasMore;
-          emit(CommentPageLoaded(
-              commentList: prevCommentList,
-              hasMore: prevHasMore,
-              isLoadingMore: true));
-          final idCursor = prevCommentList.last.id;
-          final Response response = await postRepository.getCommentList(
-              postId: postId, idCursor: idCursor);
-          final List<Comment> commentList = response.data['comment_list']
-              .map<Comment>((e) => Comment.fromJson(e))
-              .toList();
+      try {
+        final parsedState = (state as CommentPageLoaded);
+        final prevCommentList = [...parsedState.commentList];
+        final prevHasMore = parsedState.hasMore;
+        emit(CommentPageLoaded(
+            commentList: prevCommentList,
+            hasMore: prevHasMore,
+            isLoadingMore: true));
+        final idCursor = prevCommentList.last.id;
+        final Response response = await postRepository.getCommentList(
+            postId: postId, idCursor: idCursor);
+        final List<Comment> commentList = response.data['comment_list']
+            .map<Comment>((e) => Comment.fromJson(e))
+            .toList();
 
-          final bool changedHasMore;
-          if (commentList.isNotEmpty) {
-            changedHasMore = true;
-          } else {
-            changedHasMore = false;
-            commentList.add(dummyComment);
-          }
-          final List<Comment> newCommentList = [
-            ...prevCommentList,
-            ...commentList
-          ];
-          emit(CommentPageLoaded(
-              commentList: newCommentList,
-              hasMore: changedHasMore,
-              isLoadingMore: false));
-        } catch (e) {
-          emit(CommentPageError(message: e.toString()));
-        }
+        final bool changedHasMore = commentList.isNotEmpty ? true : false;
+        final List<Comment> newCommentList = [
+          ...prevCommentList,
+          ...commentList
+        ];
+        emit(CommentPageLoaded(
+            commentList: newCommentList,
+            hasMore: changedHasMore,
+            isLoadingMore: false));
+      } catch (e) {
+        emit(CommentPageError(message: e.toString()));
       }
     }
   }

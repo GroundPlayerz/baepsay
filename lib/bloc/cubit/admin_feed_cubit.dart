@@ -20,7 +20,7 @@ class AdminFeedCubit extends Cubit<AdminFeedState> {
 
       final List<AdminFeedPost> newFeed = [...feed];
 
-      emit(Loaded(feed: newFeed));
+      emit(Loaded(feed: newFeed, hasMore: true, isLoadingMore: false));
     } catch (e) {
       emit(FeedError(message: e.toString()));
     }
@@ -37,13 +37,16 @@ class AdminFeedCubit extends Cubit<AdminFeedState> {
       final idCursor = prevFeed.last.id;
       final Response response = await adminRepository.getAdminFeed(
           idCursor: idCursor, scoreCursor: scoreCursor);
-      final feed = response.data['feed']
+      final List<AdminFeedPost> feed = response.data['feed']
           .map<AdminFeedPost>((e) => AdminFeedPost.fromJson(e))
           .toList();
 
       final List<AdminFeedPost> newFeed = [...prevFeed, ...feed];
 
-      emit(Loaded(feed: newFeed));
+      emit(Loaded(
+          feed: newFeed,
+          hasMore: feed.isNotEmpty ? true : false,
+          isLoadingMore: false));
     } catch (e) {
       emit(FeedError(message: e.toString()));
     }

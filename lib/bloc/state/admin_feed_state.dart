@@ -20,7 +20,7 @@ class FeedError extends AdminFeedState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [this.message];
+  List<Object?> get props => [message];
 }
 
 class Loading extends AdminFeedState {
@@ -31,12 +31,16 @@ class Loading extends AdminFeedState {
 
 class Loaded extends AdminFeedState {
   final List<AdminFeedPost> feed;
+  final bool hasMore;
+  final bool isLoadingMore;
 
   Loaded({
     required this.feed,
+    required this.hasMore,
+    required this.isLoadingMore,
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [feed];
+  List<Object?> get props => [feed, hasMore, isLoadingMore];
 }

@@ -144,7 +144,7 @@ class _CommentScreenState extends State<CommentScreen> {
                           itemBuilder:
                               (BuildContext context, int commentIndex) {
                             if (commentIndex <
-                                commentScreenState.commentList.length - 1) {
+                                commentScreenState.commentList.length) {
                               return Padding(
                                 padding: EdgeInsets.only(
                                     left: 16,
@@ -156,13 +156,7 @@ class _CommentScreenState extends State<CommentScreen> {
                               );
                             }
 
-                            if (commentScreenState
-                                    .commentList[commentIndex - 1].id ==
-                                -1) {
-                              return Container();
-                            }
-
-                            if (commentScreenState.isLoadingMore == false &&
+                            if (!commentScreenState.isLoadingMore &&
                                 commentScreenState.hasMore) {
                               BlocProvider.of<CommentScreenCubit>(context)
                                   .getCommentList(postId: postId);

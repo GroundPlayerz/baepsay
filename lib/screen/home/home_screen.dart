@@ -74,11 +74,14 @@ class _HomeScreenState extends State<HomeScreen> {
               allowImplicitScrolling: true,
               scrollDirection: Axis.horizontal,
               controller: pageController,
-              itemCount: feedState.feed.length,
+              itemCount: feedState.feed.length + 1,
               itemBuilder: (BuildContext context, int index) {
-                return PostWidget(
-                  postIndex: index,
-                );
+                if (index < feedState.feed.length) {
+                  return PostWidget(
+                    postIndex: index,
+                  );
+                }
+                return Container();
               },
             );
           } else if (feedState is FeedError) {
