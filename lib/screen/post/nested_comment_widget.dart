@@ -80,7 +80,7 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<NestedCommentScreenCubit, NestedCommentScreenState>(
         builder: (context, state) {
-      if (state is NestedCommentPageLoaded) {
+      if (state is NestedCommentScreenLoaded) {
         NestedComment nestedComment =
             state.nestedCommentList[nestedCommentIndex];
         return Column(

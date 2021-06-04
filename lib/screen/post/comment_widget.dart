@@ -84,7 +84,7 @@ class _CommentWidgetState extends State<CommentWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<CommentScreenCubit, CommentScreenState>(
         builder: (context, state) {
-      if (state is CommentPageLoaded) {
+      if (state is CommentScreenLoaded) {
         Comment comment = state.commentList[commentIndex];
 
         return Column(

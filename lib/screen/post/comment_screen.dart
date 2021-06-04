@@ -71,7 +71,7 @@ class _CommentScreenState extends State<CommentScreen> {
           elevation: 0,
           title: BlocBuilder<CommentScreenCubit, CommentScreenState>(
             builder: (context, commentScreenState) {
-              if (commentScreenState is CommentPageLoaded) {
+              if (commentScreenState is CommentScreenLoaded) {
                 return Row(
                   children: [
                     Text('댓글  ', style: kNoto18B.copyWith(fontSize: 20.0)),
@@ -79,9 +79,9 @@ class _CommentScreenState extends State<CommentScreen> {
                         style: kSkia18B.copyWith(fontSize: 18.0)),
                   ],
                 );
-              } else if (commentScreenState is CommentPageError) {
+              } else if (commentScreenState is CommentScreenError) {
                 print(commentScreenState.message);
-              } else if (commentScreenState is CommentPageInitialLoading) {
+              } else if (commentScreenState is CommentScreenInitialLoading) {
                 return Text('댓글  ', style: kNoto18B.copyWith(fontSize: 20.0));
               }
               return Text(commentScreenState.toString());
@@ -122,7 +122,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     ),
               BlocBuilder<CommentScreenCubit, CommentScreenState>(
                 builder: (context, commentScreenState) {
-                  if (commentScreenState is CommentPageLoaded) {
+                  if (commentScreenState is CommentScreenLoaded) {
                     if (commentScreenState.commentList.isEmpty) {
                       return Expanded(
                         child: Container(
@@ -174,9 +174,10 @@ class _CommentScreenState extends State<CommentScreen> {
                         ),
                       ),
                     );
-                  } else if (commentScreenState is CommentPageError) {
+                  } else if (commentScreenState is CommentScreenError) {
                     print(commentScreenState.message);
-                  } else if (commentScreenState is CommentPageInitialLoading) {
+                  } else if (commentScreenState
+                      is CommentScreenInitialLoading) {
                     return CircularProgressIndicator();
                   }
                   return Text(commentScreenState.toString());

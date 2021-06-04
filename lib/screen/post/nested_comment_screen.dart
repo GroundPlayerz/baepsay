@@ -65,7 +65,7 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
 
     BlocProvider.of<NestedCommentScreenCubit>(context).setEmptyState();
     BlocProvider.of<NestedCommentScreenCubit>(context)
-        .getNestedCommentList(commentId: commentId);
+        .getInitialNestedCommentList(commentId: commentId);
   }
 
   String _createdOrUpdatedAt({required Comment comment}) {
@@ -146,7 +146,7 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
             //원래 댓글
             BlocBuilder<CommentScreenCubit, CommentScreenState>(
                 builder: (context, state) {
-              if (state is CommentPageLoaded) {
+              if (state is CommentScreenLoaded) {
                 Comment comment = state.commentList[commentIndex];
                 return Container(
                   color: kWhiteColor.withOpacity(0.1),
@@ -207,7 +207,10 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                 );
               } else {
                 //Todo: 스켈레톤
-                return Container();
+                return Expanded(
+                    child: Container(
+                  color: Colors.red,
+                ));
               }
             }),
 
@@ -221,40 +224,74 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
             //대댓글 listview
             BlocBuilder<NestedCommentScreenCubit, NestedCommentScreenState>(
               builder: (context, nestedCommentScreenState) {
-                if (nestedCommentScreenState is NestedCommentPageLoaded) {
-                  if (nestedCommentScreenState.nestedCommentList.length == 0) {
+                if (nestedCommentScreenState is NestedCommentScreenLoaded) {
+                  if (nestedCommentScreenState.nestedCommentList.isEmpty) {
                     return Expanded(
                       child: Container(
                         //height: 100,
                         width: MediaQuery.of(context).size.width,
                         //color: Colors.red,
-                        //child: Text('아직 댓글이 없습니다.'),
+                        // child: Text('아직 댓글이 없습니다.'),
                       ),
                     );
                   }
                   return Expanded(
-                    child: ListView.builder(
-                      // scrollDirection: Axis.vertical,
-                      itemCount:
-                          nestedCommentScreenState.nestedCommentList.length,
-                      itemBuilder:
-                          (BuildContext context, int nestedCommentIndex) {
-                        return Padding(
-                          padding: EdgeInsets.only(
-                              left: 16 + 31,
-                              top: nestedCommentIndex == 0 ? 17 : 7,
-                              bottom: 13),
-                          child: NestedCommentWidget(
-                              nestedCommentIndex: nestedCommentIndex),
-                        );
+                    child: RefreshIndicator(
+                      onRefresh: () async {
+                        BlocProvider.of<NestedCommentScreenCubit>(context)
+                            .getInitialNestedCommentList(commentId: commentId);
                       },
+                      child: ListView.builder(
+                        itemCount:
+                            nestedCommentScreenState.nestedCommentList.length +
+                                1,
+                        itemBuilder:
+                            (BuildContext context, int nestedCommentIndex) {
+                          if (nestedCommentIndex <
+                              nestedCommentScreenState
+                                  .nestedCommentList.length) {
+                            return Padding(
+                              padding: EdgeInsets.only(
+                                  left: 16 + 31,
+                                  top: nestedCommentIndex == 0 ? 17 : 7,
+                                  bottom: 13),
+                              child: NestedCommentWidget(
+                                  nestedCommentIndex: nestedCommentIndex),
+                            );
+                          }
+                          if (!nestedCommentScreenState.isLoadingMore &&
+                              nestedCommentScreenState.hasMore) {
+                            BlocProvider.of<NestedCommentScreenCubit>(context)
+                                .getNestedCommentList(commentId: commentId);
+                          }
+
+                          if (nestedCommentScreenState.hasMore) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          } else {
+                            print(nestedCommentScreenState.hasMore);
+                            return Container();
+                          }
+                        },
+                      ),
                     ),
                   );
-                } else if (nestedCommentScreenState is NestedCommentPageError) {
+                } else if (nestedCommentScreenState
+                    is NestedCommentScreenError) {
                   print(nestedCommentScreenState.message);
                 } else if (nestedCommentScreenState
-                    is NestedCommentPageLoading) {
-                  return CircularProgressIndicator();
+                    is NestedCommentScreenInitialLoading) {
+                  return Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      child: Container(
+                        width: 15,
+                        height: 15,
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  );
                 }
                 return Text(nestedCommentScreenState.toString());
               },

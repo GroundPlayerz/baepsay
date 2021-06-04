@@ -348,7 +348,7 @@ class _PostWidgetState extends State<PostWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeFeedCubit, HomeFeedState>(
       builder: (context, state) {
-        if (state is Loaded) {
+        if (state is HomeFeedLoaded) {
           Post post = state.feed[postIndex];
           List<Map<String, dynamic>> mediaList = [{}, {}];
 

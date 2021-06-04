@@ -22,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<HomeFeedCubit>(context).getUserHomeFeed();
+    BlocProvider.of<HomeFeedCubit>(context).getInitialUserHomeFeed();
   }
 
   @override
@@ -69,7 +69,17 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: kBackgroundNavyColor,
         body: BlocBuilder<HomeFeedCubit, HomeFeedState>(
             builder: (context, feedState) {
-          if (feedState is Loaded) {
+          if (feedState is HomeFeedLoaded) {
+            if (feedState.feed.isEmpty) {
+              return Expanded(
+                child: Container(
+                  //height: 100,
+                  width: MediaQuery.of(context).size.width,
+                  //color: Colors.red,
+                  child: Text('게시물을 모두 시청했습니다.'),
+                ),
+              );
+            }
             return PageView.builder(
               allowImplicitScrolling: true,
               scrollDirection: Axis.horizontal,
@@ -77,19 +87,44 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: feedState.feed.length + 1,
               itemBuilder: (BuildContext context, int index) {
                 if (index < feedState.feed.length) {
-                  return PostWidget(
-                    postIndex: index,
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      BlocProvider.of<HomeFeedCubit>(context)
+                          .getInitialUserHomeFeed();
+                    },
+                    child: ListView(children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height -
+                            (MediaQuery.of(context).padding.top +
+                                AppBar().preferredSize.height),
+                        width: double.infinity,
+                        child: PostWidget(
+                          postIndex: index,
+                        ),
+                      ),
+                    ]),
                   );
                 }
-                return Container();
+
+                if (!feedState.isLoadingMore && feedState.hasMore) {
+                  BlocProvider.of<HomeFeedCubit>(context).getUserHomeFeed();
+                }
+                if (feedState.hasMore) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else {
+                  print(feedState.hasMore);
+                  return Center(child: Text('게시물을 모두 시청했습니다.'));
+                }
               },
             );
-          } else if (feedState is FeedError) {
+          } else if (feedState is HomeFeedError) {
             print(feedState.message);
-          } else if (feedState is Loading) {
-            return Text('스켈레톤 띄우기');
+          } else if (feedState is HomeFeedInitialLoading) {
+            return CircularProgressIndicator();
+            //Text('스켈레톤 띄우기');
           }
-
           return Text(feedState.toString());
         }),
       );

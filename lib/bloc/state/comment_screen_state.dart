@@ -5,17 +5,17 @@ import 'package:golden_balance_flutter/model/comment/comment.dart';
 @immutable
 abstract class CommentScreenState extends Equatable {}
 
-class CommentPageEmpty extends CommentScreenState {
+class CommentScreenEmpty extends CommentScreenState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class CommentPageError extends CommentScreenState {
+class CommentScreenError extends CommentScreenState {
   final String message;
   final int? statusCode;
 
-  CommentPageError({required this.message, this.statusCode});
+  CommentScreenError({required this.message, this.statusCode});
 
   @override
   // TODO: implement props
@@ -32,18 +32,18 @@ class CommentPageError extends CommentScreenState {
 //   List<Object?> get props => [commentList];
 // }
 
-class CommentPageInitialLoading extends CommentScreenState {
+class CommentScreenInitialLoading extends CommentScreenState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class CommentPageLoaded extends CommentScreenState {
+class CommentScreenLoaded extends CommentScreenState {
   final List<Comment> commentList;
   final bool hasMore;
   final bool isLoadingMore;
 
-  CommentPageLoaded(
+  CommentScreenLoaded(
       {required this.commentList,
       required this.hasMore,
       required this.isLoadingMore});
