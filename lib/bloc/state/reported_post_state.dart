@@ -31,12 +31,16 @@ class Loading extends ReportedPostState {
 
 class Loaded extends ReportedPostState {
   final List<ReportedPost> feed;
+  final bool hasMore;
+  final bool isLoadingMore;
 
   Loaded({
     required this.feed,
+    required this.hasMore,
+    required this.isLoadingMore,
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [feed];
+  List<Object?> get props => [feed, hasMore, isLoadingMore];
 }

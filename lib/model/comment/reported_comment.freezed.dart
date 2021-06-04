@@ -25,7 +25,6 @@ class _$ReportedCommentTearOff {
       required int userId,
       required int postId,
       required String text,
-      required int likeCount,
       required String createdAt,
       required int reportCount,
       String? updatedAt}) {
@@ -34,7 +33,6 @@ class _$ReportedCommentTearOff {
       userId: userId,
       postId: postId,
       text: text,
-      likeCount: likeCount,
       createdAt: createdAt,
       reportCount: reportCount,
       updatedAt: updatedAt,
@@ -55,7 +53,6 @@ mixin _$ReportedComment {
   int get userId => throw _privateConstructorUsedError;
   int get postId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  int get likeCount => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   int get reportCount => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError;
@@ -76,7 +73,6 @@ abstract class $ReportedCommentCopyWith<$Res> {
       int userId,
       int postId,
       String text,
-      int likeCount,
       String createdAt,
       int reportCount,
       String? updatedAt});
@@ -97,7 +93,6 @@ class _$ReportedCommentCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? postId = freezed,
     Object? text = freezed,
-    Object? likeCount = freezed,
     Object? createdAt = freezed,
     Object? reportCount = freezed,
     Object? updatedAt = freezed,
@@ -119,10 +114,6 @@ class _$ReportedCommentCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      likeCount: likeCount == freezed
-          ? _value.likeCount
-          : likeCount // ignore: cast_nullable_to_non_nullable
-              as int,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -151,7 +142,6 @@ abstract class _$ReportedCommentCopyWith<$Res>
       int userId,
       int postId,
       String text,
-      int likeCount,
       String createdAt,
       int reportCount,
       String? updatedAt});
@@ -174,7 +164,6 @@ class __$ReportedCommentCopyWithImpl<$Res>
     Object? userId = freezed,
     Object? postId = freezed,
     Object? text = freezed,
-    Object? likeCount = freezed,
     Object? createdAt = freezed,
     Object? reportCount = freezed,
     Object? updatedAt = freezed,
@@ -196,10 +185,6 @@ class __$ReportedCommentCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      likeCount: likeCount == freezed
-          ? _value.likeCount
-          : likeCount // ignore: cast_nullable_to_non_nullable
-              as int,
       createdAt: createdAt == freezed
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -225,7 +210,6 @@ class _$_ReportedComment implements _ReportedComment {
       required this.userId,
       required this.postId,
       required this.text,
-      required this.likeCount,
       required this.createdAt,
       required this.reportCount,
       this.updatedAt});
@@ -242,8 +226,6 @@ class _$_ReportedComment implements _ReportedComment {
   @override
   final String text;
   @override
-  final int likeCount;
-  @override
   final String createdAt;
   @override
   final int reportCount;
@@ -252,7 +234,7 @@ class _$_ReportedComment implements _ReportedComment {
 
   @override
   String toString() {
-    return 'ReportedComment(id: $id, userId: $userId, postId: $postId, text: $text, likeCount: $likeCount, createdAt: $createdAt, reportCount: $reportCount, updatedAt: $updatedAt)';
+    return 'ReportedComment(id: $id, userId: $userId, postId: $postId, text: $text, createdAt: $createdAt, reportCount: $reportCount, updatedAt: $updatedAt)';
   }
 
   @override
@@ -267,9 +249,6 @@ class _$_ReportedComment implements _ReportedComment {
                 const DeepCollectionEquality().equals(other.postId, postId)) &&
             (identical(other.text, text) ||
                 const DeepCollectionEquality().equals(other.text, text)) &&
-            (identical(other.likeCount, likeCount) ||
-                const DeepCollectionEquality()
-                    .equals(other.likeCount, likeCount)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
@@ -288,7 +267,6 @@ class _$_ReportedComment implements _ReportedComment {
       const DeepCollectionEquality().hash(userId) ^
       const DeepCollectionEquality().hash(postId) ^
       const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(likeCount) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(reportCount) ^
       const DeepCollectionEquality().hash(updatedAt);
@@ -310,7 +288,6 @@ abstract class _ReportedComment implements ReportedComment {
       required int userId,
       required int postId,
       required String text,
-      required int likeCount,
       required String createdAt,
       required int reportCount,
       String? updatedAt}) = _$_ReportedComment;
@@ -326,8 +303,6 @@ abstract class _ReportedComment implements ReportedComment {
   int get postId => throw _privateConstructorUsedError;
   @override
   String get text => throw _privateConstructorUsedError;
-  @override
-  int get likeCount => throw _privateConstructorUsedError;
   @override
   String get createdAt => throw _privateConstructorUsedError;
   @override

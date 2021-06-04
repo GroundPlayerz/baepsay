@@ -19,8 +19,11 @@ class AdminFeedCubit extends Cubit<AdminFeedState> {
           .toList();
 
       final List<AdminFeedPost> newFeed = [...feed];
-
-      emit(Loaded(feed: newFeed, hasMore: true, isLoadingMore: false));
+      bool hasMore = false;
+      if (newFeed.isNotEmpty) {
+        hasMore = true;
+      }
+      emit(Loaded(feed: newFeed, hasMore: hasMore, isLoadingMore: false));
     } catch (e) {
       emit(FeedError(message: e.toString()));
     }

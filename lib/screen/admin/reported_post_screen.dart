@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/reported_post_state.dart';
-import 'package:golden_balance_flutter/screen/admin/post_report_screen.dart';
+import 'package:golden_balance_flutter/screen/admin/post_detail_report_screen.dart';
 
 class ReportedPostScreen extends StatefulWidget {
   @override
@@ -10,32 +10,11 @@ class ReportedPostScreen extends StatefulWidget {
 }
 
 class _ReportedPostScreenState extends State<ReportedPostScreen> {
-  final ScrollController _scrollController = ScrollController();
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     BlocProvider.of<ReportedPostCubit>(context).getInitialReportedPost();
-    addListenerToScrollController(context);
-  }
-
-  addListenerToScrollController(BuildContext context) {
-    _scrollController.addListener(() {
-      double maxScroll = _scrollController.position.maxScrollExtent;
-      double currentScroll = _scrollController.position.pixels;
-      double delta = MediaQuery.of(context).size.height * 0.20;
-      if (maxScroll - currentScroll <= delta) {
-        BlocProvider.of<ReportedPostCubit>(context).getReportedPost();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _scrollController.dispose();
   }
 
   @override
@@ -49,14 +28,14 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
             if (state is Loaded) {
               if (state.feed.isNotEmpty) {
                 return RefreshIndicator(
-                    onRefresh: () async {
-                      BlocProvider.of<ReportedPostCubit>(context)
-                          .getInitialReportedPost();
-                    },
-                    child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: state.feed.length,
-                        itemBuilder: (BuildContext context, int index) {
+                  onRefresh: () async {
+                    BlocProvider.of<ReportedPostCubit>(context)
+                        .getInitialReportedPost();
+                  },
+                  child: ListView.builder(
+                      itemCount: state.feed.length + 1,
+                      itemBuilder: (BuildContext context, int index) {
+                        if (index < state.feed.length) {
                           final post = state.feed[index];
                           return GestureDetector(
                             onTap: () {
@@ -64,7 +43,8 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          PostReportScreen(postId: post.id)));
+                                          PostDetailReportScreen(
+                                              postId: post.id)));
                             },
                             child: Card(
                               child: Column(
@@ -75,12 +55,25 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
                               ),
                             ),
                           );
-                        }));
+                        }
+
+                        if (!state.isLoadingMore && state.hasMore) {
+                          BlocProvider.of<ReportedPostCubit>(context)
+                              .getReportedPost();
+                        }
+
+                        if (state.hasMore) {
+                          return Center(child: CircularProgressIndicator());
+                        } else {
+                          return Container();
+                        }
+                      }),
+                );
               } else {
-                return Center(child: Text('No Data'));
+                return Center(child: Text('신고된 게시물이 없습니다.'));
               }
             } else if (state is Error) {
-              return Text(state.message);
+              return Center(child: Text(state.message));
             } else if (state is Loading) {
               return Center(
                 child: CircularProgressIndicator(),

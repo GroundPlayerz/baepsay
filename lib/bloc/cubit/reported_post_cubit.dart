@@ -19,8 +19,12 @@ class ReportedPostCubit extends Cubit<ReportedPostState> {
           .toList();
 
       final List<ReportedPost> newFeed = [...feed];
+      bool hasMore = false;
+      if (newFeed.isNotEmpty) {
+        hasMore = true;
+      }
 
-      emit(Loaded(feed: newFeed));
+      emit(Loaded(feed: newFeed, hasMore: hasMore, isLoadingMore: false));
     } catch (e) {
       emit(Error(message: e.toString()));
     }
@@ -33,6 +37,10 @@ class ReportedPostCubit extends Cubit<ReportedPostState> {
         final parsedState = (state as Loaded);
         prevFeed = [...parsedState.feed];
       }
+      emit(Loaded(
+          feed: prevFeed,
+          hasMore: prevFeed.isNotEmpty ? true : false,
+          isLoadingMore: true));
       final reportCountCursor = prevFeed.last.reportCount;
       final idCursor = prevFeed.last.id;
       final Response response = await adminRepository.getReportedPost(
@@ -43,7 +51,10 @@ class ReportedPostCubit extends Cubit<ReportedPostState> {
 
       final List<ReportedPost> newFeed = [...prevFeed, ...feed];
 
-      emit(Loaded(feed: newFeed));
+      emit(Loaded(
+          feed: newFeed,
+          hasMore: feed.isNotEmpty ? true : false,
+          isLoadingMore: false));
     } catch (e) {
       emit(Error(message: e.toString()));
     }

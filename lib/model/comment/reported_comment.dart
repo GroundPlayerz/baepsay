@@ -11,7 +11,6 @@ class ReportedComment with _$ReportedComment {
     required int userId,
     required int postId,
     required String text,
-    required int likeCount,
     required String createdAt,
     required int reportCount,
     String? updatedAt,

@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
 import 'package:golden_balance_flutter/model/report/report.dart';
 
-class PostReportScreen extends StatelessWidget {
+class PostDetailReportScreen extends StatelessWidget {
   final int postId;
 
-  const PostReportScreen({required this.postId});
+  const PostDetailReportScreen({required this.postId});
 
   @override
   Widget build(BuildContext context) {

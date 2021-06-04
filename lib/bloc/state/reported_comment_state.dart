@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:golden_balance_flutter/model/comment/reported_comment.dart';
-import 'package:golden_balance_flutter/model/post/admin_feed_post.dart';
-import 'package:golden_balance_flutter/model/post/reported_post.dart';
 
 @immutable
 abstract class ReportedCommentState extends Equatable {}
@@ -32,12 +30,16 @@ class Loading extends ReportedCommentState {
 
 class Loaded extends ReportedCommentState {
   final List<ReportedComment> feed;
+  final bool hasMore;
+  final bool isLoadingMore;
 
   Loaded({
     required this.feed,
+    required this.hasMore,
+    required this.isLoadingMore,
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [feed];
+  List<Object?> get props => [feed, hasMore, isLoadingMore];
 }

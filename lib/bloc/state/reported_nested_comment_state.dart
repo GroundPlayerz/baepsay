@@ -33,12 +33,16 @@ class Loading extends ReportedNestedCommentState {
 
 class Loaded extends ReportedNestedCommentState {
   final List<ReportedNestedComment> feed;
+  final bool hasMore;
+  final bool isLoadingMore;
 
   Loaded({
     required this.feed,
+    required this.hasMore,
+    required this.isLoadingMore,
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [feed];
+  List<Object?> get props => [feed, hasMore, isLoadingMore];
 }
