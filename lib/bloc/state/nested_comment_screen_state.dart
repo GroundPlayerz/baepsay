@@ -11,29 +11,34 @@ class Empty extends NestedCommentScreenState {
   List<Object?> get props => [];
 }
 
-class NestedCommentPageError extends NestedCommentScreenState {
+class NestedCommentScreenError extends NestedCommentScreenState {
   final String message;
   final int? statusCode;
 
-  NestedCommentPageError({required this.message, this.statusCode});
+  NestedCommentScreenError({required this.message, this.statusCode});
 
   @override
   // TODO: implement props
   List<Object?> get props => [this.message];
 }
 
-class NestedCommentPageLoading extends NestedCommentScreenState {
+class NestedCommentScreenInitialLoading extends NestedCommentScreenState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class NestedCommentPageLoaded extends NestedCommentScreenState {
+class NestedCommentScreenLoaded extends NestedCommentScreenState {
   final List<NestedComment> nestedCommentList;
+  final bool hasMore;
+  final bool isLoadingMore;
 
-  NestedCommentPageLoaded({required this.nestedCommentList});
+  NestedCommentScreenLoaded(
+      {required this.nestedCommentList,
+      required this.hasMore,
+      required this.isLoadingMore});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [nestedCommentList];
+  List<Object?> get props => [nestedCommentList, hasMore, isLoadingMore];
 }

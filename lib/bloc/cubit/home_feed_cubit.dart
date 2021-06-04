@@ -11,42 +11,67 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
 
   HomeFeedCubit(
       {required this.userRepository, required this.unauthorizedUserRepository})
-      : super(Empty());
+      : super(HomeFeedEmpty());
 
-  void getUserHomeFeed({int? cursor}) async {
+  void getInitialUserHomeFeed() async {
     try {
-      List<Post> prevFeed = [];
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
-        prevFeed = [...parsedState.feed];
-      }
-      emit(Loading());
-      final Response response =
-          await userRepository.getHomeFeed(cursor: cursor);
+      emit(HomeFeedInitialLoading());
+      final Response response = await userRepository.getHomeFeed();
       final feed =
           response.data['feed'].map<Post>((e) => Post.fromJson(e)).toList();
-      final List<Post> newFeed = [...prevFeed, ...feed];
-      emit(Loaded(feed: newFeed));
+      final List<Post> newFeed = [...feed];
+
+      bool hasMore = false;
+      if (feed.isNotEmpty) {
+        hasMore = true;
+      }
+      emit(HomeFeedLoaded(
+          feed: newFeed, hasMore: hasMore, isLoadingMore: false));
     } catch (e) {
-      emit(FeedError(message: e.toString()));
+      emit(HomeFeedError(message: e.toString()));
+    }
+  }
+
+  void getUserHomeFeed() async {
+    try {
+      final parsedState = (state as HomeFeedLoaded);
+      final prevFeed = [...parsedState.feed];
+      final prevHasMore = parsedState.hasMore;
+      emit(HomeFeedLoaded(
+          feed: prevFeed, hasMore: prevHasMore, isLoadingMore: true));
+
+      final idCursor = prevFeed.last.id;
+      final scoreCursor = prevFeed.last.score;
+      final Response response = await userRepository.getHomeFeed(
+          idCursor: idCursor, scoreCursor: scoreCursor);
+      final feed =
+          response.data['feed'].map<Post>((e) => Post.fromJson(e)).toList();
+
+      final bool changedHasMore = feed.isNotEmpty ? true : false;
+      final List<Post> newFeed = [...prevFeed, ...feed];
+      emit(HomeFeedLoaded(
+          feed: newFeed, hasMore: changedHasMore, isLoadingMore: false));
+    } catch (e) {
+      emit(HomeFeedError(message: e.toString()));
     }
   }
 
   void viewPost({required int postIndex}) async {
     try {
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
+      if (state is HomeFeedLoaded) {
+        final parsedState = (state as HomeFeedLoaded);
         await userRepository.viewPost(postId: parsedState.feed[postIndex].id);
       }
     } catch (e) {
-      emit(FeedError(message: e.toString()));
+      emit(HomeFeedError(message: e.toString()));
     }
   }
 
   void voteToPost({required int postIndex, required int choice}) async {
     try {
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
+      if (state is HomeFeedLoaded) {
+        final parsedState = (state as HomeFeedLoaded);
+        final hasMore = parsedState.hasMore;
         List<Post> feed = [...parsedState.feed];
 
         Post changedPost;
@@ -62,20 +87,22 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         }
 
         feed[postIndex] = changedPost;
-        emit(Loaded(feed: feed));
+        emit(
+            HomeFeedLoaded(feed: feed, hasMore: hasMore, isLoadingMore: false));
 
         await userRepository.voteToPost(
             postId: feed[postIndex].id, choice: choice);
       }
     } catch (e) {
-      emit(FeedError(message: e.toString()));
+      emit(HomeFeedError(message: e.toString()));
     }
   }
 
   void pressLikeButton({required int postIndex}) async {
     try {
-      if (state is Loaded) {
-        final parsedState = (state as Loaded);
+      if (state is HomeFeedLoaded) {
+        final parsedState = (state as HomeFeedLoaded);
+        final hasMore = parsedState.hasMore;
         List<Post> feed = [...parsedState.feed];
 
         Post changedPost;
@@ -87,7 +114,8 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
               userLikeCount: 0, likeCount: feed[postIndex].likeCount - 1);
         }
         feed[postIndex] = changedPost;
-        emit(Loaded(feed: feed));
+        emit(
+            HomeFeedLoaded(feed: feed, hasMore: hasMore, isLoadingMore: false));
         if (changedPost.userLikeCount == 0) {
           await userRepository.cancelLikePost(postId: changedPost.id);
         } else {
@@ -95,7 +123,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         }
       }
     } catch (e) {
-      emit(FeedError(message: e.toString()));
+      emit(HomeFeedError(message: e.toString()));
     }
   }
 }

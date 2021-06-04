@@ -19,41 +19,76 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
     try {
       emit(Empty());
     } catch (e) {
-      emit(NestedCommentPageError(message: e.toString()));
+      emit(NestedCommentScreenError(message: e.toString()));
     }
   }
 
-  void getNestedCommentList({required int commentId, int? idCursor}) async {
+  void getInitialNestedCommentList({required int commentId}) async {
     try {
-      List<NestedComment> prevNestedCommentList = [];
-      if (state is NestedCommentPageLoaded) {
-        final parsedState = (state as NestedCommentPageLoaded);
-        prevNestedCommentList = [...parsedState.nestedCommentList];
-      }
-      emit(NestedCommentPageLoading());
-      final Response response = await commentRepository.getNestedCommentList(
-          commentId: commentId, idCursor: idCursor);
-      //Todo: postman에서 형식 체크
+      emit(NestedCommentScreenInitialLoading());
+      final Response response =
+          await commentRepository.getNestedCommentList(commentId: commentId);
       final List<NestedComment> nestedCommentList = response
           .data['nested_comment_list']
           .map<NestedComment>((e) => NestedComment.fromJson(e))
           .toList();
 
-      final List<NestedComment> newNestedCommentList = [
-        ...prevNestedCommentList,
-        ...nestedCommentList
-      ];
-      emit(NestedCommentPageLoaded(nestedCommentList: newNestedCommentList));
+      final List<NestedComment> newNestedCommentList = [...nestedCommentList];
+      bool hasMore = false;
+      if (nestedCommentList.isNotEmpty) {
+        hasMore = true;
+      }
+      emit(NestedCommentScreenLoaded(
+          nestedCommentList: newNestedCommentList,
+          hasMore: hasMore,
+          isLoadingMore: false));
     } catch (e) {
-      emit(NestedCommentPageError(message: e.toString()));
+      emit(NestedCommentScreenError(message: e.toString()));
+    }
+  }
+
+  void getNestedCommentList({required int commentId}) async {
+    if (state is NestedCommentScreenLoaded) {
+      try {
+        final parsedState = (state as NestedCommentScreenLoaded);
+        final prevNestedCommentList = [...parsedState.nestedCommentList];
+        final prevHasMore = parsedState.hasMore;
+
+        emit(NestedCommentScreenLoaded(
+            nestedCommentList: prevNestedCommentList,
+            hasMore: prevHasMore,
+            isLoadingMore: true));
+
+        final idCursor = prevNestedCommentList.last.id;
+
+        final Response response = await commentRepository.getNestedCommentList(
+            commentId: commentId, idCursor: idCursor);
+        final List<NestedComment> nestedCommentList = response
+            .data['nested_comment_list']
+            .map<NestedComment>((e) => NestedComment.fromJson(e))
+            .toList();
+
+        final bool changedHasMore = nestedCommentList.isNotEmpty ? true : false;
+        final List<NestedComment> newNestedCommentList = [
+          ...prevNestedCommentList,
+          ...nestedCommentList
+        ];
+        emit(NestedCommentScreenLoaded(
+            nestedCommentList: newNestedCommentList,
+            hasMore: changedHasMore,
+            isLoadingMore: false));
+      } catch (e) {
+        emit(NestedCommentScreenError(message: e.toString()));
+      }
     }
   }
 
   void pressLikeButton(
       {required int nestedCommentIndex, required int userLikeCount}) async {
     try {
-      if (state is NestedCommentPageLoaded) {
-        final parsedState = (state as NestedCommentPageLoaded);
+      if (state is NestedCommentScreenLoaded) {
+        final parsedState = (state as NestedCommentScreenLoaded);
+        final hasMore = parsedState.hasMore;
         List<NestedComment> nestedCommentList = [
           ...parsedState.nestedCommentList
         ];
@@ -69,7 +104,10 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
               likeCount: nestedCommentList[nestedCommentIndex].likeCount - 1);
         }
         nestedCommentList[nestedCommentIndex] = changedNestedComment;
-        emit(NestedCommentPageLoaded(nestedCommentList: nestedCommentList));
+        emit(NestedCommentScreenLoaded(
+            nestedCommentList: nestedCommentList,
+            hasMore: hasMore,
+            isLoadingMore: false));
 
         if (changedNestedComment.userLikeCount == 0) {
           await userRepository.cancelLikeNestedComment(
@@ -80,15 +118,16 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
         }
       }
     } catch (e) {
-      emit(NestedCommentPageError(message: e.toString()));
+      emit(NestedCommentScreenError(message: e.toString()));
     }
   }
 
   Future<void> createNestedComment(
       {required int commentId, required text}) async {
     try {
-      if (state is NestedCommentPageLoaded) {
-        final parsedState = (state as NestedCommentPageLoaded);
+      if (state is NestedCommentScreenLoaded) {
+        final parsedState = (state as NestedCommentScreenLoaded);
+        final hasMore = parsedState.hasMore;
         List<NestedComment> prevNestedCommentList = [
           ...parsedState.nestedCommentList
         ];
@@ -105,10 +144,13 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
           ...prevNestedCommentList,
           ...uploadedNestedCommentList
         ];
-        emit(NestedCommentPageLoaded(nestedCommentList: newNestedCommentList));
+        emit(NestedCommentScreenLoaded(
+            nestedCommentList: newNestedCommentList,
+            hasMore: hasMore,
+            isLoadingMore: false));
       }
     } catch (e) {
-      emit(NestedCommentPageError(message: e.toString()));
+      emit(NestedCommentScreenError(message: e.toString()));
     }
   }
 }
