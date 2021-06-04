@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:golden_balance_flutter/model/media_for_upload.dart';
@@ -11,7 +12,7 @@ class UploadCubit extends Cubit<UploadState> {
 
   UploadCubit({required this.repository}) : super(Default());
 
-  setDefaultState() {
+  void setDefaultState() {
     emit(Default());
   }
 
@@ -27,6 +28,20 @@ class UploadCubit extends Cubit<UploadState> {
     }
   }
 
+  void uploadProfile(
+      {required String profileName, Uint8List? imageBytes}) async {
+    try {
+      emit(Uploading());
+      await repository.uploadProfileName(profileName: profileName);
+      if (imageBytes != null) {
+        await repository.uploadProfilePhoto(imageBytes: imageBytes);
+      }
+      emit(Uploaded());
+    } catch (e) {
+      emit(Error(message: e.toString()));
+    }
+  }
+
   void uploadPost({
     required String title,
     required String firstContentText,
@@ -35,7 +50,7 @@ class UploadCubit extends Cubit<UploadState> {
   }) async {
     try {
       emit(Uploading());
-      final response = await repository.uploadPost(
+      await repository.uploadPost(
           title: title,
           firstContentText: firstContentText,
           secondContentText: secondContentText,

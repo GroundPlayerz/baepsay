@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/admin_feed_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/admin_feed_state.dart';
 
 class AdminFeedScreen extends StatefulWidget {
@@ -13,6 +14,7 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
     BlocProvider.of<AdminFeedCubit>(context).getInitialAdminFeed();
   }
 

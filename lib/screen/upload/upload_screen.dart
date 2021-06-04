@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/media_for_upload.dart';
 import 'package:golden_balance_flutter/screen/home/home_screen.dart';
@@ -265,6 +266,7 @@ class _UploadScreenState extends State<UploadScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
     BlocProvider.of<UploadCubit>(context).setDefaultState();
   }
 
@@ -272,6 +274,9 @@ class _UploadScreenState extends State<UploadScreen> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    myFocusNode?.dispose();
+    firstContentController.dispose();
+    secondContentController.dispose();
   }
 
   @override

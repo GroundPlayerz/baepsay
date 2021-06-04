@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/reported_post_state.dart';
 import 'package:golden_balance_flutter/screen/admin/post_detail_report_screen.dart';
@@ -14,6 +15,7 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
     BlocProvider.of<ReportedPostCubit>(context).getInitialReportedPost();
   }
 

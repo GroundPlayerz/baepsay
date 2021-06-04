@@ -23,18 +23,17 @@ class _SplashScreenState extends State<SplashScreen> {
       builder: (context, state) {
         if (state is Checking) {
           return Scaffold(
-            backgroundColor: Colors.red,
             body: Center(
-              child: Column(children: [
-                SizedBox(height: 100),
-                Container(
-                  height: 34.0,
-                  child: Text(
-                    'Golden Balance',
-                    style: TextStyle(fontSize: 60.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '황금 밸런스',
+                    style: TextStyle(fontSize: 40.0),
                   ),
-                ),
-              ]),
+                  Icon(Icons.check_circle_outline)
+                ],
+              ),
             ),
           );
         } else if (state is FirebaseSignedOut) {
@@ -44,7 +43,6 @@ class _SplashScreenState extends State<SplashScreen> {
           if (_isAccessTokenRequested == false) {
             BlocProvider.of<AuthCubit>(context)
                 .getUnauthenticatedUserAccessToken();
-
             _isAccessTokenRequested = true;
           }
         } else if (state is DeviceSignedIn) {
@@ -62,18 +60,17 @@ class _SplashScreenState extends State<SplashScreen> {
           return Text(state.message);
         }
         return Scaffold(
-          backgroundColor: Colors.red,
           body: Center(
-            child: Column(children: [
-              SizedBox(height: 100),
-              Container(
-                height: 34.0,
-                child: Text(
-                  'Golden Balance',
-                  style: TextStyle(fontSize: 60.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '황금 밸런스',
+                  style: TextStyle(fontSize: 40.0),
                 ),
-              ),
-            ]),
+                Icon(Icons.check_circle_outline)
+              ],
+            ),
           ),
         );
       },

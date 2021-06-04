@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
+import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
@@ -37,8 +39,8 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   void initState() {
     super.initState();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
     postCommentCount = widget.postCommentCount;
-
     _myFocusNode = FocusNode();
     _textController.addListener(() {
       setState(() => _canPost = _textController.text.isNotEmpty);

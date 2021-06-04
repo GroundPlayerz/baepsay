@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/reported_comment_state.dart';
 
@@ -13,6 +14,7 @@ class _ReportedCommentScreenState extends State<ReportedCommentScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
     BlocProvider.of<ReportedCommentCubit>(context).getInitialReportedComment();
   }
 

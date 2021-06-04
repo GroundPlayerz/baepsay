@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fa;
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:bloc/bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
@@ -55,6 +56,26 @@ class AuthCubit extends Cubit<AuthState> {
       }
     } catch (e) {
       emit(AuthError(message: e.toString()));
+    }
+  }
+
+  Future<void> getAccessTokenByState() async {
+    if (state is FirebaseSignedIn) {
+      await getAuthenticatedUserAccessToken();
+    } else if (state is DeviceSignedIn) {
+      await getUnauthenticatedUserAccessToken();
+    }
+  }
+
+  String? getProfileName() {
+    try {
+      if (state is FirebaseSignedIn) {
+        final parsedState = (state as FirebaseSignedIn);
+
+        return parsedState.user.profileName;
+      }
+    } catch (e) {
+      print(e.toString());
     }
   }
 

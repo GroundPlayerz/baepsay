@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
@@ -49,6 +50,7 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
     commentIndex = widget.commentIndex;
     commentId = widget.commentId;
 

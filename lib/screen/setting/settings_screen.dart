@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/screen/setting/account_setting_screen.dart';
 import 'package:golden_balance_flutter/screen/setting/notification_setting_screen.dart';
 
@@ -8,6 +10,13 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +41,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         builder: (context) => AccountSettingScreen()));
               },
               child: Text('계정')),
-          TextButton(onPressed: () {}, child: Text('로그아웃')),
+          TextButton(
+              onPressed: () {
+                BlocProvider.of<AuthCubit>(context).firebaseSignOut();
+              },
+              child: Text('로그아웃')),
         ],
       ),
     );

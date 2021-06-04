@@ -147,15 +147,6 @@ class _PostWidgetState extends State<PostWidget> {
                           .toString(),
                       style: kPostInfoNumberTextStyle.copyWith(fontSize: 14)),
                   SizedBox(width: 20),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(9),
-                    child: Container(
-                      width: 20,
-                      height: 20,
-                      child: Image.asset('images/default_profile_photo.png'),
-                    ),
-                  ),
-                  SizedBox(width: 11),
                   Text(post.profileName),
                 ],
               ),

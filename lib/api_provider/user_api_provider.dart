@@ -25,24 +25,15 @@ class UserApiProvider {
     required String secondContentText,
     required List<MediaForUpload> mediaList,
   }) async {
-    Reference videoRef = _firebaseStorage.ref().child('videos');
     Reference imageRef = _firebaseStorage.ref().child('images');
-    Reference thumbnailRef = _firebaseStorage.ref().child('thumbnail');
     List mediaMetaDataList = [];
     if (mediaList.isNotEmpty) {
       for (MediaForUpload media in mediaList) {
         Map<String, dynamic> metaData = {};
         String mediaDownloadUrl;
-        if (media.type == 'video') {
-          mediaDownloadUrl =
-              await _uploadToStorageAndGetDownloadURL(videoRef, media.media);
-        } else if (media.type == 'image') {
-          mediaDownloadUrl =
-              await _uploadToStorageAndGetDownloadURL(imageRef, media.media);
-        } else {
-          mediaDownloadUrl = await _uploadToStorageAndGetDownloadURL(
-              thumbnailRef, media.media);
-        }
+        mediaDownloadUrl =
+            await _uploadToStorageAndGetDownloadURL(imageRef, media.media);
+
         metaData['url'] = mediaDownloadUrl;
         metaData['type'] = media.type;
         metaData['size'] = media.media.length;
@@ -58,6 +49,23 @@ class UserApiProvider {
     data['media_list'] = mediaMetaDataList;
 
     Response response = await _dio.post('user/post', data: data);
+    return response;
+  }
+
+  Future<Response> uploadProfilePhoto({required Uint8List imageBytes}) async {
+    Reference imageRef = _firebaseStorage.ref().child('profile_photo');
+    final String profilePhotoUrl =
+        await _uploadToStorageAndGetDownloadURL(imageRef, imageBytes);
+    Response response = await _dio.post('user/profile/photo',
+        data: {'profile_photo_url': profilePhotoUrl});
+
+    return response;
+  }
+
+  Future<Response> uploadProfileName({required String profileName}) async {
+    Response response = await _dio
+        .post('user/profile/name', data: {'profile_name': profileName});
+
     return response;
   }
 

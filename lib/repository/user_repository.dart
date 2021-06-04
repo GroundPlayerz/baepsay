@@ -20,6 +20,12 @@ class UserRepository {
           secondContentText: secondContentText,
           mediaList: mediaList);
 
+  Future<Response> uploadProfilePhoto({required Uint8List imageBytes}) async =>
+      await userApiProvider.uploadProfilePhoto(imageBytes: imageBytes);
+
+  Future<Response> uploadProfileName({required String profileName}) async =>
+      await userApiProvider.uploadProfileName(profileName: profileName);
+
   Future<Response> getHomeFeed({int? idCursor, double? scoreCursor}) async =>
       await userApiProvider.getHomeFeed(
           idCursor: idCursor, scoreCursor: scoreCursor);
