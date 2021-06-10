@@ -32,7 +32,7 @@ class UploadCubit extends Cubit<UploadState> {
     emit(Compressing());
     Uint8List? image = await FlutterImageCompress.compressWithFile(
       imageFile.path,
-      quality: 30,
+      quality: 1,
     );
 
     if (image != null) {

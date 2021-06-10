@@ -6,6 +6,7 @@ import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
+import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
 
 class FeedPostWidgetNew extends StatefulWidget {
   final int postIndex;
@@ -20,6 +21,7 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
   double outerHorizontalPadding = 10;
   double innerHorizontalPadding = 20;
   late double mediaWidthHeight;
+  late double completeButtonWidth;
 
   int selectedContent = -1; //선택안된거임.
 
@@ -58,8 +60,9 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
               .voteToPost(postIndex: postIndex, choice: selectedContent);
         },
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 10.0),
+          //padding: EdgeInsets.symmetric(vertical: 10.0),
           width: double.infinity,
+          height: 45,
           decoration: BoxDecoration(
             color: kAccentPinkColor,
             borderRadius: BorderRadius.all(Radius.circular(11)),
@@ -73,12 +76,176 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
         ),
       );
 
+  Widget _voteResultWidget(
+      {required int firstContentVoteCount,
+      required int secondContentVoteCount}) {
+    var firstPercent = 100 *
+        (firstContentVoteCount /
+            (firstContentVoteCount + secondContentVoteCount));
+    var secondPercent = 100 - firstPercent;
+    int firstPercentInt = firstPercent.toInt();
+    int secondPercentInt = secondPercent.toInt();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: 45 + (completeButtonWidth - 45 * 2) * firstPercent / 100,
+          height: 45,
+          decoration: firstPercent >= secondPercent
+              ? BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Color(0xffFF0045).withOpacity(0.3),
+                      Color(0xffEA425D).withOpacity(0.14),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(11),
+                      bottomLeft: Radius.circular(11)),
+                )
+              : BoxDecoration(
+                  color: Color(0xffF4F4F4),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(11),
+                      bottomLeft: Radius.circular(11)),
+                ),
+          child: Center(
+            child: Text(
+              firstPercentInt.toString() + '%',
+              style: kPostVoteResultPercentTextStyle,
+            ),
+          ),
+        ),
+        Container(
+          width: 45 + (completeButtonWidth - 45 * 2) * secondPercent / 100,
+          height: 45,
+          decoration: secondPercent >= firstPercent
+              ? BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Color(0xffEA425D).withOpacity(0.14),
+                      Color(0xffFF0045).withOpacity(0.3),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(11),
+                      bottomRight: Radius.circular(11)),
+                )
+              : BoxDecoration(
+                  color: Color(0xffF4F4F4),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(11),
+                      bottomRight: Radius.circular(11)),
+                ),
+          child: Center(
+            child: Text(
+              secondPercentInt.toString() + '%',
+              style: kPostVoteResultPercentTextStyle,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _likeButtonDeactivated(Post post) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Row(
+          children: [
+            Icon(
+              Icons.favorite_border_rounded,
+              size: 35,
+              color: kAccentPinkColor.withOpacity(0.4),
+            ),
+            SizedBox(width: 11),
+            Text(
+              post.likeCount.toString(),
+              style: kPostInfoNumberTextStyle.copyWith(
+                  color: kGreyColor1_767676.withOpacity(0.4)),
+            ),
+          ],
+        ),
+      );
+  Widget _likeButton(Post post) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          setState(() {
+            BlocProvider.of<HomeFeedCubit>(context)
+                .pressLikeButton(postIndex: postIndex);
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: [
+              post.memberLikeCount == 0
+                  ? Icon(Icons.favorite_border_rounded,
+                      size: 35, color: kIconGreyColor_CBCBCB)
+                  : Icon(Icons.favorite_rounded,
+                      size: 35, color: kAccentPinkColor),
+              SizedBox(width: 11),
+              Text(
+                post.likeCount.toString(),
+                style: kPostInfoNumberTextStyle,
+              ),
+            ],
+          ),
+        ),
+      );
+  Widget _commentButtonDeactivated(Post post) => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Row(
+          children: [
+            Icon(Icons.mode_comment_outlined,
+                size: 30, color: kIconGreyColor_CBCBCB.withOpacity(0.4)),
+            SizedBox(width: 11),
+            Text((post.commentCount).toString(),
+                style: kPostInfoNumberTextStyle.copyWith(
+                    color: kGreyColor1_767676.withOpacity(0.4))),
+          ],
+        ),
+      );
+  Widget _commentButton({required Post post, required int postId}) =>
+      GestureDetector(
+        onTap: () {
+          //Todo : 댓글 화면으로 넘어가기
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CommentScreen(
+                        postId: postId,
+                        postCommentCount: post.commentCount,
+                      )));
+        },
+        behavior: HitTestBehavior.opaque,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: [
+              Icon(Icons.mode_comment_outlined,
+                  size: 30, color: kIconGreyColor_CBCBCB),
+              SizedBox(width: 11),
+              Text((post.commentCount).toString(),
+                  style: kPostInfoNumberTextStyle),
+            ],
+          ),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     mediaWidthHeight = (MediaQuery.of(context).size.width -
             (outerHorizontalPadding + innerHorizontalPadding) * 2 -
             24) /
         2;
+    completeButtonWidth = MediaQuery.of(context).size.width -
+        (outerHorizontalPadding + innerHorizontalPadding) * 2;
+
     print(MediaQuery.of(context).padding.bottom);
     return BlocBuilder<HomeFeedCubit, HomeFeedState>(builder: (context, state) {
       if (state is HomeFeedLoaded) {
@@ -104,6 +271,7 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
           }
         }
         return ListView(children: [
+          SizedBox(height: 5),
           Container(
             margin: EdgeInsets.symmetric(horizontal: outerHorizontalPadding),
             decoration: BoxDecoration(
@@ -114,7 +282,7 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.05),
-                  spreadRadius: 5,
+                  spreadRadius: 0,
                   blurRadius: 6,
                   offset: Offset(0, 3), // changes position of shadow
                 ),
@@ -307,18 +475,20 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
                                                 color: kWhiteColor),
                                           ),
                                         )
-                                      : Container(
-                                          width: 44,
-                                          height: 44,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: kWhiteColor,
-                                            border: Border.all(
-                                              width: 2,
-                                              color: Color(0xffD5D5D5),
+                                      : post.memberVoteChoice == 2
+                                          ? Container()
+                                          : Container(
+                                              width: 44,
+                                              height: 44,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kWhiteColor,
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: Color(0xffD5D5D5),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
                                 ),
                                 //항목 2 선택버튼
                                 Expanded(
@@ -335,31 +505,53 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
                                                 color: kWhiteColor),
                                           ),
                                         )
-                                      : Container(
-                                          width: 44,
-                                          height: 44,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: kWhiteColor,
-                                            border: Border.all(
-                                              width: 2,
-                                              color: Color(0xffD5D5D5),
+                                      : post.memberVoteChoice == 1
+                                          ? Container()
+                                          : Container(
+                                              width: 44,
+                                              height: 44,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kWhiteColor,
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: Color(0xffD5D5D5),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
                                 ),
                               ],
                             ),
                       SizedBox(height: 29.0),
-                      selectedContent == -1
-                          ? _completeButtonDeactivated()
-                          : _completeButton(),
+                      post.memberVoteChoice != null
+                          ? _voteResultWidget(
+                              firstContentVoteCount: post.firstContentVoteCount,
+                              secondContentVoteCount:
+                                  post.secondContentVoteCount)
+                          : selectedContent == -1
+                              ? _completeButtonDeactivated()
+                              : _completeButton(),
                       SizedBox(
-                        height: 33,
+                        height: 23,
                       ),
                     ],
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    //좋아요 버튼
+                    post.memberVoteChoice == null
+                        ? _likeButtonDeactivated(post)
+                        : _likeButton(post),
+
+                    // 댓글 버튼
+                    post.memberVoteChoice == null
+                        ? _commentButtonDeactivated(post)
+                        : _commentButton(post: post, postId: post.id),
+                  ],
+                ),
+                SizedBox(height: 10),
               ],
             ),
           ),
@@ -369,7 +561,8 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  '설문 시작일  ' + post.createdAt,
+                  '설문 시작일  ' +
+                      post.createdAt.split('T')[0].replaceAll('-', '/'),
                   style:
                       kPostInfoTextStyleOld.copyWith(color: kGreyColor2_999999),
                 ),

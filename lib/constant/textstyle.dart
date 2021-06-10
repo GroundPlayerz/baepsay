@@ -109,6 +109,22 @@ const TextStyle kNoto24B = TextStyle(
   color: kBlackColor,
 );
 
+const TextStyle kNoto20B = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 20,
+  fontWeight: FontWeight.w700,
+  letterSpacing: -0.4,
+  color: kBlackColor,
+);
+
+const TextStyle kNoto14R = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 14,
+  fontWeight: FontWeight.w400,
+  letterSpacing: -0.28,
+  color: kBlackColor,
+);
+
 TextStyle kDefaultBody2TextStyle = kNoto12R;
 
 TextStyle kHomeScreenSelectedTabTextStyle = kNoto18B;
@@ -127,6 +143,9 @@ TextStyle kPostVoteResultPercentTextStyleOld = kNoto50B;
 TextStyle kPostTitleTextStyle = kNoto24B;
 TextStyle kPostContentTextStyle = kNoto16M;
 TextStyle kPostInfoTextStyle = kNoto12R.copyWith(color: kGreyColor2_999999);
+TextStyle kPostVoteResultPercentTextStyle = kNoto20B;
+TextStyle kPostInfoNumberTextStyle =
+    kNoto14R.copyWith(color: kGreyColor1_767676);
 
 //AppBar
 TextStyle kAppBarTitleTextStyle = kNoto16R;
