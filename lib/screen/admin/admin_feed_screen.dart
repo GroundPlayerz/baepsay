@@ -48,6 +48,7 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
                     if (index < state.feed.length) {
                       final SimplePost post = state.feed[index];
                       return GestureDetector(
+                        behavior: HitTestBehavior.translucent,
                         onTap: () {
                           Navigator.push(
                               context,
@@ -55,22 +56,46 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
                                   builder: (context) =>
                                       SinglePostWidget(postId: post.id)));
                         },
-                        child: Card(
-                          color: Colors.green,
+                        child: Container(
+                          padding: EdgeInsets.all(10),
                           child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('제목: ' + post.title),
+                                Text(
+                                  post.title,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  post.firstContentText +
+                                      ', ' +
+                                      post.secondContentText,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: Colors.grey),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
                                 Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(post.firstContentText),
-                                      Text('vs'),
-                                      Text(post.secondContentText),
-                                    ]),
-                                Text('생성일: ' + post.createdAt),
-                                Text('점수: ' + post.score.toString()),
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text('생성일자: ' +
+                                        post.createdAt.split('T')[0]),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text('점수: ' + post.score.toString()),
+                                  ],
+                                ),
+                                Divider()
                               ]),
                         ),
                       );

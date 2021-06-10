@@ -28,11 +28,21 @@ class PostDetailReportScreen extends StatelessWidget {
                   return ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
                       final report = snapshot.data![index];
-                      return Card(
-                        child: Column(children: [
-                          Text(report.text),
-                          Text(report.createdAt)
-                        ]),
+                      return Container(
+                        padding: EdgeInsets.all(10),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                report.text,
+                                style: TextStyle(fontSize: 14),
+                              ),
+                              SizedBox(height: 5),
+                              Text(report.createdAt),
+                              SizedBox(height: 5),
+                              Divider()
+                            ]),
                       );
                     },
                     itemCount: snapshot.data!.length,
