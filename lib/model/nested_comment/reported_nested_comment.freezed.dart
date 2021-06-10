@@ -23,7 +23,7 @@ class _$ReportedNestedCommentTearOff {
 
   _ReportedNestedComment call(
       {required int id,
-      required int userId,
+      required int memberId,
       required int commentId,
       required String text,
       required String createdAt,
@@ -31,7 +31,7 @@ class _$ReportedNestedCommentTearOff {
       required int reportCount}) {
     return _ReportedNestedComment(
       id: id,
-      userId: userId,
+      memberId: memberId,
       commentId: commentId,
       text: text,
       createdAt: createdAt,
@@ -51,7 +51,7 @@ const $ReportedNestedComment = _$ReportedNestedCommentTearOff();
 /// @nodoc
 mixin _$ReportedNestedComment {
   int get id => throw _privateConstructorUsedError;
-  int get userId => throw _privateConstructorUsedError;
+  int get memberId => throw _privateConstructorUsedError;
   int get commentId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
@@ -71,7 +71,7 @@ abstract class $ReportedNestedCommentCopyWith<$Res> {
       _$ReportedNestedCommentCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      int userId,
+      int memberId,
       int commentId,
       String text,
       String createdAt,
@@ -91,7 +91,7 @@ class _$ReportedNestedCommentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? userId = freezed,
+    Object? memberId = freezed,
     Object? commentId = freezed,
     Object? text = freezed,
     Object? createdAt = freezed,
@@ -103,9 +103,9 @@ class _$ReportedNestedCommentCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
               as int,
       commentId: commentId == freezed
           ? _value.commentId
@@ -140,7 +140,7 @@ abstract class _$ReportedNestedCommentCopyWith<$Res>
   @override
   $Res call(
       {int id,
-      int userId,
+      int memberId,
       int commentId,
       String text,
       String createdAt,
@@ -162,7 +162,7 @@ class __$ReportedNestedCommentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? userId = freezed,
+    Object? memberId = freezed,
     Object? commentId = freezed,
     Object? text = freezed,
     Object? createdAt = freezed,
@@ -174,9 +174,9 @@ class __$ReportedNestedCommentCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
               as int,
       commentId: commentId == freezed
           ? _value.commentId
@@ -208,7 +208,7 @@ class __$ReportedNestedCommentCopyWithImpl<$Res>
 class _$_ReportedNestedComment implements _ReportedNestedComment {
   _$_ReportedNestedComment(
       {required this.id,
-      required this.userId,
+      required this.memberId,
       required this.commentId,
       required this.text,
       required this.createdAt,
@@ -221,7 +221,7 @@ class _$_ReportedNestedComment implements _ReportedNestedComment {
   @override
   final int id;
   @override
-  final int userId;
+  final int memberId;
   @override
   final int commentId;
   @override
@@ -235,7 +235,7 @@ class _$_ReportedNestedComment implements _ReportedNestedComment {
 
   @override
   String toString() {
-    return 'ReportedNestedComment(id: $id, userId: $userId, commentId: $commentId, text: $text, createdAt: $createdAt, updatedAt: $updatedAt, reportCount: $reportCount)';
+    return 'ReportedNestedComment(id: $id, memberId: $memberId, commentId: $commentId, text: $text, createdAt: $createdAt, updatedAt: $updatedAt, reportCount: $reportCount)';
   }
 
   @override
@@ -244,8 +244,9 @@ class _$_ReportedNestedComment implements _ReportedNestedComment {
         (other is _ReportedNestedComment &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)) &&
+            (identical(other.memberId, memberId) ||
+                const DeepCollectionEquality()
+                    .equals(other.memberId, memberId)) &&
             (identical(other.commentId, commentId) ||
                 const DeepCollectionEquality()
                     .equals(other.commentId, commentId)) &&
@@ -266,7 +267,7 @@ class _$_ReportedNestedComment implements _ReportedNestedComment {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(userId) ^
+      const DeepCollectionEquality().hash(memberId) ^
       const DeepCollectionEquality().hash(commentId) ^
       const DeepCollectionEquality().hash(text) ^
       const DeepCollectionEquality().hash(createdAt) ^
@@ -288,7 +289,7 @@ class _$_ReportedNestedComment implements _ReportedNestedComment {
 abstract class _ReportedNestedComment implements ReportedNestedComment {
   factory _ReportedNestedComment(
       {required int id,
-      required int userId,
+      required int memberId,
       required int commentId,
       required String text,
       required String createdAt,
@@ -301,7 +302,7 @@ abstract class _ReportedNestedComment implements ReportedNestedComment {
   @override
   int get id => throw _privateConstructorUsedError;
   @override
-  int get userId => throw _privateConstructorUsedError;
+  int get memberId => throw _privateConstructorUsedError;
   @override
   int get commentId => throw _privateConstructorUsedError;
   @override

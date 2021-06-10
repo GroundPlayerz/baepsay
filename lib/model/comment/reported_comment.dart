@@ -8,7 +8,7 @@ class ReportedComment with _$ReportedComment {
   @JsonSerializable(fieldRename: FieldRename.snake)
   factory ReportedComment({
     required int id,
-    required int userId,
+    required int memberId,
     required int postId,
     required String text,
     required String createdAt,

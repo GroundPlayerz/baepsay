@@ -63,12 +63,12 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
                   ? Icon(Icons.favorite_border_rounded,
                       size: 20, color: kWhiteColor.withOpacity(0.7))
                   : Icon(Icons.favorite_rounded,
-                      size: 20, color: kAccentYellowColor),
+                      size: 20, color: kAccentPinkColor),
               //SizedBox(width: 4),
               (nestedComment.memberLikeCount == 0)
                   ? Text('')
                   : Text(nestedComment.likeCount.toString(),
-                      style: kPostInfoNumberTextStyle.copyWith(
+                      style: kPostInfoNumberTextStyleOld.copyWith(
                           fontSize: 14.0,
                           color: Colors.white.withOpacity(0.7))),
             ],

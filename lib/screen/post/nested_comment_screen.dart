@@ -96,12 +96,12 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                   ? Icon(Icons.favorite_border_rounded,
                       size: photoWidth, color: kWhiteColor.withOpacity(0.7))
                   : Icon(Icons.favorite_rounded,
-                      size: photoWidth, color: kAccentYellowColor),
+                      size: photoWidth, color: kAccentPinkColor),
               //SizedBox(width: 4),
               (comment.likeCount == 0)
                   ? Text('')
                   : Text(comment.likeCount.toString(),
-                      style: kPostInfoNumberTextStyle.copyWith(
+                      style: kPostInfoNumberTextStyleOld.copyWith(
                           fontSize: 14.0,
                           color: Colors.white.withOpacity(0.7))),
             ],
@@ -378,7 +378,7 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                               opacity: _canPost ? 1 : 0.4,
                               child: CircleAvatar(
                                 radius: 19,
-                                backgroundColor: kAccentYellowColor,
+                                backgroundColor: kAccentPinkColor,
                                 child: Icon(Icons.arrow_upward_rounded,
                                     color: kWhiteColor),
                               ),

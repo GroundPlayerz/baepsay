@@ -22,7 +22,7 @@ class _$ReportedCommentTearOff {
 
   _ReportedComment call(
       {required int id,
-      required int userId,
+      required int memberId,
       required int postId,
       required String text,
       required String createdAt,
@@ -30,7 +30,7 @@ class _$ReportedCommentTearOff {
       String? updatedAt}) {
     return _ReportedComment(
       id: id,
-      userId: userId,
+      memberId: memberId,
       postId: postId,
       text: text,
       createdAt: createdAt,
@@ -50,7 +50,7 @@ const $ReportedComment = _$ReportedCommentTearOff();
 /// @nodoc
 mixin _$ReportedComment {
   int get id => throw _privateConstructorUsedError;
-  int get userId => throw _privateConstructorUsedError;
+  int get memberId => throw _privateConstructorUsedError;
   int get postId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
@@ -70,7 +70,7 @@ abstract class $ReportedCommentCopyWith<$Res> {
       _$ReportedCommentCopyWithImpl<$Res>;
   $Res call(
       {int id,
-      int userId,
+      int memberId,
       int postId,
       String text,
       String createdAt,
@@ -90,7 +90,7 @@ class _$ReportedCommentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? userId = freezed,
+    Object? memberId = freezed,
     Object? postId = freezed,
     Object? text = freezed,
     Object? createdAt = freezed,
@@ -102,9 +102,9 @@ class _$ReportedCommentCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
               as int,
       postId: postId == freezed
           ? _value.postId
@@ -139,7 +139,7 @@ abstract class _$ReportedCommentCopyWith<$Res>
   @override
   $Res call(
       {int id,
-      int userId,
+      int memberId,
       int postId,
       String text,
       String createdAt,
@@ -161,7 +161,7 @@ class __$ReportedCommentCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = freezed,
-    Object? userId = freezed,
+    Object? memberId = freezed,
     Object? postId = freezed,
     Object? text = freezed,
     Object? createdAt = freezed,
@@ -173,9 +173,9 @@ class __$ReportedCommentCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
               as int,
       postId: postId == freezed
           ? _value.postId
@@ -207,7 +207,7 @@ class __$ReportedCommentCopyWithImpl<$Res>
 class _$_ReportedComment implements _ReportedComment {
   _$_ReportedComment(
       {required this.id,
-      required this.userId,
+      required this.memberId,
       required this.postId,
       required this.text,
       required this.createdAt,
@@ -220,7 +220,7 @@ class _$_ReportedComment implements _ReportedComment {
   @override
   final int id;
   @override
-  final int userId;
+  final int memberId;
   @override
   final int postId;
   @override
@@ -234,7 +234,7 @@ class _$_ReportedComment implements _ReportedComment {
 
   @override
   String toString() {
-    return 'ReportedComment(id: $id, userId: $userId, postId: $postId, text: $text, createdAt: $createdAt, reportCount: $reportCount, updatedAt: $updatedAt)';
+    return 'ReportedComment(id: $id, memberId: $memberId, postId: $postId, text: $text, createdAt: $createdAt, reportCount: $reportCount, updatedAt: $updatedAt)';
   }
 
   @override
@@ -243,8 +243,9 @@ class _$_ReportedComment implements _ReportedComment {
         (other is _ReportedComment &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)) &&
+            (identical(other.memberId, memberId) ||
+                const DeepCollectionEquality()
+                    .equals(other.memberId, memberId)) &&
             (identical(other.postId, postId) ||
                 const DeepCollectionEquality().equals(other.postId, postId)) &&
             (identical(other.text, text) ||
@@ -264,7 +265,7 @@ class _$_ReportedComment implements _ReportedComment {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
-      const DeepCollectionEquality().hash(userId) ^
+      const DeepCollectionEquality().hash(memberId) ^
       const DeepCollectionEquality().hash(postId) ^
       const DeepCollectionEquality().hash(text) ^
       const DeepCollectionEquality().hash(createdAt) ^
@@ -285,7 +286,7 @@ class _$_ReportedComment implements _ReportedComment {
 abstract class _ReportedComment implements ReportedComment {
   factory _ReportedComment(
       {required int id,
-      required int userId,
+      required int memberId,
       required int postId,
       required String text,
       required String createdAt,
@@ -298,7 +299,7 @@ abstract class _ReportedComment implements ReportedComment {
   @override
   int get id => throw _privateConstructorUsedError;
   @override
-  int get userId => throw _privateConstructorUsedError;
+  int get memberId => throw _privateConstructorUsedError;
   @override
   int get postId => throw _privateConstructorUsedError;
   @override

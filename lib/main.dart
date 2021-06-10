@@ -97,14 +97,14 @@ class GoldenBalance extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        themeMode: ThemeMode.dark,
+        themeMode: ThemeMode.light,
         theme: ThemeData(
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
           fontFamily: 'NotoSansCJKkr',
-          scaffoldBackgroundColor: kBackgroundNavyColor,
-          backgroundColor: kBackgroundNavyColor,
-          primaryColor: kBackgroundNavyColor, //->앱바 배경색
-          accentColor: kAccentYellowColor,
+          scaffoldBackgroundColor: kBackgroundGreyColor,
+          backgroundColor: kBackgroundGreyColor,
+          primaryColor: kBackgroundGreyColor, //->앱바 배경색
+          accentColor: kAccentPinkColor,
           primaryTextTheme: TextTheme(
             headline6: kAppBarTitleTextStyle,
             bodyText2: kDefaultBody2TextStyle,
@@ -114,7 +114,7 @@ class GoldenBalance extends StatelessWidget {
             headline6: kAppBarTitleTextStyle,
             bodyText2: kDefaultBody2TextStyle,
           ),
-          primarySwatch: createMaterialColor(kAccentYellowColor),
+          primarySwatch: createMaterialColor(kAccentPinkColor),
         ),
         home: SplashScreen(),
       ),

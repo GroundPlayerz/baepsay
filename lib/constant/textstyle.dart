@@ -7,7 +7,7 @@ const TextStyle kNoto18B = TextStyle(
   fontSize: 18.0,
   fontWeight: FontWeight.w700,
   letterSpacing: -0.36,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 //홈화면 비선택 탭 스타일, 게시물 항목 스타일
@@ -16,7 +16,7 @@ const TextStyle kNoto18R = TextStyle(
   fontSize: 18.0,
   fontWeight: FontWeight.w400,
   letterSpacing: -0.36,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 //게시물 Info
@@ -25,14 +25,14 @@ const TextStyle kNoto12R = TextStyle(
   fontSize: 12.0,
   fontWeight: FontWeight.w400,
   letterSpacing: -0.24,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 const TextStyle kNoto12B = TextStyle(
   fontFamily: 'NotoSansCJKkr',
   fontSize: 12.0,
   fontWeight: FontWeight.w700,
   letterSpacing: -0.24,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 //게시물 Info 숫자
@@ -41,7 +41,7 @@ const TextStyle kSkia16R = TextStyle(
   fontSize: 16.0,
   fontWeight: FontWeight.w400,
   letterSpacing: -0.32,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 const TextStyle kNoto16R = TextStyle(
@@ -49,7 +49,7 @@ const TextStyle kNoto16R = TextStyle(
   fontSize: 16.0,
   fontWeight: FontWeight.w400,
   letterSpacing: -0.32,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 const TextStyle kNoto16B = TextStyle(
@@ -57,7 +57,7 @@ const TextStyle kNoto16B = TextStyle(
   fontSize: 16.0,
   fontWeight: FontWeight.w700,
   letterSpacing: -0.32,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 const TextStyle kPermanentMarker60R = TextStyle(
@@ -65,7 +65,7 @@ const TextStyle kPermanentMarker60R = TextStyle(
   fontSize: 60.0,
   fontWeight: FontWeight.w400,
   letterSpacing: -1.2,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 const TextStyle kNoto50B = TextStyle(
@@ -73,7 +73,7 @@ const TextStyle kNoto50B = TextStyle(
   fontSize: 50,
   fontWeight: FontWeight.w700,
   letterSpacing: -1,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 const TextStyle kSkia18B = TextStyle(
@@ -81,7 +81,7 @@ const TextStyle kSkia18B = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w700,
   letterSpacing: -0.36,
-  color: kWhiteColor,
+  color: kBlackColor,
 );
 
 const TextStyle kNoto13R = TextStyle(
@@ -89,22 +89,44 @@ const TextStyle kNoto13R = TextStyle(
   fontSize: 13,
   fontWeight: FontWeight.w400,
   letterSpacing: -0.26,
-  color: kWhiteColor,
+  color: kBlackColor,
+);
+
+//새로운
+const TextStyle kNoto16M = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 16.0,
+  fontWeight: FontWeight.w500,
+  letterSpacing: -0.32,
+  color: kBlackColor,
+);
+
+const TextStyle kNoto24B = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 24.0,
+  fontWeight: FontWeight.w700,
+  letterSpacing: -0.32,
+  color: kBlackColor,
 );
 
 TextStyle kDefaultBody2TextStyle = kNoto12R;
 
 TextStyle kHomeScreenSelectedTabTextStyle = kNoto18B;
 TextStyle kHomeScreenUnselectedTabTextStyle =
-    kNoto18R.copyWith(color: kWhiteColor.withOpacity(0.4));
+    kNoto18R.copyWith(color: kBlackColor.withOpacity(0.4));
 
-//Post
-TextStyle kPostTitleTextStyle = kNoto18B;
-TextStyle kPostContentTextStyle = kNoto18R;
-TextStyle kPostVSTextStyle = kPermanentMarker60R;
-TextStyle kPostInfoTextStyle = kNoto12R;
-TextStyle kPostInfoNumberTextStyle = kSkia16R;
-TextStyle kPostVoteResultPercentTextStyle = kNoto50B;
+//Post_Old
+TextStyle kPostTitleTextStyleOld = kNoto18B;
+TextStyle kPostContentTextStyleOld = kNoto18R;
+TextStyle kPostVSTextStyleOld = kPermanentMarker60R;
+TextStyle kPostInfoTextStyleOld = kNoto12R;
+TextStyle kPostInfoNumberTextStyleOld = kSkia16R;
+TextStyle kPostVoteResultPercentTextStyleOld = kNoto50B;
+
+//새로운 Post
+TextStyle kPostTitleTextStyle = kNoto24B;
+TextStyle kPostContentTextStyle = kNoto16M;
+TextStyle kPostInfoTextStyle = kNoto12R.copyWith(color: kGreyColor2_999999);
 
 //AppBar
 TextStyle kAppBarTitleTextStyle = kNoto16R;
@@ -116,5 +138,5 @@ TextStyle kCommentTextTextStyle = kNoto13R;
 TextStyle kCommentLikeNumberTextStyle = kSkia16R;
 TextStyle kNestedCommentButtonsTextStyle = kNoto12B;
 TextStyle kCommentScreenTextFieldHintTextStyle =
-    kNoto13R.copyWith(color: kWhiteColor.withOpacity(0.7));
+    kNoto13R.copyWith(color: kBlackColor.withOpacity(0.7));
 TextStyle kCommentScreenTextFieldTextStyle = kNoto13R;

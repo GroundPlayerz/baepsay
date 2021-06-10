@@ -266,7 +266,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                 opacity: _canPost ? 1 : 0.4,
                                 child: CircleAvatar(
                                   radius: 19,
-                                  backgroundColor: kAccentYellowColor,
+                                  backgroundColor: kAccentPinkColor,
                                   child: Icon(Icons.arrow_upward_rounded,
                                       color: kWhiteColor),
                                 ),

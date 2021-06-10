@@ -9,7 +9,7 @@ part of 'reported_comment.dart';
 _$_ReportedComment _$_$_ReportedCommentFromJson(Map<String, dynamic> json) {
   return _$_ReportedComment(
     id: json['id'] as int,
-    userId: json['user_id'] as int,
+    memberId: json['member_id'] as int,
     postId: json['post_id'] as int,
     text: json['text'] as String,
     createdAt: json['created_at'] as String,
@@ -21,7 +21,7 @@ _$_ReportedComment _$_$_ReportedCommentFromJson(Map<String, dynamic> json) {
 Map<String, dynamic> _$_$_ReportedCommentToJson(_$_ReportedComment instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'user_id': instance.userId,
+      'member_id': instance.memberId,
       'post_id': instance.postId,
       'text': instance.text,
       'created_at': instance.createdAt,

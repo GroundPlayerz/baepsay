@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,6 +8,7 @@ import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/screen/post/feed_post_widget.dart';
+import 'package:golden_balance_flutter/screen/post/feed_post_widget_new.dart';
 import 'package:golden_balance_flutter/screen/profile/auth_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/profile/unauth_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen.dart';
@@ -33,12 +35,29 @@ class _HomeScreenState extends State<HomeScreen> {
       return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: kBackgroundNavyColor,
+          //backgroundColor: kBackgroundNavyColor,
           leadingWidth: 0,
           titleSpacing: 0,
           actions: [
             IconButton(
-                icon: Icon(Icons.add),
+                icon: Container(
+                  width: 33,
+                  height: 33,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: kWhiteColor,
+                    boxShadow: [
+                      BoxShadow(
+                          color: kAccentPinkColor.withOpacity(0.1),
+                          offset: Offset(0, 3),
+                          blurRadius: 6),
+                    ],
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    color: kAccentPinkColor,
+                  ),
+                ),
                 onPressed: authState is FirebaseSignedIn
                     ? () {
                         Navigator.push(
@@ -58,23 +77,38 @@ class _HomeScreenState extends State<HomeScreen> {
                         );
                       }),
             IconButton(
-                icon: Icon(Icons.person),
-                onPressed: authState is FirebaseSignedIn
-                    ? () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AuthProfileScreen()));
-                      }
-                    : () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => UnauthProfileScreen()));
-                      }),
+              icon: Container(
+                width: 33,
+                height: 33,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: authState is FirebaseSignedIn &&
+                        authState.member.profilePhotoUrl != null
+                    ? CachedNetworkImage(
+                        imageUrl: authState.member.profilePhotoUrl!,
+                      )
+                    : Image.asset('images/default_profile_photo.png'),
+              ),
+              onPressed: authState is FirebaseSignedIn
+                  ? () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AuthProfileScreen()));
+                    }
+                  : () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UnauthProfileScreen()));
+                    },
+            ),
+            SizedBox(width: 5),
           ],
         ),
-        backgroundColor: kBackgroundNavyColor,
+        //backgroundColor: kBackgroundNavyColor,
         body: BlocBuilder<HomeFeedCubit, HomeFeedState>(
             builder: (context, feedState) {
           if (feedState is HomeFeedLoaded) {
@@ -110,7 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             (MediaQuery.of(context).padding.top +
                                 AppBar().preferredSize.height),
                         width: double.infinity,
-                        child: FeedPostWidget(
+                        child: FeedPostWidgetNew(
                           postIndex: index,
                         ),
                       ),

@@ -54,7 +54,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
             SizedBox(width: 11),
             Text(
               post.likeCount.toString(),
-              style: kPostInfoNumberTextStyle.copyWith(
+              style: kPostInfoNumberTextStyleOld.copyWith(
                   color: kWhiteColor.withOpacity(0.4)),
             ),
           ],
@@ -76,7 +76,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                   ? Icon(Icons.favorite_border_rounded,
                       size: 35, color: kWhiteColor)
                   : Icon(Icons.favorite_rounded,
-                      size: 35, color: kAccentYellowColor),
+                      size: 35, color: kAccentPinkColor),
               SizedBox(width: 11),
               Text(post.likeCount.toString()),
             ],
@@ -91,7 +91,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                 size: 30, color: kWhiteColor.withOpacity(0.4)),
             SizedBox(width: 11),
             Text((post.commentCount).toString(),
-                style: kPostInfoNumberTextStyle.copyWith(
+                style: kPostInfoNumberTextStyleOld.copyWith(
                     color: kWhiteColor.withOpacity(0.4))),
           ],
         ),
@@ -116,11 +116,12 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
               Icon(Icons.mode_comment_outlined, size: 30, color: kWhiteColor),
               SizedBox(width: 11),
               Text((post.commentCount).toString(),
-                  style: kPostInfoNumberTextStyle),
+                  style: kPostInfoNumberTextStyleOld),
             ],
           ),
         ),
       );
+
   Widget _postInfoWidgetArea(BuildContext context,
           {required Post post, required int postId}) =>
       Container(
@@ -137,12 +138,13 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 children: [
-                  Text('투표', style: kPostInfoTextStyle),
+                  Text('투표', style: kPostInfoTextStyleOld),
                   SizedBox(width: 4),
                   Text(
                       (post.firstContentVoteCount + post.secondContentVoteCount)
                           .toString(),
-                      style: kPostInfoNumberTextStyle.copyWith(fontSize: 14)),
+                      style:
+                          kPostInfoNumberTextStyleOld.copyWith(fontSize: 14)),
                   SizedBox(width: 20),
                   Text(post.profileName),
                 ],
@@ -185,7 +187,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                       child: Text(
                         post.title,
                         maxLines: !_isTitleStretched ? 1 : 2,
-                        style: kPostTitleTextStyle,
+                        style: kPostTitleTextStyleOld,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -276,7 +278,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                 child: Center(
                   child: Text(
                     firstPercentInt.toString() + '%',
-                    style: kPostVoteResultPercentTextStyle,
+                    style: kPostVoteResultPercentTextStyleOld,
                   ),
                 ),
               ),
@@ -284,7 +286,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                 child: Center(
                   child: Text(
                     secondPercentInt.toString() + '%',
-                    style: kPostVoteResultPercentTextStyle,
+                    style: kPostVoteResultPercentTextStyleOld,
                   ),
                 ),
               ),
@@ -420,7 +422,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                                   color: Colors.black.withOpacity(0.5),
                                   child: Text(
                                     post.firstContentText,
-                                    style: kPostContentTextStyle,
+                                    style: kPostContentTextStyleOld,
                                   ),
                                 ),
                                 SizedBox(height: 40.0),
@@ -438,7 +440,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                                 color: Colors.black.withOpacity(0.5),
                                 child: Text(
                                   post.secondContentText,
-                                  style: kPostContentTextStyle,
+                                  style: kPostContentTextStyleOld,
                                 ),
                               ),
                             ],
@@ -451,7 +453,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                       child: Center(
                         child: Text(
                           'vs',
-                          style: kPostVSTextStyle.copyWith(fontSize: 55),
+                          style: kPostVSTextStyleOld.copyWith(fontSize: 55),
                         ),
                       ),
                     ),
@@ -534,7 +536,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                                   child: Text(
                                     '...',
                                     //post.firstContentText,
-                                    style: kPostContentTextStyle,
+                                    style: kPostContentTextStyleOld,
                                   ),
                                 ),
                                 SizedBox(height: 40.0),
@@ -553,7 +555,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                                   child: Text(
                                     '...',
                                     //post.secondContentText,
-                                    style: kPostContentTextStyle,
+                                    style: kPostContentTextStyleOld,
                                   ),
                                 ),
                               ],
@@ -567,7 +569,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                       child: Center(
                         child: Text(
                           'vs',
-                          style: kPostVSTextStyle.copyWith(fontSize: 55),
+                          style: kPostVSTextStyleOld.copyWith(fontSize: 55),
                         ),
                       ),
                     ),
@@ -618,10 +620,10 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Row(
                         children: [
-                          Text('...', style: kPostInfoTextStyle),
+                          Text('...', style: kPostInfoTextStyleOld),
                           SizedBox(width: 4),
                           Text('...',
-                              style: kPostInfoNumberTextStyle.copyWith(
+                              style: kPostInfoNumberTextStyleOld.copyWith(
                                   fontSize: 14)),
                           SizedBox(width: 20),
                           ClipRRect(
@@ -655,7 +657,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                               SizedBox(width: 11),
                               Text(
                                 '...',
-                                style: kPostInfoNumberTextStyle.copyWith(
+                                style: kPostInfoNumberTextStyleOld.copyWith(
                                     color: kWhiteColor.withOpacity(0.4)),
                               ),
                             ],
@@ -672,7 +674,7 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                                   color: kWhiteColor.withOpacity(0.4)),
                               SizedBox(width: 11),
                               Text('...',
-                                  style: kPostInfoNumberTextStyle.copyWith(
+                                  style: kPostInfoNumberTextStyleOld.copyWith(
                                       color: kWhiteColor.withOpacity(0.4))),
                             ],
                           ),

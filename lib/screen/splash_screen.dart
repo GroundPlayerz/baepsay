@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
+import 'package:golden_balance_flutter/constant/color.dart';
 import 'home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 children: [
                   Text(
                     '황금 밸런스',
-                    style: TextStyle(fontSize: 40.0),
+                    style: TextStyle(fontSize: 40.0, color: kAccentPinkColor),
                   ),
                   Icon(Icons.check_circle_outline)
                 ],

@@ -400,8 +400,8 @@ class _UploadScreenState extends State<UploadScreen> {
                   '완료',
                   style: TextStyle(
                     color: isNextButtonEnabled()
-                        ? kAccentYellowColor
-                        : kAccentYellowColor.withOpacity(0.4),
+                        ? kAccentPinkColor
+                        : kAccentPinkColor.withOpacity(0.4),
                   ),
                 ),
               )

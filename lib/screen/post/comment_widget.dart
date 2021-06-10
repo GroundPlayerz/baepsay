@@ -67,12 +67,12 @@ class _CommentWidgetState extends State<CommentWidget> {
                   ? Icon(Icons.favorite_border_rounded,
                       size: photoWidth, color: kWhiteColor.withOpacity(0.7))
                   : Icon(Icons.favorite_rounded,
-                      size: photoWidth, color: kAccentYellowColor),
+                      size: photoWidth, color: kAccentPinkColor),
               //SizedBox(width: 4),
               (comment.likeCount == 0)
                   ? Text('')
                   : Text(comment.likeCount.toString(),
-                      style: kPostInfoNumberTextStyle.copyWith(
+                      style: kPostInfoNumberTextStyleOld.copyWith(
                           fontSize: 14.0,
                           color: Colors.white.withOpacity(0.7))),
             ],
