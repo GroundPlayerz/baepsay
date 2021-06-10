@@ -42,6 +42,7 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
                         if (index < state.feed.length) {
                           final post = state.feed[index];
                           return GestureDetector(
+                            behavior: HitTestBehavior.translucent,
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -50,13 +51,53 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
                                           PostDetailReportScreen(
                                               postId: post.id)));
                             },
-                            child: Card(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
                               child: Column(
-                                children: [
-                                  Text(post.title),
-                                  Text('신고 수: ' + post.reportCount.toString()),
-                                ],
-                              ),
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      post.title,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      post.firstContentText +
+                                          ', ' +
+                                          post.secondContentText,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 14,
+                                          color: Colors.grey),
+                                    ),
+                                    SizedBox(
+                                      height: 5,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Text('생성일자: ' +
+                                            post.createdAt.split('T')[0]),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text('점수: ' + post.score.toString()),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text('신고수: ' +
+                                            post.reportCount.toString()),
+                                      ],
+                                    ),
+                                    Divider()
+                                  ]),
                             ),
                           );
                         }

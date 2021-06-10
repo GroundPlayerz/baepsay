@@ -34,6 +34,7 @@ class _MyVotedPostListWidgetState extends State<MyVotedPostListWidget> {
                   if (index < state.postList.length) {
                     final SimplePost post = state.postList[index];
                     return GestureDetector(
+                      behavior: HitTestBehavior.translucent,
                       onTap: () {
                         Navigator.push(
                             context,
@@ -41,22 +42,36 @@ class _MyVotedPostListWidgetState extends State<MyVotedPostListWidget> {
                                 builder: (context) =>
                                     SinglePostWidget(postId: post.id)));
                       },
-                      child: Card(
-                        color: Colors.green,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('제목: ' + post.title),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(post.firstContentText),
-                                    Text('vs'),
-                                    Text(post.secondContentText),
-                                  ]),
-                              Text('생성일: ' + post.createdAt),
-                              Text('점수: ' + post.score.toString()),
+                              Text(
+                                post.title,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                post.firstContentText +
+                                    ', ' +
+                                    post.secondContentText,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14,
+                                    color: Colors.grey),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(post.createdAt.split('T')[0]),
+                              Divider()
                             ]),
                       ),
                     );

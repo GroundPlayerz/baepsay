@@ -21,13 +21,6 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
   int selectedTab = 0;
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {

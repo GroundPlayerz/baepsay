@@ -52,7 +52,9 @@ class AdminApiProvider {
     if (reportCountCursor != null) {
       queryParameters['report_count_cursor'] = reportCountCursor;
     }
-    if (idCursor != null) queryParameters['id_cursor'] = idCursor;
+    if (idCursor != null) {
+      queryParameters['id_cursor'] = idCursor;
+    }
     Response response = await _dio.get('admin/report/comment',
         queryParameters: queryParameters);
 
