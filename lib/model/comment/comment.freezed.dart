@@ -30,7 +30,7 @@ class _$CommentTearOff {
       required int nestedCommentCount,
       required String createdAt,
       String? updatedAt,
-      required int userLikeCount}) {
+      required int memberLikeCount}) {
     return _Comment(
       id: id,
       profileName: profileName,
@@ -41,7 +41,7 @@ class _$CommentTearOff {
       nestedCommentCount: nestedCommentCount,
       createdAt: createdAt,
       updatedAt: updatedAt,
-      userLikeCount: userLikeCount,
+      memberLikeCount: memberLikeCount,
     );
   }
 
@@ -64,7 +64,7 @@ mixin _$Comment {
   int get nestedCommentCount => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError; //[nullable]
-  int get userLikeCount => throw _privateConstructorUsedError;
+  int get memberLikeCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -85,7 +85,7 @@ abstract class $CommentCopyWith<$Res> {
       int nestedCommentCount,
       String createdAt,
       String? updatedAt,
-      int userLikeCount});
+      int memberLikeCount});
 }
 
 /// @nodoc
@@ -107,7 +107,7 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
     Object? nestedCommentCount = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? userLikeCount = freezed,
+    Object? memberLikeCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -146,9 +146,9 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      userLikeCount: userLikeCount == freezed
-          ? _value.userLikeCount
-          : userLikeCount // ignore: cast_nullable_to_non_nullable
+      memberLikeCount: memberLikeCount == freezed
+          ? _value.memberLikeCount
+          : memberLikeCount // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -169,7 +169,7 @@ abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
       int nestedCommentCount,
       String createdAt,
       String? updatedAt,
-      int userLikeCount});
+      int memberLikeCount});
 }
 
 /// @nodoc
@@ -192,7 +192,7 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
     Object? nestedCommentCount = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? userLikeCount = freezed,
+    Object? memberLikeCount = freezed,
   }) {
     return _then(_Comment(
       id: id == freezed
@@ -231,9 +231,9 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      userLikeCount: userLikeCount == freezed
-          ? _value.userLikeCount
-          : userLikeCount // ignore: cast_nullable_to_non_nullable
+      memberLikeCount: memberLikeCount == freezed
+          ? _value.memberLikeCount
+          : memberLikeCount // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -253,7 +253,7 @@ class _$_Comment implements _Comment {
       required this.nestedCommentCount,
       required this.createdAt,
       this.updatedAt,
-      required this.userLikeCount});
+      required this.memberLikeCount});
 
   factory _$_Comment.fromJson(Map<String, dynamic> json) =>
       _$_$_CommentFromJson(json);
@@ -277,11 +277,11 @@ class _$_Comment implements _Comment {
   @override
   final String? updatedAt;
   @override //[nullable]
-  final int userLikeCount;
+  final int memberLikeCount;
 
   @override
   String toString() {
-    return 'Comment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, postId: $postId, text: $text, likeCount: $likeCount, nestedCommentCount: $nestedCommentCount, createdAt: $createdAt, updatedAt: $updatedAt, userLikeCount: $userLikeCount)';
+    return 'Comment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, postId: $postId, text: $text, likeCount: $likeCount, nestedCommentCount: $nestedCommentCount, createdAt: $createdAt, updatedAt: $updatedAt, memberLikeCount: $memberLikeCount)';
   }
 
   @override
@@ -312,9 +312,9 @@ class _$_Comment implements _Comment {
             (identical(other.updatedAt, updatedAt) ||
                 const DeepCollectionEquality()
                     .equals(other.updatedAt, updatedAt)) &&
-            (identical(other.userLikeCount, userLikeCount) ||
+            (identical(other.memberLikeCount, memberLikeCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.userLikeCount, userLikeCount)));
+                    .equals(other.memberLikeCount, memberLikeCount)));
   }
 
   @override
@@ -329,7 +329,7 @@ class _$_Comment implements _Comment {
       const DeepCollectionEquality().hash(nestedCommentCount) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(userLikeCount);
+      const DeepCollectionEquality().hash(memberLikeCount);
 
   @JsonKey(ignore: true)
   @override
@@ -353,7 +353,7 @@ abstract class _Comment implements Comment {
       required int nestedCommentCount,
       required String createdAt,
       String? updatedAt,
-      required int userLikeCount}) = _$_Comment;
+      required int memberLikeCount}) = _$_Comment;
 
   factory _Comment.fromJson(Map<String, dynamic> json) = _$_Comment.fromJson;
 
@@ -376,7 +376,7 @@ abstract class _Comment implements Comment {
   @override
   String? get updatedAt => throw _privateConstructorUsedError;
   @override //[nullable]
-  int get userLikeCount => throw _privateConstructorUsedError;
+  int get memberLikeCount => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$CommentCopyWith<_Comment> get copyWith =>

@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:golden_balance_flutter/model/user/user.dart';
 
 part 'nested_comment.freezed.dart';
 part 'nested_comment.g.dart';
@@ -16,7 +15,7 @@ class NestedComment with _$NestedComment {
     required int likeCount,
     required String createdAt,
     String? updatedAt, //[nullable]
-    required int userLikeCount,
+    required int memberLikeCount,
   }) = _NestedComment;
 
   factory NestedComment.fromJson(Map<String, dynamic> json) =>

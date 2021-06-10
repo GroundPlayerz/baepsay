@@ -2,21 +2,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
-import 'package:golden_balance_flutter/repository/unauthorized_user_repository.dart';
-import 'package:golden_balance_flutter/repository/user_repository.dart';
+import 'package:golden_balance_flutter/repository/member_repository.dart';
 
 class HomeFeedCubit extends Cubit<HomeFeedState> {
-  final UserRepository userRepository;
-  final UnauthorizedUserRepository unauthorizedUserRepository;
+  final MemberRepository memberRepository;
 
-  HomeFeedCubit(
-      {required this.userRepository, required this.unauthorizedUserRepository})
-      : super(HomeFeedEmpty());
+  HomeFeedCubit({
+    required this.memberRepository,
+  }) : super(HomeFeedEmpty());
 
   void getInitialUserHomeFeed() async {
     try {
       emit(HomeFeedInitialLoading());
-      final Response response = await userRepository.getHomeFeed();
+      final Response response = await memberRepository.getHomeFeed();
       final feed =
           response.data['feed'].map<Post>((e) => Post.fromJson(e)).toList();
       final List<Post> newFeed = [...feed];
@@ -42,7 +40,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
 
       final idCursor = prevFeed.last.id;
       final scoreCursor = prevFeed.last.score;
-      final Response response = await userRepository.getHomeFeed(
+      final Response response = await memberRepository.getHomeFeed(
           idCursor: idCursor, scoreCursor: scoreCursor);
       final feed =
           response.data['feed'].map<Post>((e) => Post.fromJson(e)).toList();
@@ -60,7 +58,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
     try {
       if (state is HomeFeedLoaded) {
         final parsedState = (state as HomeFeedLoaded);
-        await userRepository.viewPost(postId: parsedState.feed[postIndex].id);
+        await memberRepository.viewPost(postId: parsedState.feed[postIndex].id);
       }
     } catch (e) {
       emit(HomeFeedError(message: e.toString()));
@@ -77,11 +75,11 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         Post changedPost;
         if (choice == 1) {
           changedPost = feed[postIndex].copyWith(
-              userVoteChoice: 1,
+              memberVoteChoice: 1,
               firstContentVoteCount: feed[postIndex].firstContentVoteCount + 1);
         } else {
           changedPost = feed[postIndex].copyWith(
-              userVoteChoice: 2,
+              memberVoteChoice: 2,
               secondContentVoteCount:
                   feed[postIndex].secondContentVoteCount + 1);
         }
@@ -90,7 +88,7 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         emit(
             HomeFeedLoaded(feed: feed, hasMore: hasMore, isLoadingMore: false));
 
-        await userRepository.voteToPost(
+        await memberRepository.voteToPost(
             postId: feed[postIndex].id, choice: choice);
       }
     } catch (e) {
@@ -106,20 +104,20 @@ class HomeFeedCubit extends Cubit<HomeFeedState> {
         List<Post> feed = [...parsedState.feed];
 
         Post changedPost;
-        if (feed[postIndex].userLikeCount == 0) {
+        if (feed[postIndex].memberLikeCount == 0) {
           changedPost = feed[postIndex].copyWith(
-              userLikeCount: 1, likeCount: feed[postIndex].likeCount + 1);
+              memberLikeCount: 1, likeCount: feed[postIndex].likeCount + 1);
         } else {
           changedPost = feed[postIndex].copyWith(
-              userLikeCount: 0, likeCount: feed[postIndex].likeCount - 1);
+              memberLikeCount: 0, likeCount: feed[postIndex].likeCount - 1);
         }
         feed[postIndex] = changedPost;
         emit(
             HomeFeedLoaded(feed: feed, hasMore: hasMore, isLoadingMore: false));
-        if (changedPost.userLikeCount == 0) {
-          await userRepository.cancelLikePost(postId: changedPost.id);
+        if (changedPost.memberLikeCount == 0) {
+          await memberRepository.cancelLikePost(postId: changedPost.id);
         } else {
-          await userRepository.likePost(postId: changedPost.id);
+          await memberRepository.likePost(postId: changedPost.id);
         }
       }
     } catch (e) {

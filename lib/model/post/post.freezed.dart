@@ -33,8 +33,8 @@ class _$PostTearOff {
       required int viewCount,
       required int firstContentVoteCount,
       required int secondContentVoteCount,
-      required int userLikeCount,
-      required int? userVoteChoice,
+      required int memberLikeCount,
+      required int? memberVoteChoice,
       required String createdAt,
       required String? mediaContentOrders,
       required String? mediaTypes,
@@ -52,8 +52,8 @@ class _$PostTearOff {
       viewCount: viewCount,
       firstContentVoteCount: firstContentVoteCount,
       secondContentVoteCount: secondContentVoteCount,
-      userLikeCount: userLikeCount,
-      userVoteChoice: userVoteChoice,
+      memberLikeCount: memberLikeCount,
+      memberVoteChoice: memberVoteChoice,
       createdAt: createdAt,
       mediaContentOrders: mediaContentOrders,
       mediaTypes: mediaTypes,
@@ -83,8 +83,8 @@ mixin _$Post {
   int get viewCount => throw _privateConstructorUsedError;
   int get firstContentVoteCount => throw _privateConstructorUsedError;
   int get secondContentVoteCount => throw _privateConstructorUsedError;
-  int get userLikeCount => throw _privateConstructorUsedError;
-  int? get userVoteChoice => throw _privateConstructorUsedError;
+  int get memberLikeCount => throw _privateConstructorUsedError;
+  int? get memberVoteChoice => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String? get mediaContentOrders => throw _privateConstructorUsedError;
   String? get mediaTypes => throw _privateConstructorUsedError;
@@ -112,8 +112,8 @@ abstract class $PostCopyWith<$Res> {
       int viewCount,
       int firstContentVoteCount,
       int secondContentVoteCount,
-      int userLikeCount,
-      int? userVoteChoice,
+      int memberLikeCount,
+      int? memberVoteChoice,
       String createdAt,
       String? mediaContentOrders,
       String? mediaTypes,
@@ -142,8 +142,8 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
     Object? viewCount = freezed,
     Object? firstContentVoteCount = freezed,
     Object? secondContentVoteCount = freezed,
-    Object? userLikeCount = freezed,
-    Object? userVoteChoice = freezed,
+    Object? memberLikeCount = freezed,
+    Object? memberVoteChoice = freezed,
     Object? createdAt = freezed,
     Object? mediaContentOrders = freezed,
     Object? mediaTypes = freezed,
@@ -198,13 +198,13 @@ class _$PostCopyWithImpl<$Res> implements $PostCopyWith<$Res> {
           ? _value.secondContentVoteCount
           : secondContentVoteCount // ignore: cast_nullable_to_non_nullable
               as int,
-      userLikeCount: userLikeCount == freezed
-          ? _value.userLikeCount
-          : userLikeCount // ignore: cast_nullable_to_non_nullable
+      memberLikeCount: memberLikeCount == freezed
+          ? _value.memberLikeCount
+          : memberLikeCount // ignore: cast_nullable_to_non_nullable
               as int,
-      userVoteChoice: userVoteChoice == freezed
-          ? _value.userVoteChoice
-          : userVoteChoice // ignore: cast_nullable_to_non_nullable
+      memberVoteChoice: memberVoteChoice == freezed
+          ? _value.memberVoteChoice
+          : memberVoteChoice // ignore: cast_nullable_to_non_nullable
               as int?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -244,8 +244,8 @@ abstract class _$PostCopyWith<$Res> implements $PostCopyWith<$Res> {
       int viewCount,
       int firstContentVoteCount,
       int secondContentVoteCount,
-      int userLikeCount,
-      int? userVoteChoice,
+      int memberLikeCount,
+      int? memberVoteChoice,
       String createdAt,
       String? mediaContentOrders,
       String? mediaTypes,
@@ -275,8 +275,8 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
     Object? viewCount = freezed,
     Object? firstContentVoteCount = freezed,
     Object? secondContentVoteCount = freezed,
-    Object? userLikeCount = freezed,
-    Object? userVoteChoice = freezed,
+    Object? memberLikeCount = freezed,
+    Object? memberVoteChoice = freezed,
     Object? createdAt = freezed,
     Object? mediaContentOrders = freezed,
     Object? mediaTypes = freezed,
@@ -331,13 +331,13 @@ class __$PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res>
           ? _value.secondContentVoteCount
           : secondContentVoteCount // ignore: cast_nullable_to_non_nullable
               as int,
-      userLikeCount: userLikeCount == freezed
-          ? _value.userLikeCount
-          : userLikeCount // ignore: cast_nullable_to_non_nullable
+      memberLikeCount: memberLikeCount == freezed
+          ? _value.memberLikeCount
+          : memberLikeCount // ignore: cast_nullable_to_non_nullable
               as int,
-      userVoteChoice: userVoteChoice == freezed
-          ? _value.userVoteChoice
-          : userVoteChoice // ignore: cast_nullable_to_non_nullable
+      memberVoteChoice: memberVoteChoice == freezed
+          ? _value.memberVoteChoice
+          : memberVoteChoice // ignore: cast_nullable_to_non_nullable
               as int?,
       createdAt: createdAt == freezed
           ? _value.createdAt
@@ -376,8 +376,8 @@ class _$_Post implements _Post {
       required this.viewCount,
       required this.firstContentVoteCount,
       required this.secondContentVoteCount,
-      required this.userLikeCount,
-      required this.userVoteChoice,
+      required this.memberLikeCount,
+      required this.memberVoteChoice,
       required this.createdAt,
       required this.mediaContentOrders,
       required this.mediaTypes,
@@ -411,9 +411,9 @@ class _$_Post implements _Post {
   @override
   final int secondContentVoteCount;
   @override
-  final int userLikeCount;
+  final int memberLikeCount;
   @override
-  final int? userVoteChoice;
+  final int? memberVoteChoice;
   @override
   final String createdAt;
   @override
@@ -425,7 +425,7 @@ class _$_Post implements _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, authorId: $authorId, score: $score, profileName: $profileName, title: $title, firstContentText: $firstContentText, secondContentText: $secondContentText, commentCount: $commentCount, likeCount: $likeCount, viewCount: $viewCount, firstContentVoteCount: $firstContentVoteCount, secondContentVoteCount: $secondContentVoteCount, userLikeCount: $userLikeCount, userVoteChoice: $userVoteChoice, createdAt: $createdAt, mediaContentOrders: $mediaContentOrders, mediaTypes: $mediaTypes, mediaUrls: $mediaUrls)';
+    return 'Post(id: $id, authorId: $authorId, score: $score, profileName: $profileName, title: $title, firstContentText: $firstContentText, secondContentText: $secondContentText, commentCount: $commentCount, likeCount: $likeCount, viewCount: $viewCount, firstContentVoteCount: $firstContentVoteCount, secondContentVoteCount: $secondContentVoteCount, memberLikeCount: $memberLikeCount, memberVoteChoice: $memberVoteChoice, createdAt: $createdAt, mediaContentOrders: $mediaContentOrders, mediaTypes: $mediaTypes, mediaUrls: $mediaUrls)';
   }
 
   @override
@@ -465,12 +465,12 @@ class _$_Post implements _Post {
             (identical(other.secondContentVoteCount, secondContentVoteCount) ||
                 const DeepCollectionEquality().equals(
                     other.secondContentVoteCount, secondContentVoteCount)) &&
-            (identical(other.userLikeCount, userLikeCount) ||
+            (identical(other.memberLikeCount, memberLikeCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.userLikeCount, userLikeCount)) &&
-            (identical(other.userVoteChoice, userVoteChoice) ||
+                    .equals(other.memberLikeCount, memberLikeCount)) &&
+            (identical(other.memberVoteChoice, memberVoteChoice) ||
                 const DeepCollectionEquality()
-                    .equals(other.userVoteChoice, userVoteChoice)) &&
+                    .equals(other.memberVoteChoice, memberVoteChoice)) &&
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
@@ -500,8 +500,8 @@ class _$_Post implements _Post {
       const DeepCollectionEquality().hash(viewCount) ^
       const DeepCollectionEquality().hash(firstContentVoteCount) ^
       const DeepCollectionEquality().hash(secondContentVoteCount) ^
-      const DeepCollectionEquality().hash(userLikeCount) ^
-      const DeepCollectionEquality().hash(userVoteChoice) ^
+      const DeepCollectionEquality().hash(memberLikeCount) ^
+      const DeepCollectionEquality().hash(memberVoteChoice) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(mediaContentOrders) ^
       const DeepCollectionEquality().hash(mediaTypes) ^
@@ -532,8 +532,8 @@ abstract class _Post implements Post {
       required int viewCount,
       required int firstContentVoteCount,
       required int secondContentVoteCount,
-      required int userLikeCount,
-      required int? userVoteChoice,
+      required int memberLikeCount,
+      required int? memberVoteChoice,
       required String createdAt,
       required String? mediaContentOrders,
       required String? mediaTypes,
@@ -566,9 +566,9 @@ abstract class _Post implements Post {
   @override
   int get secondContentVoteCount => throw _privateConstructorUsedError;
   @override
-  int get userLikeCount => throw _privateConstructorUsedError;
+  int get memberLikeCount => throw _privateConstructorUsedError;
   @override
-  int? get userVoteChoice => throw _privateConstructorUsedError;
+  int? get memberVoteChoice => throw _privateConstructorUsedError;
   @override
   String get createdAt => throw _privateConstructorUsedError;
   @override

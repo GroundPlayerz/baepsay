@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:golden_balance_flutter/screen/admin/admin_screen.dart';
+import 'package:golden_balance_flutter/screen/profile/my_comment_list_widget.dart';
+import 'package:golden_balance_flutter/screen/profile/my_post_list_widget.dart';
+import 'package:golden_balance_flutter/screen/profile/my_voted_post_list_widget.dart';
 import 'package:golden_balance_flutter/screen/profile/profile_edit_screen.dart';
 import 'package:golden_balance_flutter/screen/setting/settings_screen.dart';
 
@@ -15,6 +18,8 @@ class AuthProfileScreen extends StatefulWidget {
 }
 
 class _AuthProfileScreenState extends State<AuthProfileScreen> {
+  int selectedTab = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -80,31 +85,70 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
         body: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
             if (state is FirebaseSignedIn) {
-              return Column(children: [
-                Row(children: [
-                  Expanded(child: Text(state.user.profileName)),
-                  state.user.profilePhotoUrl != null
-                      ? CircleAvatar(
-                          radius: 24,
-                          foregroundImage: CachedNetworkImageProvider(
-                            state.user.profilePhotoUrl!,
-                          ),
-                          backgroundColor: Colors.white,
+              return Column(
+                children: [
+                  Row(children: [
+                    Expanded(child: Text(state.member.profileName)),
+                    state.member.profilePhotoUrl != null
+                        ? CircleAvatar(
+                            radius: 24,
+                            foregroundImage: CachedNetworkImageProvider(
+                              state.member.profilePhotoUrl!,
+                            ),
+                            backgroundColor: Colors.white,
+                          )
+                        : Container(),
+                  ]),
+                  state.member.role == 'admin'
+                      ? TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AdminScreen()));
+                          },
+                          child: Text('관리자 페이지'),
                         )
                       : Container(),
-                ]),
-                state.user.role == 'admin'
-                    ? TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AdminScreen()));
-                        },
-                        child: Text('관리자 페이지'),
-                      )
-                    : Container(),
-              ]);
+                  Row(
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedTab = 0;
+                            });
+                          },
+                          child: Text('내 게시물')),
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedTab = 1;
+                            });
+                          },
+                          child: Text('투표한 게시물')),
+                      TextButton(
+                          onPressed: () {
+                            setState(() {
+                              selectedTab = 2;
+                            });
+                          },
+                          child: Text('내가 쓴 댓글')),
+                    ],
+                  ),
+                  Container(
+                    height: 500,
+                    child: Builder(builder: (context) {
+                      if (selectedTab == 0) {
+                        return MyPostListWidget();
+                      } else if (selectedTab == 1) {
+                        return MyVotedPostListWidget();
+                      } else {
+                        return MyCommentListWidget();
+                      }
+                    }),
+                  ),
+                ],
+              );
             } else if (state is AuthError) {
               return Text(state.message);
             }

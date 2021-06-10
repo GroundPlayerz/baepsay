@@ -15,8 +15,10 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
-    BlocProvider.of<ReportedPostCubit>(context).getInitialReportedPost();
+
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState().then((_) {
+      BlocProvider.of<ReportedPostCubit>(context).getInitialReportedPost();
+    });
   }
 
   @override

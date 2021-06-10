@@ -4,15 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/my_comment_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/my_post_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/my_voted_post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
-import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/repository/admin_repository.dart';
 import 'package:golden_balance_flutter/repository/comment_repository.dart';
 import 'package:golden_balance_flutter/repository/post_repository.dart';
-import 'package:golden_balance_flutter/repository/unauthorized_user_repository.dart';
-import 'package:golden_balance_flutter/screen/home/home_screen.dart';
 import 'package:golden_balance_flutter/screen/splash_screen.dart';
 
 import 'bloc/cubit/admin_feed_cubit.dart';
@@ -21,7 +22,7 @@ import 'bloc/cubit/upload_cubit.dart';
 import 'constant/color.dart';
 import 'constant/textstyle.dart';
 import 'repository/auth_repository.dart';
-import 'repository/user_repository.dart';
+import 'repository/member_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -59,21 +60,21 @@ class GoldenBalance extends StatelessWidget {
         BlocProvider<AuthCubit>(
             create: (_) => AuthCubit(repository: AuthRepository())),
         BlocProvider<UploadCubit>(
-            create: (_) => UploadCubit(repository: UserRepository())),
+            create: (_) => UploadCubit(repository: MemberRepository())),
         BlocProvider<HomeFeedCubit>(
             create: (_) => HomeFeedCubit(
-                userRepository: UserRepository(),
-                unauthorizedUserRepository: UnauthorizedUserRepository())),
+                  memberRepository: MemberRepository(),
+                )),
         BlocProvider<AdminFeedCubit>(
             create: (_) => AdminFeedCubit(adminRepository: AdminRepository())),
         BlocProvider<CommentScreenCubit>(
             create: (_) => CommentScreenCubit(
                 postRepository: PostRepository(),
-                userRepository: UserRepository())),
+                memberRepository: MemberRepository())),
         BlocProvider<NestedCommentScreenCubit>(
           create: (_) => NestedCommentScreenCubit(
               commentRepository: CommentRepository(),
-              userRepository: UserRepository()),
+              userRepository: MemberRepository()),
         ),
         BlocProvider<ReportedPostCubit>(
             create: (_) =>
@@ -81,6 +82,18 @@ class GoldenBalance extends StatelessWidget {
         BlocProvider<ReportedCommentCubit>(
             create: (_) =>
                 ReportedCommentCubit(adminRepository: AdminRepository())),
+        BlocProvider<PostCubit>(
+            create: (_) => PostCubit(
+                postRepository: PostRepository(),
+                userRepository: MemberRepository())),
+        BlocProvider<MyPostCubit>(
+            create: (_) => MyPostCubit(userRepository: MemberRepository())),
+        BlocProvider<MyVotedPostCubit>(
+            create: (_) =>
+                MyVotedPostCubit(userRepository: MemberRepository())),
+        BlocProvider<MyCommentCubit>(
+            create: (_) =>
+                MyCommentCubit(memberRepository: MemberRepository())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

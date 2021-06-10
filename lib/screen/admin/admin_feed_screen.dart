@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/admin_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/admin_feed_state.dart';
+import 'package:golden_balance_flutter/model/post/simple_post.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_widget.dart';
 
 class AdminFeedScreen extends StatefulWidget {
   @override
@@ -14,8 +16,9 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
-    BlocProvider.of<AdminFeedCubit>(context).getInitialAdminFeed();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState().then((_) {
+      BlocProvider.of<AdminFeedCubit>(context).getInitialAdminFeed();
+    });
   }
 
   @override
@@ -43,44 +46,33 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
                   itemCount: state.feed.length + 1,
                   itemBuilder: (BuildContext context, int index) {
                     if (index < state.feed.length) {
-                      final post = state.feed[index];
-                      return Card(
-                        color: Colors.green,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(post.title),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Column(
-                                      children: [
-                                        Text(post.firstContentText),
-                                        Text(post.firstContentVoteCount
-                                            .toString()),
-                                      ],
-                                    ),
-                                    Text('vs'),
-                                    Column(
-                                      children: [
-                                        Text(post.secondContentText),
-                                        Text(post.secondContentVoteCount
-                                            .toString()),
-                                      ],
-                                    ),
-                                  ]),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(post.viewCount.toString() + ' views'),
-                                  Text(post.likeCount.toString() + 'likes'),
-                                  Text(post.score.toString() + 'score'),
-                                  Text(post.createdAt)
-                                ],
-                              )
-                            ]),
+                      final SimplePost post = state.feed[index];
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SinglePostWidget(postId: post.id)));
+                        },
+                        child: Card(
+                          color: Colors.green,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('제목: ' + post.title),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(post.firstContentText),
+                                      Text('vs'),
+                                      Text(post.secondContentText),
+                                    ]),
+                                Text('생성일: ' + post.createdAt),
+                                Text('점수: ' + post.score.toString()),
+                              ]),
+                        ),
                       );
                     }
                     if (!state.isLoadingMore && state.hasMore) {

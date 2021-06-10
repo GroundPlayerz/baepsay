@@ -1,18 +1,18 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
-import 'package:golden_balance_flutter/model/post/reported_post.dart';
 
 @immutable
-abstract class ReportedPostState extends Equatable {}
+abstract class MyPostState extends Equatable {}
 
-class Empty extends ReportedPostState {
+class Empty extends MyPostState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class Error extends ReportedPostState {
+class Error extends MyPostState {
   final String message;
   final int? statusCode;
 
@@ -23,24 +23,24 @@ class Error extends ReportedPostState {
   List<Object?> get props => [message];
 }
 
-class Loading extends ReportedPostState {
+class Loading extends MyPostState {
   @override
   // TODO: implement props
   List<Object?> get props => [];
 }
 
-class Loaded extends ReportedPostState {
-  final List<ReportedPost> feed;
+class Loaded extends MyPostState {
+  final List<SimplePost> postList;
   final bool hasMore;
   final bool isLoadingMore;
 
   Loaded({
-    required this.feed,
+    required this.postList,
     required this.hasMore,
     required this.isLoadingMore,
   });
 
   @override
   // TODO: implement props
-  List<Object?> get props => [feed, hasMore, isLoadingMore];
+  List<Object?> get props => [postList, hasMore, isLoadingMore];
 }

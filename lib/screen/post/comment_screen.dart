@@ -39,16 +39,17 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
     postCommentCount = widget.postCommentCount;
     _myFocusNode = FocusNode();
     _textController.addListener(() {
       setState(() => _canPost = _textController.text.isNotEmpty);
     });
     postId = widget.postId;
-    BlocProvider.of<CommentScreenCubit>(context).setEmptyState();
-    BlocProvider.of<CommentScreenCubit>(context)
-        .getInitialCommentList(postId: postId);
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState().then((_) {
+      BlocProvider.of<CommentScreenCubit>(context).setEmptyState();
+      BlocProvider.of<CommentScreenCubit>(context)
+          .getInitialCommentList(postId: postId);
+    });
   }
 
   @override
@@ -169,7 +170,6 @@ class _CommentScreenState extends State<CommentScreen> {
                                 child: CircularProgressIndicator(),
                               );
                             } else {
-                              print(commentScreenState.hasMore);
                               return Container();
                             }
                           },

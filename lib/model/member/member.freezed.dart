@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
-part of 'user.dart';
+part of 'member.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -12,15 +12,15 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-User _$UserFromJson(Map<String, dynamic> json) {
-  return _User.fromJson(json);
+Member _$MemberFromJson(Map<String, dynamic> json) {
+  return _Member.fromJson(json);
 }
 
 /// @nodoc
-class _$UserTearOff {
-  const _$UserTearOff();
+class _$MemberTearOff {
+  const _$MemberTearOff();
 
-  _User call(
+  _Member call(
       {required int id,
       String? email,
       required String profileName,
@@ -28,7 +28,7 @@ class _$UserTearOff {
       required String role,
       required String createdAt,
       String? updatedAt}) {
-    return _User(
+    return _Member(
       id: id,
       email: email,
       profileName: profileName,
@@ -39,16 +39,16 @@ class _$UserTearOff {
     );
   }
 
-  User fromJson(Map<String, Object> json) {
-    return User.fromJson(json);
+  Member fromJson(Map<String, Object> json) {
+    return Member.fromJson(json);
   }
 }
 
 /// @nodoc
-const $User = _$UserTearOff();
+const $Member = _$MemberTearOff();
 
 /// @nodoc
-mixin _$User {
+mixin _$Member {
   int get id => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String get profileName => throw _privateConstructorUsedError;
@@ -60,13 +60,13 @@ mixin _$User {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $UserCopyWith<User> get copyWith => throw _privateConstructorUsedError;
+  $MemberCopyWith<Member> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $UserCopyWith<$Res> {
-  factory $UserCopyWith(User value, $Res Function(User) then) =
-      _$UserCopyWithImpl<$Res>;
+abstract class $MemberCopyWith<$Res> {
+  factory $MemberCopyWith(Member value, $Res Function(Member) then) =
+      _$MemberCopyWithImpl<$Res>;
   $Res call(
       {int id,
       String? email,
@@ -78,12 +78,12 @@ abstract class $UserCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
-  _$UserCopyWithImpl(this._value, this._then);
+class _$MemberCopyWithImpl<$Res> implements $MemberCopyWith<$Res> {
+  _$MemberCopyWithImpl(this._value, this._then);
 
-  final User _value;
+  final Member _value;
   // ignore: unused_field
-  final $Res Function(User) _then;
+  final $Res Function(Member) _then;
 
   @override
   $Res call({
@@ -129,9 +129,9 @@ class _$UserCopyWithImpl<$Res> implements $UserCopyWith<$Res> {
 }
 
 /// @nodoc
-abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
-  factory _$UserCopyWith(_User value, $Res Function(_User) then) =
-      __$UserCopyWithImpl<$Res>;
+abstract class _$MemberCopyWith<$Res> implements $MemberCopyWith<$Res> {
+  factory _$MemberCopyWith(_Member value, $Res Function(_Member) then) =
+      __$MemberCopyWithImpl<$Res>;
   @override
   $Res call(
       {int id,
@@ -144,13 +144,13 @@ abstract class _$UserCopyWith<$Res> implements $UserCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
-    implements _$UserCopyWith<$Res> {
-  __$UserCopyWithImpl(_User _value, $Res Function(_User) _then)
-      : super(_value, (v) => _then(v as _User));
+class __$MemberCopyWithImpl<$Res> extends _$MemberCopyWithImpl<$Res>
+    implements _$MemberCopyWith<$Res> {
+  __$MemberCopyWithImpl(_Member _value, $Res Function(_Member) _then)
+      : super(_value, (v) => _then(v as _Member));
 
   @override
-  _User get _value => super._value as _User;
+  _Member get _value => super._value as _Member;
 
   @override
   $Res call({
@@ -162,7 +162,7 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
   }) {
-    return _then(_User(
+    return _then(_Member(
       id: id == freezed
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -198,8 +198,8 @@ class __$UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$_User implements _User {
-  _$_User(
+class _$_Member implements _Member {
+  _$_Member(
       {required this.id,
       this.email,
       required this.profileName,
@@ -208,8 +208,8 @@ class _$_User implements _User {
       required this.createdAt,
       this.updatedAt});
 
-  factory _$_User.fromJson(Map<String, dynamic> json) =>
-      _$_$_UserFromJson(json);
+  factory _$_Member.fromJson(Map<String, dynamic> json) =>
+      _$_$_MemberFromJson(json);
 
   @override
   final int id;
@@ -228,13 +228,13 @@ class _$_User implements _User {
 
   @override
   String toString() {
-    return 'User(id: $id, email: $email, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, role: $role, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'Member(id: $id, email: $email, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, role: $role, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _User &&
+        (other is _Member &&
             (identical(other.id, id) ||
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.email, email) ||
@@ -268,26 +268,26 @@ class _$_User implements _User {
 
   @JsonKey(ignore: true)
   @override
-  _$UserCopyWith<_User> get copyWith =>
-      __$UserCopyWithImpl<_User>(this, _$identity);
+  _$MemberCopyWith<_Member> get copyWith =>
+      __$MemberCopyWithImpl<_Member>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$_$_UserToJson(this);
+    return _$_$_MemberToJson(this);
   }
 }
 
-abstract class _User implements User {
-  factory _User(
+abstract class _Member implements Member {
+  factory _Member(
       {required int id,
       String? email,
       required String profileName,
       String? profilePhotoUrl,
       required String role,
       required String createdAt,
-      String? updatedAt}) = _$_User;
+      String? updatedAt}) = _$_Member;
 
-  factory _User.fromJson(Map<String, dynamic> json) = _$_User.fromJson;
+  factory _Member.fromJson(Map<String, dynamic> json) = _$_Member.fromJson;
 
   @override
   int get id => throw _privateConstructorUsedError;
@@ -305,5 +305,5 @@ abstract class _User implements User {
   String? get updatedAt => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
-  _$UserCopyWith<_User> get copyWith => throw _privateConstructorUsedError;
+  _$MemberCopyWith<_Member> get copyWith => throw _privateConstructorUsedError;
 }

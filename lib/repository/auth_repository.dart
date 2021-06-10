@@ -13,7 +13,7 @@ class AuthRepository {
   Future<void> googleSignIn() async => await authApiProvider.googleSignIn();
 
   Future<Response> getUnauthenticatedUserAccessToken() async =>
-      await authApiProvider.getUnauthenticatedUserAccessToken();
+      await authApiProvider.getUnauthenticatedMemberAccessToken();
 
   Future<Response> getAuthenticatedUserAccessToken() async =>
       await authApiProvider.getAuthenticatedUserAccessToken();

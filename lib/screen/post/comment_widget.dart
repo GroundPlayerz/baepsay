@@ -55,7 +55,7 @@ class _CommentWidgetState extends State<CommentWidget> {
           setState(() {
             BlocProvider.of<CommentScreenCubit>(context).pressLikeButton(
               commentIndex: commentIndex,
-              userLikeCount: comment.userLikeCount,
+              memberLikeCount: comment.memberLikeCount,
             );
           });
         },
@@ -63,7 +63,7 @@ class _CommentWidgetState extends State<CommentWidget> {
           padding: EdgeInsets.only(left: 8, right: 16, top: 2),
           child: Column(
             children: [
-              comment.userLikeCount == 0
+              comment.memberLikeCount == 0
                   ? Icon(Icons.favorite_border_rounded,
                       size: photoWidth, color: kWhiteColor.withOpacity(0.7))
                   : Icon(Icons.favorite_rounded,

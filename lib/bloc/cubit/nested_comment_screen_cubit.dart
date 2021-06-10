@@ -4,11 +4,11 @@ import 'package:golden_balance_flutter/bloc/state/nested_comment_screen_state.da
 import 'package:golden_balance_flutter/model/nested_comment/nested_comment.dart';
 import 'package:golden_balance_flutter/repository/comment_repository.dart';
 
-import 'package:golden_balance_flutter/repository/user_repository.dart';
+import 'package:golden_balance_flutter/repository/member_repository.dart';
 
 class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
   final CommentRepository commentRepository;
-  final UserRepository userRepository;
+  final MemberRepository userRepository;
 
   NestedCommentScreenCubit({
     required this.commentRepository,
@@ -94,13 +94,13 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
         ];
 
         NestedComment changedNestedComment;
-        if (nestedCommentList[nestedCommentIndex].userLikeCount == 0) {
+        if (nestedCommentList[nestedCommentIndex].memberLikeCount == 0) {
           changedNestedComment = nestedCommentList[nestedCommentIndex].copyWith(
-              userLikeCount: 1,
+              memberLikeCount: 1,
               likeCount: nestedCommentList[nestedCommentIndex].likeCount + 1);
         } else {
           changedNestedComment = nestedCommentList[nestedCommentIndex].copyWith(
-              userLikeCount: 0,
+              memberLikeCount: 0,
               likeCount: nestedCommentList[nestedCommentIndex].likeCount - 1);
         }
         nestedCommentList[nestedCommentIndex] = changedNestedComment;
@@ -109,7 +109,7 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
             hasMore: hasMore,
             isLoadingMore: false));
 
-        if (changedNestedComment.userLikeCount == 0) {
+        if (changedNestedComment.memberLikeCount == 0) {
           await userRepository.cancelLikeNestedComment(
               nestedCommentId: changedNestedComment.id);
         } else {

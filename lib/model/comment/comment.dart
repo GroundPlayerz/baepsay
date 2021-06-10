@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:golden_balance_flutter/model/user/user.dart';
 
 part 'comment.freezed.dart';
 part 'comment.g.dart';
@@ -17,7 +16,7 @@ class Comment with _$Comment {
     required int nestedCommentCount,
     required String createdAt,
     String? updatedAt, //[nullable]
-    required int userLikeCount,
+    required int memberLikeCount,
   }) = _Comment;
 
   factory Comment.fromJson(Map<String, dynamic> json) =>

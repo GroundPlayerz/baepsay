@@ -4,11 +4,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:golden_balance_flutter/model/media_for_upload.dart';
-import '../../repository/user_repository.dart';
+import '../../repository/member_repository.dart';
 import '../state/upload_state.dart';
 
 class UploadCubit extends Cubit<UploadState> {
-  final UserRepository repository;
+  final MemberRepository repository;
 
   UploadCubit({required this.repository}) : super(Default());
 
@@ -21,6 +21,18 @@ class UploadCubit extends Cubit<UploadState> {
     Uint8List? image = await FlutterImageCompress.compressWithFile(
       imageFile.path,
       quality: 70,
+    );
+
+    if (image != null) {
+      return image;
+    }
+  }
+
+  Future<Uint8List?> compressProfileImage({required File imageFile}) async {
+    emit(Compressing());
+    Uint8List? image = await FlutterImageCompress.compressWithFile(
+      imageFile.path,
+      quality: 30,
     );
 
     if (image != null) {

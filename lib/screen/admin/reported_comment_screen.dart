@@ -14,8 +14,10 @@ class _ReportedCommentScreenState extends State<ReportedCommentScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
-    BlocProvider.of<ReportedCommentCubit>(context).getInitialReportedComment();
+    BlocProvider.of<AuthCubit>(context).getAccessTokenByState().then((_) {
+      BlocProvider.of<ReportedCommentCubit>(context)
+          .getInitialReportedComment();
+    });
   }
 
   @override

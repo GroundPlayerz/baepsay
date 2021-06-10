@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:golden_balance_flutter/model/token/token.dart';
-import 'package:golden_balance_flutter/model/user/user.dart';
+import 'package:golden_balance_flutter/model/member/member.dart';
 
 @immutable
 abstract class AuthState extends Equatable {}
@@ -12,24 +11,24 @@ class Checking extends AuthState {
   List<Object?> get props => [];
 }
 
-class DeviceUserIdExists extends AuthState {
-  final String userId;
+class DeviceMemberIdExists extends AuthState {
+  final String memberId;
 
-  DeviceUserIdExists(this.userId);
+  DeviceMemberIdExists(this.memberId);
 
   @override
 // TODO: implement props
-  List<Object?> get props => [userId];
+  List<Object?> get props => [memberId];
 }
 
 class DeviceSignedIn extends AuthState {
-  final User user;
+  final Member member;
 
-  DeviceSignedIn(this.user);
+  DeviceSignedIn(this.member);
 
   @override
   // TODO: implement props
-  List<Object?> get props => [user];
+  List<Object?> get props => [member];
 }
 
 class FirebaseSigningIn extends AuthState {
@@ -39,12 +38,12 @@ class FirebaseSigningIn extends AuthState {
 }
 
 class FirebaseSignedIn extends AuthState {
-  final User user;
-  FirebaseSignedIn(this.user);
+  final Member member;
+  FirebaseSignedIn(this.member);
 
   @override
   // TODO: implement props
-  List<Object?> get props => [user];
+  List<Object?> get props => [member];
 }
 
 class FirebaseSignedOut extends AuthState {

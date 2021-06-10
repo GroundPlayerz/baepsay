@@ -13,33 +13,38 @@ class PostDetailReportScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('게시물 신고 상세 내용'),
+        actions: [
+          TextButton(onPressed: () {}, child: Text('게시물로 이동')),
+        ],
       ),
-      body: FutureBuilder<List<Report>?>(
-          future: BlocProvider.of<ReportedPostCubit>(context)
-              .getPostReport(postId: postId),
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Report>?> snapshot) {
-            if (snapshot.hasData) {
-              if (snapshot.data != null) {
-                return ListView.builder(
-                  itemBuilder: (BuildContext context, int index) {
-                    final report = snapshot.data![index];
-                    return Card(
-                      child: Column(children: [
-                        Text(report.text),
-                        Text(report.createdAt)
-                      ]),
-                    );
-                  },
-                  itemCount: snapshot.data!.length,
-                );
+      body: SafeArea(
+        child: FutureBuilder<List<Report>?>(
+            future: BlocProvider.of<ReportedPostCubit>(context)
+                .getPostReport(postId: postId),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Report>?> snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data != null) {
+                  return ListView.builder(
+                    itemBuilder: (BuildContext context, int index) {
+                      final report = snapshot.data![index];
+                      return Card(
+                        child: Column(children: [
+                          Text(report.text),
+                          Text(report.createdAt)
+                        ]),
+                      );
+                    },
+                    itemCount: snapshot.data!.length,
+                  );
+                } else {
+                  return Center(child: Text('오류가 발생하였습니다.'));
+                }
               } else {
-                return Center(child: Text('오류가 발생하였습니다.'));
+                return Center(child: CircularProgressIndicator());
               }
-            } else {
-              return CircularProgressIndicator();
-            }
-          }),
+            }),
+      ),
     );
   }
 }

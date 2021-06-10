@@ -38,11 +38,11 @@ class _SplashScreenState extends State<SplashScreen> {
           );
         } else if (state is FirebaseSignedOut) {
           BlocProvider.of<AuthCubit>(context)
-              .checkUserIdExistsInSecureStorage();
-        } else if (state is DeviceUserIdExists) {
+              .checkMemberIdExistsInSecureStorage();
+        } else if (state is DeviceMemberIdExists) {
           if (_isAccessTokenRequested == false) {
             BlocProvider.of<AuthCubit>(context)
-                .getUnauthenticatedUserAccessToken();
+                .getUnauthenticatedMemberAccessToken();
             _isAccessTokenRequested = true;
           }
         } else if (state is DeviceSignedIn) {
@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
         } else if (state is FirebaseSigningIn) {
           if (_isAccessTokenRequested == false) {
             BlocProvider.of<AuthCubit>(context)
-                .getAuthenticatedUserAccessToken();
+                .getAuthenticatedMemberAccessToken();
 
             _isAccessTokenRequested = true;
           }

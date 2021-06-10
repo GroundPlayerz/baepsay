@@ -24,12 +24,12 @@ class _$ReportTearOff {
       {required String createdAt,
       required int id,
       required String text,
-      required int userId}) {
+      required int memberId}) {
     return _Report(
       createdAt: createdAt,
       id: id,
       text: text,
-      userId: userId,
+      memberId: memberId,
     );
   }
 
@@ -46,7 +46,7 @@ mixin _$Report {
   String get createdAt => throw _privateConstructorUsedError;
   int get id => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
-  int get userId => throw _privateConstructorUsedError;
+  int get memberId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -57,7 +57,7 @@ mixin _$Report {
 abstract class $ReportCopyWith<$Res> {
   factory $ReportCopyWith(Report value, $Res Function(Report) then) =
       _$ReportCopyWithImpl<$Res>;
-  $Res call({String createdAt, int id, String text, int userId});
+  $Res call({String createdAt, int id, String text, int memberId});
 }
 
 /// @nodoc
@@ -73,7 +73,7 @@ class _$ReportCopyWithImpl<$Res> implements $ReportCopyWith<$Res> {
     Object? createdAt = freezed,
     Object? id = freezed,
     Object? text = freezed,
-    Object? userId = freezed,
+    Object? memberId = freezed,
   }) {
     return _then(_value.copyWith(
       createdAt: createdAt == freezed
@@ -88,9 +88,9 @@ class _$ReportCopyWithImpl<$Res> implements $ReportCopyWith<$Res> {
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -101,7 +101,7 @@ abstract class _$ReportCopyWith<$Res> implements $ReportCopyWith<$Res> {
   factory _$ReportCopyWith(_Report value, $Res Function(_Report) then) =
       __$ReportCopyWithImpl<$Res>;
   @override
-  $Res call({String createdAt, int id, String text, int userId});
+  $Res call({String createdAt, int id, String text, int memberId});
 }
 
 /// @nodoc
@@ -118,7 +118,7 @@ class __$ReportCopyWithImpl<$Res> extends _$ReportCopyWithImpl<$Res>
     Object? createdAt = freezed,
     Object? id = freezed,
     Object? text = freezed,
-    Object? userId = freezed,
+    Object? memberId = freezed,
   }) {
     return _then(_Report(
       createdAt: createdAt == freezed
@@ -133,9 +133,9 @@ class __$ReportCopyWithImpl<$Res> extends _$ReportCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
-      userId: userId == freezed
-          ? _value.userId
-          : userId // ignore: cast_nullable_to_non_nullable
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -149,7 +149,7 @@ class _$_Report implements _Report {
       {required this.createdAt,
       required this.id,
       required this.text,
-      required this.userId});
+      required this.memberId});
 
   factory _$_Report.fromJson(Map<String, dynamic> json) =>
       _$_$_ReportFromJson(json);
@@ -161,11 +161,11 @@ class _$_Report implements _Report {
   @override
   final String text;
   @override
-  final int userId;
+  final int memberId;
 
   @override
   String toString() {
-    return 'Report(createdAt: $createdAt, id: $id, text: $text, userId: $userId)';
+    return 'Report(createdAt: $createdAt, id: $id, text: $text, memberId: $memberId)';
   }
 
   @override
@@ -179,8 +179,9 @@ class _$_Report implements _Report {
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.text, text) ||
                 const DeepCollectionEquality().equals(other.text, text)) &&
-            (identical(other.userId, userId) ||
-                const DeepCollectionEquality().equals(other.userId, userId)));
+            (identical(other.memberId, memberId) ||
+                const DeepCollectionEquality()
+                    .equals(other.memberId, memberId)));
   }
 
   @override
@@ -189,7 +190,7 @@ class _$_Report implements _Report {
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(text) ^
-      const DeepCollectionEquality().hash(userId);
+      const DeepCollectionEquality().hash(memberId);
 
   @JsonKey(ignore: true)
   @override
@@ -207,7 +208,7 @@ abstract class _Report implements Report {
       {required String createdAt,
       required int id,
       required String text,
-      required int userId}) = _$_Report;
+      required int memberId}) = _$_Report;
 
   factory _Report.fromJson(Map<String, dynamic> json) = _$_Report.fromJson;
 
@@ -218,7 +219,7 @@ abstract class _Report implements Report {
   @override
   String get text => throw _privateConstructorUsedError;
   @override
-  int get userId => throw _privateConstructorUsedError;
+  int get memberId => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$ReportCopyWith<_Report> get copyWith => throw _privateConstructorUsedError;

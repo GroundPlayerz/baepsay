@@ -52,20 +52,20 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
           setState(() {
             BlocProvider.of<NestedCommentScreenCubit>(context).pressLikeButton(
                 nestedCommentIndex: nestedCommentIndex,
-                userLikeCount: nestedComment.userLikeCount);
+                userLikeCount: nestedComment.memberLikeCount);
           });
         },
         child: Padding(
           padding: const EdgeInsets.only(left: 8, right: 16, top: 2),
           child: Column(
             children: [
-              nestedComment.userLikeCount == 0
+              nestedComment.memberLikeCount == 0
                   ? Icon(Icons.favorite_border_rounded,
                       size: 20, color: kWhiteColor.withOpacity(0.7))
                   : Icon(Icons.favorite_rounded,
                       size: 20, color: kAccentYellowColor),
               //SizedBox(width: 4),
-              (nestedComment.userLikeCount == 0)
+              (nestedComment.memberLikeCount == 0)
                   ? Text('')
                   : Text(nestedComment.likeCount.toString(),
                       style: kPostInfoNumberTextStyle.copyWith(

@@ -1,12 +1,12 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'user.freezed.dart';
-part 'user.g.dart';
+part 'member.freezed.dart';
+part 'member.g.dart';
 
 @freezed
-class User with _$User {
+class Member with _$Member {
   @JsonSerializable(fieldRename: FieldRename.snake)
-  factory User({
+  factory Member({
     required int id,
     String? email,
     required String profileName,
@@ -14,8 +14,8 @@ class User with _$User {
     required String role, //admin, general_free, general_paid, expert
     required String createdAt,
     String? updatedAt, //[nullable]
-  }) = _User;
+  }) = _Member;
 
-  factory User.fromJson(Map<String, dynamic> json) =>
-      _$UserFromJson(json); //all, follower, none
+  factory Member.fromJson(Map<String, dynamic> json) =>
+      _$MemberFromJson(json); //all, follower, none
 }

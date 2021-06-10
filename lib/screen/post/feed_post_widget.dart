@@ -1,25 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
-import 'package:golden_balance_flutter/repository/post_repository.dart';
-import 'package:golden_balance_flutter/repository/user_repository.dart';
 import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
 
-class PostWidget extends StatefulWidget {
+class FeedPostWidget extends StatefulWidget {
   final int postIndex;
-  PostWidget({required this.postIndex});
+  FeedPostWidget({required this.postIndex});
 
   @override
-  _PostWidgetState createState() => _PostWidgetState();
+  _FeedPostWidgetState createState() => _FeedPostWidgetState();
 }
 
-class _PostWidgetState extends State<PostWidget> {
+class _FeedPostWidgetState extends State<FeedPostWidget> {
   late int postIndex;
 
   final double _titleAreaHeight = 56;
@@ -75,7 +72,7 @@ class _PostWidgetState extends State<PostWidget> {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
             children: [
-              post.userLikeCount == 0
+              post.memberLikeCount == 0
                   ? Icon(Icons.favorite_border_rounded,
                       size: 35, color: kWhiteColor)
                   : Icon(Icons.favorite_rounded,
@@ -155,10 +152,10 @@ class _PostWidgetState extends State<PostWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                post.userVoteChoice == null
+                post.memberVoteChoice == null
                     ? _likeButtonDeactivated(post)
                     : _likeButton(post),
-                post.userVoteChoice == null
+                post.memberVoteChoice == null
                     ? _commentButtonDeactivated(post)
                     : _commentButton(post: post, postId: postId),
               ],
@@ -299,7 +296,8 @@ class _PostWidgetState extends State<PostWidget> {
   }
 
   Widget _voteCompleteIconWidget(int whichContent, {required Post post}) {
-    if (post.userVoteChoice != null && post.userVoteChoice == whichContent) {
+    if (post.memberVoteChoice != null &&
+        post.memberVoteChoice == whichContent) {
       return Container(
           height: 40,
           width: 40,
@@ -401,7 +399,7 @@ class _PostWidgetState extends State<PostWidget> {
                       ),
                     ),
                     //투표비율위젯
-                    post.userVoteChoice != null
+                    post.memberVoteChoice != null
                         ? _voteResultWidget(
                             firstContentVoteCount: post.firstContentVoteCount,
                             secondContentVoteCount: post.secondContentVoteCount)
@@ -466,7 +464,7 @@ class _PostWidgetState extends State<PostWidget> {
                             child: Container(
                               alignment: Alignment.centerRight,
                               padding: EdgeInsets.only(right: 20),
-                              child: post.userVoteChoice == null
+                              child: post.memberVoteChoice == null
                                   ? _voteButton(1)
                                   : _voteCompleteIconWidget(1, post: post),
                             ),
@@ -476,7 +474,7 @@ class _PostWidgetState extends State<PostWidget> {
                             child: Container(
                               alignment: Alignment.centerRight,
                               padding: EdgeInsets.only(right: 20),
-                              child: post.userVoteChoice == null
+                              child: post.memberVoteChoice == null
                                   ? _voteButton(2)
                                   : _voteCompleteIconWidget(2, post: post),
                             ),

@@ -3,15 +3,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
 import 'package:golden_balance_flutter/repository/post_repository.dart';
-import 'package:golden_balance_flutter/repository/user_repository.dart';
+import 'package:golden_balance_flutter/repository/member_repository.dart';
 
 class CommentScreenCubit extends Cubit<CommentScreenState> {
   final PostRepository postRepository;
-  final UserRepository userRepository;
+  final MemberRepository memberRepository;
 
   CommentScreenCubit({
     required this.postRepository,
-    required this.userRepository,
+    required this.memberRepository,
   }) : super(CommentScreenEmpty());
 
   void setEmptyState() {
@@ -76,7 +76,7 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
   }
 
   void pressLikeButton(
-      {required int commentIndex, required int userLikeCount}) async {
+      {required int commentIndex, required int memberLikeCount}) async {
     try {
       if (state is CommentScreenLoaded) {
         final parsedState = (state as CommentScreenLoaded);
@@ -84,22 +84,23 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
         List<Comment> commentList = [...parsedState.commentList];
 
         Comment changedComment;
-        if (commentList[commentIndex].userLikeCount == 0) {
+        if (commentList[commentIndex].memberLikeCount == 0) {
           changedComment = commentList[commentIndex].copyWith(
-              userLikeCount: 1,
+              memberLikeCount: 1,
               likeCount: commentList[commentIndex].likeCount + 1);
         } else {
           changedComment = commentList[commentIndex].copyWith(
-              userLikeCount: 0,
+              memberLikeCount: 0,
               likeCount: commentList[commentIndex].likeCount - 1);
         }
         commentList[commentIndex] = changedComment;
         emit(CommentScreenLoaded(
             commentList: commentList, hasMore: hasMore, isLoadingMore: false));
-        if (changedComment.userLikeCount == 0) {
-          await userRepository.cancelLikeComment(commentId: changedComment.id);
+        if (changedComment.memberLikeCount == 0) {
+          await memberRepository.cancelLikeComment(
+              commentId: changedComment.id);
         } else {
-          await userRepository.likeComment(commentId: changedComment.id);
+          await memberRepository.likeComment(commentId: changedComment.id);
         }
       }
     } catch (e) {
@@ -114,7 +115,7 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
         final hasMore = parsedState.hasMore;
         List<Comment> prevCommentList = [...parsedState.commentList];
         final Response response =
-            await userRepository.createComment(postId: postId, text: text);
+            await memberRepository.createComment(postId: postId, text: text);
 
         final List<Comment> uploadedCommentList = response.data['comment_list']
             .map<Comment>((e) => Comment.fromJson(e))

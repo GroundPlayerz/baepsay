@@ -29,7 +29,7 @@ class _$NestedCommentTearOff {
       required int likeCount,
       required String createdAt,
       String? updatedAt,
-      required int userLikeCount}) {
+      required int memberLikeCount}) {
     return _NestedComment(
       id: id,
       profileName: profileName,
@@ -39,7 +39,7 @@ class _$NestedCommentTearOff {
       likeCount: likeCount,
       createdAt: createdAt,
       updatedAt: updatedAt,
-      userLikeCount: userLikeCount,
+      memberLikeCount: memberLikeCount,
     );
   }
 
@@ -61,7 +61,7 @@ mixin _$NestedComment {
   int get likeCount => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError; //[nullable]
-  int get userLikeCount => throw _privateConstructorUsedError;
+  int get memberLikeCount => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -83,7 +83,7 @@ abstract class $NestedCommentCopyWith<$Res> {
       int likeCount,
       String createdAt,
       String? updatedAt,
-      int userLikeCount});
+      int memberLikeCount});
 }
 
 /// @nodoc
@@ -105,7 +105,7 @@ class _$NestedCommentCopyWithImpl<$Res>
     Object? likeCount = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? userLikeCount = freezed,
+    Object? memberLikeCount = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed
@@ -140,9 +140,9 @@ class _$NestedCommentCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      userLikeCount: userLikeCount == freezed
-          ? _value.userLikeCount
-          : userLikeCount // ignore: cast_nullable_to_non_nullable
+      memberLikeCount: memberLikeCount == freezed
+          ? _value.memberLikeCount
+          : memberLikeCount // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -164,7 +164,7 @@ abstract class _$NestedCommentCopyWith<$Res>
       int likeCount,
       String createdAt,
       String? updatedAt,
-      int userLikeCount});
+      int memberLikeCount});
 }
 
 /// @nodoc
@@ -188,7 +188,7 @@ class __$NestedCommentCopyWithImpl<$Res>
     Object? likeCount = freezed,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
-    Object? userLikeCount = freezed,
+    Object? memberLikeCount = freezed,
   }) {
     return _then(_NestedComment(
       id: id == freezed
@@ -223,9 +223,9 @@ class __$NestedCommentCopyWithImpl<$Res>
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
               as String?,
-      userLikeCount: userLikeCount == freezed
-          ? _value.userLikeCount
-          : userLikeCount // ignore: cast_nullable_to_non_nullable
+      memberLikeCount: memberLikeCount == freezed
+          ? _value.memberLikeCount
+          : memberLikeCount // ignore: cast_nullable_to_non_nullable
               as int,
     ));
   }
@@ -244,7 +244,7 @@ class _$_NestedComment implements _NestedComment {
       required this.likeCount,
       required this.createdAt,
       this.updatedAt,
-      required this.userLikeCount});
+      required this.memberLikeCount});
 
   factory _$_NestedComment.fromJson(Map<String, dynamic> json) =>
       _$_$_NestedCommentFromJson(json);
@@ -266,11 +266,11 @@ class _$_NestedComment implements _NestedComment {
   @override
   final String? updatedAt;
   @override //[nullable]
-  final int userLikeCount;
+  final int memberLikeCount;
 
   @override
   String toString() {
-    return 'NestedComment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, commentId: $commentId, text: $text, likeCount: $likeCount, createdAt: $createdAt, updatedAt: $updatedAt, userLikeCount: $userLikeCount)';
+    return 'NestedComment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, commentId: $commentId, text: $text, likeCount: $likeCount, createdAt: $createdAt, updatedAt: $updatedAt, memberLikeCount: $memberLikeCount)';
   }
 
   @override
@@ -299,9 +299,9 @@ class _$_NestedComment implements _NestedComment {
             (identical(other.updatedAt, updatedAt) ||
                 const DeepCollectionEquality()
                     .equals(other.updatedAt, updatedAt)) &&
-            (identical(other.userLikeCount, userLikeCount) ||
+            (identical(other.memberLikeCount, memberLikeCount) ||
                 const DeepCollectionEquality()
-                    .equals(other.userLikeCount, userLikeCount)));
+                    .equals(other.memberLikeCount, memberLikeCount)));
   }
 
   @override
@@ -315,7 +315,7 @@ class _$_NestedComment implements _NestedComment {
       const DeepCollectionEquality().hash(likeCount) ^
       const DeepCollectionEquality().hash(createdAt) ^
       const DeepCollectionEquality().hash(updatedAt) ^
-      const DeepCollectionEquality().hash(userLikeCount);
+      const DeepCollectionEquality().hash(memberLikeCount);
 
   @JsonKey(ignore: true)
   @override
@@ -338,7 +338,7 @@ abstract class _NestedComment implements NestedComment {
       required int likeCount,
       required String createdAt,
       String? updatedAt,
-      required int userLikeCount}) = _$_NestedComment;
+      required int memberLikeCount}) = _$_NestedComment;
 
   factory _NestedComment.fromJson(Map<String, dynamic> json) =
       _$_NestedComment.fromJson;
@@ -360,7 +360,7 @@ abstract class _NestedComment implements NestedComment {
   @override
   String? get updatedAt => throw _privateConstructorUsedError;
   @override //[nullable]
-  int get userLikeCount => throw _privateConstructorUsedError;
+  int get memberLikeCount => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$NestedCommentCopyWith<_NestedComment> get copyWith =>

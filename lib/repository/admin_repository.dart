@@ -8,6 +8,9 @@ class AdminRepository {
       await adminApiProvider.getAdminFeed(
           scoreCursor: scoreCursor, idCursor: idCursor);
 
+  Future<Response> scoreAllPost() async =>
+      await adminApiProvider.scoreAllPost();
+
   Future<Response> getReportedPost(
           {int? reportCountCursor, int? idCursor}) async =>
       await adminApiProvider.getReportedPost(

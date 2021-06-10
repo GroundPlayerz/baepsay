@@ -1,5 +1,4 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:golden_balance_flutter/model/user/user.dart';
 part 'post.freezed.dart';
 part 'post.g.dart';
 
@@ -19,8 +18,8 @@ class Post with _$Post {
     required int viewCount,
     required int firstContentVoteCount,
     required int secondContentVoteCount,
-    required int userLikeCount,
-    required int? userVoteChoice,
+    required int memberLikeCount,
+    required int? memberVoteChoice,
     required String createdAt,
     required String? mediaContentOrders,
     required String? mediaTypes,

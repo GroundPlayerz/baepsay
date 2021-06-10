@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:golden_balance_flutter/util/dio_logging_interceptor.dart';
 
 import '../configuration.dart';

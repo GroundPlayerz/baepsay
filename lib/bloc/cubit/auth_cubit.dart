@@ -4,8 +4,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:bloc/bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
+import 'package:golden_balance_flutter/model/member/member.dart';
 import 'package:golden_balance_flutter/model/token/token.dart';
-import 'package:golden_balance_flutter/model/user/user.dart';
 import 'package:golden_balance_flutter/repository/auth_repository.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -15,18 +15,19 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit({required this.repository}) : super(Checking());
 
-  void checkUserIdExistsInSecureStorage() async {
+  void checkMemberIdExistsInSecureStorage() async {
     try {
-      String? userId = await _secureStorage.read(key: 'user_id');
-      print(userId);
-      if (userId != null) {
-        emit(DeviceUserIdExists(userId));
+      String? memberId = await _secureStorage.read(key: 'member_id');
+      print(memberId);
+      if (memberId != null) {
+        emit(DeviceMemberIdExists(memberId));
       } else {
         Response response = await repository.unauthenticatedSignUp();
-        final user = User.fromJson(response.data);
-        print(user.toString());
-        await _secureStorage.write(key: 'user_id', value: user.id.toString());
-        checkUserIdExistsInSecureStorage();
+        final member = Member.fromJson(response.data);
+        print(member.toString());
+        await _secureStorage.write(
+            key: 'member_id', value: member.id.toString());
+        checkMemberIdExistsInSecureStorage();
       }
     } catch (e) {
       print(e.toString());
@@ -61,9 +62,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> getAccessTokenByState() async {
     if (state is FirebaseSignedIn) {
-      await getAuthenticatedUserAccessToken();
+      await getAuthenticatedMemberAccessToken();
     } else if (state is DeviceSignedIn) {
-      await getUnauthenticatedUserAccessToken();
+      await getUnauthenticatedMemberAccessToken();
     }
   }
 
@@ -72,22 +73,22 @@ class AuthCubit extends Cubit<AuthState> {
       if (state is FirebaseSignedIn) {
         final parsedState = (state as FirebaseSignedIn);
 
-        return parsedState.user.profileName;
+        return parsedState.member.profileName;
       }
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<void> getUnauthenticatedUserAccessToken() async {
+  Future<void> getUnauthenticatedMemberAccessToken() async {
     try {
       final resp = await repository.getUnauthenticatedUserAccessToken();
       final accessToken = Token.fromJson(resp.data['access_token']);
-      final User user = User.fromJson(resp.data['user']);
+      final Member member = Member.fromJson(resp.data['member']);
       await _secureStorage.delete(key: 'access_token');
       await _secureStorage.write(
           key: 'access_token', value: accessToken.accessToken);
-      emit(DeviceSignedIn(user));
+      emit(DeviceSignedIn(member));
     } catch (e) {
       emit(AuthError(
         message: e.toString(),
@@ -95,16 +96,16 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> getAuthenticatedUserAccessToken() async {
+  Future<void> getAuthenticatedMemberAccessToken() async {
     try {
       final resp = await repository.getAuthenticatedUserAccessToken();
       final accessToken = Token.fromJson(resp.data['access_token']);
-      final User user = User.fromJson(resp.data['user']);
+      final Member member = Member.fromJson(resp.data['member']);
       await _secureStorage.delete(key: 'access_token');
       await _secureStorage.delete(key: 'user_id');
       await _secureStorage.write(
           key: 'access_token', value: accessToken.accessToken);
-      emit(FirebaseSignedIn(user));
+      emit(FirebaseSignedIn(member));
     } catch (e) {
       emit(AuthError(
         message: e.toString(),

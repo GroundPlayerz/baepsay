@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -8,12 +7,12 @@ import 'package:golden_balance_flutter/model/media_for_upload.dart';
 import '../configuration.dart';
 import '../util/dio_logging_interceptor.dart';
 
-class UserApiProvider {
+class MemberApiProvider {
   final Dio _dio = Dio();
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  UserApiProvider() {
+  MemberApiProvider() {
     _dio.options = dioOptions;
     _dio.interceptors.add(DioLoggingInterceptors(_dio));
     _dio.options.headers['requirestoken'] = true;
@@ -48,7 +47,7 @@ class UserApiProvider {
     data['second_content_text'] = secondContentText;
     data['media_list'] = mediaMetaDataList;
 
-    Response response = await _dio.post('user/post', data: data);
+    Response response = await _dio.post('member/post', data: data);
     return response;
   }
 
@@ -56,7 +55,7 @@ class UserApiProvider {
     Reference imageRef = _firebaseStorage.ref().child('profile_photo');
     final String profilePhotoUrl =
         await _uploadToStorageAndGetDownloadURL(imageRef, imageBytes);
-    Response response = await _dio.post('user/profile/photo',
+    Response response = await _dio.post('member/profile/photo',
         data: {'profile_photo_url': profilePhotoUrl});
 
     return response;
@@ -64,7 +63,7 @@ class UserApiProvider {
 
   Future<Response> uploadProfileName({required String profileName}) async {
     Response response = await _dio
-        .post('user/profile/name', data: {'profile_name': profileName});
+        .post('member/profile/name', data: {'profile_name': profileName});
 
     return response;
   }
@@ -84,48 +83,48 @@ class UserApiProvider {
     if (scoreCursor != null) queryParameters['score_cursor'] = scoreCursor;
     if (idCursor != null) queryParameters['id_cursor'] = idCursor;
     var response =
-        await _dio.get('user/feed', queryParameters: queryParameters);
+        await _dio.get('member/feed', queryParameters: queryParameters);
 
     return response;
   }
 
   Future<Response> viewPost({required int postId}) async {
-    Response response = await _dio.post('user/post/$postId/view');
+    Response response = await _dio.post('member/post/$postId/view');
     return response;
   }
 
   Future<Response> likePost({required int postId}) async {
-    Response response = await _dio.post('user/post/$postId/like');
+    Response response = await _dio.post('member/post/$postId/like');
     return response;
   }
 
   Future<Response> cancelLikePost({required int postId}) async {
-    Response response = await _dio.delete('user/post/$postId/like');
+    Response response = await _dio.delete('member/post/$postId/like');
     return response;
   }
 
   Future<Response> voteToPost(
       {required int postId, required int choice}) async {
     Response response =
-        await _dio.post('user/post/$postId/vote', data: {'choice': choice});
+        await _dio.post('member/post/$postId/vote', data: {'choice': choice});
     return response;
   }
 
   //------댓글------
   Future<Response> createComment({required int postId, required text}) async {
-    Response response = await _dio.post('user/post/$postId/comment', data: {
+    Response response = await _dio.post('member/post/$postId/comment', data: {
       'text': text,
     });
     return response;
   }
 
   Future<Response> likeComment({required int commentId}) async {
-    Response response = await _dio.post('user/comment/$commentId/like');
+    Response response = await _dio.post('member/comment/$commentId/like');
     return response;
   }
 
   Future<Response> cancelLikeComment({required int commentId}) async {
-    Response response = await _dio.delete('user/comment/$commentId/like');
+    Response response = await _dio.delete('member/comment/$commentId/like');
     return response;
   }
 
@@ -133,25 +132,108 @@ class UserApiProvider {
 
   Future<Response> createNestedComment(
       {required int commentId, required String text}) async {
-    Response response =
-        await _dio.post('user/comment/$commentId/nested', data: {'text': text});
+    Response response = await _dio
+        .post('member/comment/$commentId/nested', data: {'text': text});
     return response;
   }
 
   Future<Response> likeNestedComment({required int nestedCommentId}) async {
     Response response =
-        await _dio.post('user/comment/nested/$nestedCommentId/like');
+        await _dio.post('member/comment/nested/$nestedCommentId/like');
     return response;
   }
 
   Future<Response> cancelLikeNestedComment(
       {required int nestedCommentId}) async {
     Response response =
-        await _dio.delete('user/comment/nested/$nestedCommentId/like');
+        await _dio.delete('member/comment/nested/$nestedCommentId/like');
     return response;
   }
 
-  //Todo: 자신이 작성한 댓글 수정, 삭제
+  Future<Response> reportPost(
+      {required int postId, required String text}) async {
+    Response response =
+        await _dio.post('member/post/$postId/report', data: {'text': text});
+    return response;
+  }
 
-  //Todo:
+  Future<Response> reportComment(
+      {required int commentId, required String text}) async {
+    Response response = await _dio
+        .post('member/comment/$commentId/report', data: {'text': text});
+    return response;
+  }
+
+  Future<Response> reportNestedComment(
+      {required int nestedCommentId, required String text}) async {
+    Response response = await _dio.post(
+        'member/comment/nested/$nestedCommentId/report',
+        data: {'text': text});
+    return response;
+  }
+
+  Future<Response> deletePost({required int postId}) async {
+    Response response = await _dio.delete('member/post/$postId');
+
+    return response;
+  }
+
+  Future<Response> updateComment(
+      {required int commentId, required String text}) async {
+    Response response =
+        await _dio.put('member/comment/$commentId', data: {'text': text});
+
+    return response;
+  }
+
+  Future<Response> deleteComment({required int commentId}) async {
+    Response response = await _dio.delete('member/comment/$commentId');
+
+    return response;
+  }
+
+  Future<Response> updateNestedComment(
+      {required int nestedCommentId, required String text}) async {
+    Response response = await _dio
+        .put('member/comment/nested/$nestedCommentId', data: {'text': text});
+
+    return response;
+  }
+
+  Future<Response> deleteNestedComment({required int nestedCommentId}) async {
+    Response response =
+        await _dio.delete('member/comment/nested/$nestedCommentId');
+
+    return response;
+  }
+
+  Future<Response> getMyUploadedPost(
+      {int? idCursor, double? scoreCursor}) async {
+    Map<String, dynamic> queryParameters = {};
+    if (scoreCursor != null) queryParameters['score_cursor'] = scoreCursor;
+    if (idCursor != null) queryParameters['id_cursor'] = idCursor;
+    var response = await _dio.get('member/profile/post/my',
+        queryParameters: queryParameters);
+
+    return response;
+  }
+
+  Future<Response> getMyVotedPost({int? idCursor, double? scoreCursor}) async {
+    Map<String, dynamic> queryParameters = {};
+    if (scoreCursor != null) queryParameters['score_cursor'] = scoreCursor;
+    if (idCursor != null) queryParameters['id_cursor'] = idCursor;
+    var response = await _dio.get('member/profile/post/vote',
+        queryParameters: queryParameters);
+
+    return response;
+  }
+
+  Future<Response> getMyComment({int? idCursor}) async {
+    Map<String, dynamic> queryParameters = {};
+    if (idCursor != null) queryParameters['id_cursor'] = idCursor;
+    var response = await _dio.get('member/profile/comment',
+        queryParameters: queryParameters);
+
+    return response;
+  }
 }

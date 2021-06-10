@@ -70,14 +70,14 @@ class DioLoggingInterceptors extends dio.Interceptor {
       dio.Response? resp;
       if (userId == null && currentUser != null) {
         resp = await Dio(dio.BaseOptions(
-          baseUrl: 'http://34.64.204.217:5000/api/',
+          baseUrl: 'http://34.64.204.217/api/',
           connectTimeout: 5000,
           receiveTimeout: 3000,
         )).post('auth/authenticated/access-token',
             data: {'email': currentUser.email});
       } else if (userId != null && currentUser == null) {
         resp = await Dio(BaseOptions(
-          baseUrl: 'http://34.64.204.217:5000/api/',
+          baseUrl: 'http://34.64.204.217/api/',
           connectTimeout: 5000,
           receiveTimeout: 3000,
         )).post('auth/unauthenticated/access-token', data: {'user_id': userId});

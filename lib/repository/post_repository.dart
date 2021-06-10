@@ -6,4 +6,7 @@ class PostRepository {
 
   Future<Response> getCommentList({required int postId, int? idCursor}) async =>
       await postApiProvider.getCommentList(postId: postId, idCursor: idCursor);
+
+  Future<Response> getPostById({required int postId}) async =>
+      await postApiProvider.getPostById(postId: postId);
 }

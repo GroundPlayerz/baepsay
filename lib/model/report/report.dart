@@ -10,7 +10,7 @@ class Report with _$Report {
     required String createdAt,
     required int id,
     required String text,
-    required int userId,
+    required int memberId,
   }) = _Report;
 
   factory Report.fromJson(Map<String, dynamic> json) => _$ReportFromJson(json);

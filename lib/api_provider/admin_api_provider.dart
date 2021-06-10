@@ -21,6 +21,12 @@ class AdminApiProvider {
     return response;
   }
 
+  Future<Response> scoreAllPost() async {
+    Response response = await _dio.get('admin/post/scoring');
+
+    return response;
+  }
+
   Future<Response> getReportedPost(
       {int? reportCountCursor, int? idCursor}) async {
     Map<String, dynamic> queryParameters = {};

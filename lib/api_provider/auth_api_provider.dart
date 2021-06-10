@@ -36,10 +36,10 @@ class AuthApiProvider {
     return false;
   }
 
-  Future<Response> getUnauthenticatedUserAccessToken() async {
-    String? userId = await _secureStorage.read(key: 'user_id');
+  Future<Response> getUnauthenticatedMemberAccessToken() async {
+    String? memberId = await _secureStorage.read(key: 'member_id');
     var response = await _dio.post('auth/unauthenticated/access-token', data: {
-      'user_id': userId,
+      'member_id': memberId,
     });
     return response;
   }

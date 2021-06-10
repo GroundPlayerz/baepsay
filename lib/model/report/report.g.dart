@@ -11,7 +11,7 @@ _$_Report _$_$_ReportFromJson(Map<String, dynamic> json) {
     createdAt: json['created_at'] as String,
     id: json['id'] as int,
     text: json['text'] as String,
-    userId: json['user_id'] as int,
+    memberId: json['member_id'] as int,
   );
 }
 
@@ -19,5 +19,5 @@ Map<String, dynamic> _$_$_ReportToJson(_$_Report instance) => <String, dynamic>{
       'created_at': instance.createdAt,
       'id': instance.id,
       'text': instance.text,
-      'user_id': instance.userId,
+      'member_id': instance.memberId,
     };

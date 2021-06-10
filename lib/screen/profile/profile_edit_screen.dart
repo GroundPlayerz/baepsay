@@ -105,7 +105,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                     Uint8List? imageBytes;
                     if (uploadMediaModel.mediaFile != null) {
                       imageBytes = await BlocProvider.of<UploadCubit>(context)
-                          .compressImage(
+                          .compressProfileImage(
                               imageFile: uploadMediaModel.mediaFile!);
                     }
                     BlocProvider.of<UploadCubit>(context).uploadProfile(
@@ -143,12 +143,12 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                             children: [
                               Text('프로필 사진'),
                               Builder(builder: (context) {
-                                if (authState.user.profilePhotoUrl != null &&
+                                if (authState.member.profilePhotoUrl != null &&
                                     uploadMediaModel.mediaFile == null) {
                                   return CircleAvatar(
                                     radius: 24,
                                     foregroundImage: CachedNetworkImageProvider(
-                                      authState.user.profilePhotoUrl!,
+                                      authState.member.profilePhotoUrl!,
                                     ),
                                     backgroundColor: Colors.white,
                                   );
