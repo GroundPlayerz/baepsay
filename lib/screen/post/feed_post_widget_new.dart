@@ -1,12 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
+import 'package:golden_balance_flutter/model/member/member.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
+import 'package:golden_balance_flutter/screen/post/post_report_screen.dart';
 
 class FeedPostWidgetNew extends StatefulWidget {
   final int postIndex;
@@ -331,7 +334,46 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
                                   color: kIconGreyColor_CBCBCB,
                                 ),
                                 onPressed: () {
-                                  //Todo
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Builder(builder: (context) {
+                                              Member? currentMember =
+                                                  BlocProvider.of<AuthCubit>(
+                                                          context)
+                                                      .getCurrentMember();
+                                              if (currentMember != null &&
+                                                  (post.authorId ==
+                                                          currentMember.id ||
+                                                      currentMember.role ==
+                                                          'admin')) {
+                                                return ListTile(
+                                                  onTap: () {},
+                                                  leading: Icon(Icons.delete),
+                                                  title: Text('삭제'),
+                                                );
+                                              } else {
+                                                return ListTile(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                PostReportScreen(
+                                                                    postId: post
+                                                                        .id)));
+                                                  },
+                                                  leading: Icon(Icons.report),
+                                                  title: Text('신고하기'),
+                                                );
+                                              }
+                                            }),
+                                          ],
+                                        );
+                                      });
                                 }),
                           ],
                         ),

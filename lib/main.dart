@@ -9,6 +9,7 @@ import 'package:golden_balance_flutter/bloc/cubit/my_post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/my_voted_post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/post_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/report_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
 import 'package:golden_balance_flutter/repository/admin_repository.dart';
@@ -85,7 +86,7 @@ class GoldenBalance extends StatelessWidget {
         BlocProvider<PostCubit>(
             create: (_) => PostCubit(
                 postRepository: PostRepository(),
-                userRepository: MemberRepository())),
+                memberRepository: MemberRepository())),
         BlocProvider<MyPostCubit>(
             create: (_) => MyPostCubit(userRepository: MemberRepository())),
         BlocProvider<MyVotedPostCubit>(
@@ -94,6 +95,8 @@ class GoldenBalance extends StatelessWidget {
         BlocProvider<MyCommentCubit>(
             create: (_) =>
                 MyCommentCubit(memberRepository: MemberRepository())),
+        BlocProvider<ReportCubit>(
+            create: (_) => ReportCubit(memberRepository: MemberRepository())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

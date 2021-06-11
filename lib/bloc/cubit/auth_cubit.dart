@@ -80,6 +80,38 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  int? getMemberId() {
+    try {
+      if (state is FirebaseSignedIn) {
+        final parsedState = (state as FirebaseSignedIn);
+
+        return parsedState.member.id;
+      } else if (state is DeviceSignedIn) {
+        final parsedState = (state as DeviceSignedIn);
+
+        return parsedState.member.id;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Member? getCurrentMember() {
+    try {
+      if (state is FirebaseSignedIn) {
+        final parsedState = (state as FirebaseSignedIn);
+
+        return parsedState.member;
+      } else if (state is DeviceSignedIn) {
+        final parsedState = (state as DeviceSignedIn);
+
+        return parsedState.member;
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   Future<void> getUnauthenticatedMemberAccessToken() async {
     try {
       final resp = await repository.getUnauthenticatedUserAccessToken();

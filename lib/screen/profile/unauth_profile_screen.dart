@@ -40,32 +40,20 @@ class _UnauthProfileScreenState extends State<UnauthProfileScreen> {
                   showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return SafeArea(
-                          child: Container(
-                            height: 150,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                    child: TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    '프로필 편집',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                )),
-                                Expanded(
-                                    child: TextButton(
-                                  onPressed: () {},
-                                  child: Text(
-                                    '설정',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                )),
-                              ],
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              title: Text('프로필 편집'),
+                              leading: Icon(Icons.edit),
+                              onTap: () {},
                             ),
-                          ),
+                            ListTile(
+                              title: Text('설정'),
+                              leading: Icon(Icons.settings),
+                              onTap: () {},
+                            ),
+                          ],
                         );
                       });
                 }),

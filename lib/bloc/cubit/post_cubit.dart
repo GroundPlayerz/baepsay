@@ -6,10 +6,10 @@ import 'package:golden_balance_flutter/repository/post_repository.dart';
 import 'package:golden_balance_flutter/repository/member_repository.dart';
 
 class PostCubit extends Cubit<PostState> {
-  final MemberRepository userRepository;
+  final MemberRepository memberRepository;
   final PostRepository postRepository;
 
-  PostCubit({required this.userRepository, required this.postRepository})
+  PostCubit({required this.memberRepository, required this.postRepository})
       : super(Empty());
 
   void setEmptyState() {
@@ -34,7 +34,7 @@ class PostCubit extends Cubit<PostState> {
     try {
       if (state is Loaded) {
         final parsedState = (state as Loaded);
-        await userRepository.viewPost(postId: parsedState.post.id);
+        await memberRepository.viewPost(postId: parsedState.post.id);
       }
     } catch (e) {
       emit(Error(message: e.toString()));
@@ -59,7 +59,7 @@ class PostCubit extends Cubit<PostState> {
 
         emit(Loaded(post: changedPost));
 
-        await userRepository.voteToPost(postId: prevPost.id, choice: choice);
+        await memberRepository.voteToPost(postId: prevPost.id, choice: choice);
       }
     } catch (e) {
       emit(Error(message: e.toString()));
@@ -81,9 +81,9 @@ class PostCubit extends Cubit<PostState> {
         }
         emit(Loaded(post: changedPost));
         if (changedPost.memberLikeCount == 0) {
-          await userRepository.cancelLikePost(postId: changedPost.id);
+          await memberRepository.cancelLikePost(postId: changedPost.id);
         } else {
-          await userRepository.likePost(postId: changedPost.id);
+          await memberRepository.likePost(postId: changedPost.id);
         }
       }
     } catch (e) {
