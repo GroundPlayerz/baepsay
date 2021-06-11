@@ -115,6 +115,11 @@ class GoldenBalance extends StatelessWidget {
             bodyText2: kDefaultBody2TextStyle,
           ),
           primarySwatch: createMaterialColor(kAccentPinkColor),
+          dividerTheme: DividerThemeData(
+            space: 0.5,
+            thickness: 0.5,
+            color: kIconGreyColor_CBCBCB,
+          ),
         ),
         home: SplashScreen(),
       ),

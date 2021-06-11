@@ -297,6 +297,8 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
                       AppBar().preferredSize.height -
                       safeAreaVerticalHeight -
                       15),
+
+              //Rounded 컨테이너
               child: Container(
                 margin:
                     EdgeInsets.symmetric(horizontal: outerHorizontalPadding),

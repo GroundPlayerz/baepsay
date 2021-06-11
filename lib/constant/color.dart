@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 const Color kBackgroundGreyColor = Color(0xfffafafa);
 const Color kAccentPinkColor = Color(0xffea425d);
 const Color kBlackColor = Colors.black;
+const Color kWhiteColor = Colors.white;
 
 const Color kGreyColor1_767676 = Color(0xff767676);
 const Color kGreyColor2_999999 = Color(0xff999999);
 
 const Color kIconGreyColor_CBCBCB = Color(0xffCBCBCB);
+const Color kLightGreyColor_F4F4F4 = Color(0xffF4F4F4);
 
 const Color kBackgroundNavyColor = Color(0xff0F0F31);
-const Color kWhiteColor = Colors.white;
 
 LinearGradient kPostGradient70 = LinearGradient(
   begin: Alignment.centerLeft,

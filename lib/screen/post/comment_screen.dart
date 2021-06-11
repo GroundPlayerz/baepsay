@@ -68,16 +68,19 @@ class _CommentScreenState extends State<CommentScreen> {
         onTapOutsideOfTextField();
       },
       child: Scaffold(
+        backgroundColor: kWhiteColor,
         appBar: AppBar(
+          backgroundColor: kWhiteColor,
           automaticallyImplyLeading: false,
-          titleSpacing: 10,
+          centerTitle: false,
+          titleSpacing: 20,
           elevation: 0,
           title: BlocBuilder<CommentScreenCubit, CommentScreenState>(
             builder: (context, commentScreenState) {
               if (commentScreenState is CommentScreenLoaded) {
                 return Row(
                   children: [
-                    Text('댓글  ', style: kNoto18B.copyWith(fontSize: 20.0)),
+                    Text('의견  ', style: kNoto18B.copyWith(fontSize: 20.0)),
                     Text(postCommentCount.toString(),
                         style: kSkia18B.copyWith(fontSize: 18.0)),
                   ],
@@ -98,10 +101,14 @@ class _CommentScreenState extends State<CommentScreen> {
               child: Text(
                 '닫기',
                 style: kNoto16R.copyWith(
-                    fontSize: 14.0, color: kWhiteColor.withOpacity(0.7)),
+                    fontSize: 14.0, color: kGreyColor1_767676),
               ),
             ),
           ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(0.5),
+            child: Divider(),
+          ),
         ),
         body: SafeArea(
           child: Column(
@@ -109,7 +116,7 @@ class _CommentScreenState extends State<CommentScreen> {
             children: [
               //Todo: 광고 영역
               Container(
-                color: Colors.white54,
+                color: Colors.grey,
                 width: MediaQuery.of(context).size.width,
                 height: 75,
                 child: Center(child: Text('광고 영역')),
@@ -148,14 +155,13 @@ class _CommentScreenState extends State<CommentScreen> {
                               (BuildContext context, int commentIndex) {
                             if (commentIndex <
                                 commentScreenState.commentList.length) {
-                              return Padding(
-                                padding: EdgeInsets.only(
-                                    left: 16,
-                                    top: commentIndex == 0 ? 17 : 7,
-                                    bottom: 7),
-                                child: CommentWidget(
-                                  commentIndex: commentIndex,
-                                ),
+                              return Column(
+                                children: [
+                                  CommentWidget(
+                                    commentIndex: commentIndex,
+                                  ),
+                                  Divider(indent: 20),
+                                ],
                               );
                             }
 
@@ -188,14 +194,13 @@ class _CommentScreenState extends State<CommentScreen> {
 
               //댓글 입력 textfield
               Container(
-                //color: Colors.grey,
                 child: SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: 16, right: 16, bottom: 5, top: 5),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
+                        color: kLightGreyColor_F4F4F4,
                         borderRadius: BorderRadius.circular(24),
                       ),
                       child: Row(
@@ -231,7 +236,7 @@ class _CommentScreenState extends State<CommentScreen> {
                                           kCommentScreenTextFieldHintTextStyle,
                                       contentPadding: EdgeInsets.only(
                                           left: 18, top: 3, bottom: 3),
-                                      hintText: '댓글 쓰기',
+                                      hintText: '당신의 의견을 말해주세요..',
                                       border: InputBorder.none,
                                     ),
                                   ),
