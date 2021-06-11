@@ -85,7 +85,7 @@ class _CommentScreenState extends State<CommentScreen> {
               } else if (commentScreenState is CommentScreenError) {
                 print(commentScreenState.message);
               } else if (commentScreenState is CommentScreenInitialLoading) {
-                return Text('댓글  ', style: kNoto18B.copyWith(fontSize: 20.0));
+                return Text('의견  ', style: kNoto18B.copyWith(fontSize: 20.0));
               }
               return Text(commentScreenState.toString());
             },

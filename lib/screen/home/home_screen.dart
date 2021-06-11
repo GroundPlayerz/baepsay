@@ -22,6 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isForYouSelected = true;
   bool isStateChecked = false;
 
+  bool isSafeAreaHeightsInitialized = false;
+  late final double safeAreaVerticalHeight;
+  late final double safeAreaTopHeight;
   @override
   void initState() {
     super.initState();
@@ -30,7 +33,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (!isSafeAreaHeightsInitialized) {
+      safeAreaVerticalHeight = MediaQuery.of(context).padding.vertical;
+      print('safeAreaVerticalHeight: ' + safeAreaVerticalHeight.toString());
+      safeAreaTopHeight = MediaQuery.of(context).padding.top;
+      isSafeAreaHeightsInitialized = true;
+    }
+
     final PageController pageController = PageController(initialPage: 0);
+    //print(MediaQuery.of(context).padding.vertical);
     return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
       return Scaffold(
         appBar: AppBar(
@@ -86,8 +97,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 clipBehavior: Clip.antiAlias,
                 child: authState is FirebaseSignedIn &&
                         authState.member.profilePhotoUrl != null
-                    ? CachedNetworkImage(
-                        imageUrl: authState.member.profilePhotoUrl!,
+                    ? CircleAvatar(
+                        radius: 24,
+                        foregroundImage: CachedNetworkImageProvider(
+                          authState.member.profilePhotoUrl!,
+                        ),
+                        backgroundColor: Colors.white,
                       )
                     : Image.asset('images/default_profile_photo.png'),
               ),
@@ -141,12 +156,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: ListView(children: [
                       Container(
                         height: MediaQuery.of(context).size.height -
-                            (MediaQuery.of(context).padding.top +
-                                AppBar().preferredSize.height),
+                            (safeAreaTopHeight + AppBar().preferredSize.height),
                         width: double.infinity,
                         child: FeedPostWidgetNew(
-                          postIndex: index,
-                        ),
+                            postIndex: index,
+                            safeAreaTopHeight: safeAreaTopHeight,
+                            safeAreaVerticalHeight: safeAreaVerticalHeight),
                       ),
                     ]),
                   );
