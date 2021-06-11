@@ -60,21 +60,20 @@ class _CommentWidgetState extends State<CommentWidget> {
           });
         },
         child: Padding(
-          padding: EdgeInsets.only(left: 8, right: 16, top: 2),
-          child: Column(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
             children: [
               comment.memberLikeCount == 0
                   ? Icon(Icons.favorite_border_rounded,
-                      size: photoWidth, color: kWhiteColor.withOpacity(0.7))
+                      size: photoWidth, color: kIconGreyColor_CBCBCB)
                   : Icon(Icons.favorite_rounded,
                       size: photoWidth, color: kAccentPinkColor),
-              //SizedBox(width: 4),
+              SizedBox(width: 10),
               (comment.likeCount == 0)
                   ? Text('')
                   : Text(comment.likeCount.toString(),
-                      style: kPostInfoNumberTextStyleOld.copyWith(
-                          fontSize: 14.0,
-                          color: Colors.white.withOpacity(0.7))),
+                      style: kCommentTextTextStyle.copyWith(
+                          color: kGreyColor1_767676)),
             ],
           ),
         ),
@@ -88,110 +87,117 @@ class _CommentWidgetState extends State<CommentWidget> {
         Comment comment = state.commentList[commentIndex];
 
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 20,
-                      height: 20,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7.0),
-                          color: Colors.grey),
-                      child: comment.profilePhotoUrl != null
-                          ? Image.network(comment.profilePhotoUrl!)
-                          : Image.asset('images/default_profile_photo.png'),
-                    ),
-                    SizedBox(width: sizeboxWidthBetweenPhotoAndName),
-                    SizedBox(
-                      width:
-                          MediaQuery.of(context).size.width - sumConstantsWidth,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: 0),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
                         children: [
-                          Text(
-                            comment.profileName +
-                                '     ' +
-                                _createdOrUpdatedAt(comment: comment)
-                                    .split(' ')[0]
-                                    .split('T')[0]
-                                    .replaceAll('-', '/'),
-                            style: kCommentInfoTextStyle.copyWith(
-                                color: kWhiteColor.withOpacity(0.7)),
+                          Container(
+                            width: 24,
+                            height: 24,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.grey),
+                            child: comment.profilePhotoUrl != null
+                                ? Image.network(comment.profilePhotoUrl!)
+                                : Image.asset(
+                                    'images/default_profile_photo.png'),
                           ),
-                          SizedBox(height: 4),
-                          Text(
-                            comment.text,
-                            style: kCommentTextTextStyle,
-                            softWrap: true,
+                          SizedBox(width: sizeboxWidthBetweenPhotoAndName),
+                          RichText(
+                            text: TextSpan(
+                              text: comment.profileName + '     ',
+                              style: kCommentTextTextStyle,
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text: _createdOrUpdatedAt(comment: comment)
+                                      .split(' ')[0]
+                                      .split('T')[0]
+                                      .replaceAll('-', '.'),
+                                  style: kCommentInfoTextStyle.copyWith(
+                                      color: kGreyColor2_999999),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(width: 8),
-                  ],
-                ),
-                _likeButton(comment: comment),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 25),
-              child: Row(
-                children: [
-                  //대댓 열기 버튼
-                  comment.nestedCommentCount != 0
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 0.0),
-                          child: GestureDetector(
+                      Row(
+                        children: [
+                          //더보기 버튼
+                          GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => NestedCommentScreen(
-                                            commentId: comment.id,
-                                            commentIndex: commentIndex,
-                                          )));
+                              //Todo
                             },
+                            behavior: HitTestBehavior.opaque,
                             child: Padding(
-                              padding: EdgeInsets.all(6.0),
-                              child: Text(
-                                '대댓 보기(' +
-                                    comment.nestedCommentCount.toString() +
-                                    ')',
-                                style: kNestedCommentButtonsTextStyle.copyWith(
-                                    color: kWhiteColor.withOpacity(0.6)),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 13, horizontal: 10),
+                              child: SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: Icon(
+                                  Icons.more_horiz_sharp,
+                                  color: kIconGreyColor_CBCBCB,
+                                ),
                               ),
                             ),
                           ),
-                        )
-                      : SizedBox(height: 0),
-                  //대댓 쓰기 버튼
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => NestedCommentScreen(
-                                    commentId: comment.id,
-                                    commentIndex: commentIndex,
-                                  )));
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.all(6),
-                      child: Text(
-                        '대댓 쓰기',
-                        style: kNestedCommentButtonsTextStyle.copyWith(
-                            color: kWhiteColor.withOpacity(0.6)),
+                          SizedBox(
+                            width: 10,
+                          ),
+                        ],
                       ),
-                    ),
+                    ],
                   ),
+                  Text(
+                    comment.text,
+                    style: kCommentTextTextStyle,
+                    softWrap: true,
+                  ),
+                  SizedBox(height: 10),
                 ],
               ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                _likeButton(comment: comment),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NestedCommentScreen(
+                                  commentId: comment.id,
+                                  commentIndex: commentIndex,
+                                )));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Row(
+                      children: [
+                        Icon(Icons.mode_comment_outlined,
+                            size: photoWidth, color: kIconGreyColor_CBCBCB),
+                        SizedBox(width: 10),
+                        (comment.nestedCommentCount == 0)
+                            ? Text('')
+                            : Text(comment.likeCount.toString() + '개 답글',
+                                style: kCommentTextTextStyle),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         );
