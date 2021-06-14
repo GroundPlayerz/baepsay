@@ -29,6 +29,7 @@ class _MyCommentListWidgetState extends State<MyCommentListWidget> {
               BlocProvider.of<MyCommentCubit>(context).getInitialCommentList();
             },
             child: ListView.builder(
+                shrinkWrap: true,
                 itemCount: state.commentList.length + 1,
                 itemBuilder: (BuildContext context, int index) {
                   if (index < state.commentList.length) {

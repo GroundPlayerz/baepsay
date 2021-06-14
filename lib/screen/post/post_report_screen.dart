@@ -39,12 +39,21 @@ class _PostReportScreenState extends State<PostReportScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('어젠다 신고하기'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                if (controller.text.isNotEmpty) {
+                  BlocProvider.of<ReportCubit>(context)
+                      .reportPost(postId: postId, text: controller.text.trim());
+                }
+              },
+              child: Text('완료')),
+        ],
       ),
       body: BlocListener<ReportCubit, ReportState>(
         listener: (context, state) {
           if (state is Success) {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.pop(context);
           } else if (state is Error) {
             Fluttertoast.showToast(
               msg: '문제가 발생하였습니다.',
@@ -55,34 +64,32 @@ class _PostReportScreenState extends State<PostReportScreen> {
               textColor: Colors.white,
               fontSize: 16.0,
             );
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => HomeScreen()));
+            Navigator.pop(context);
           }
         },
-        child: Column(
+        child: ListView(
           children: [
-            Text('어떤 점이 불편하신가요? 신고 내용을 적어주세요.'),
             Container(
-              height: 300,
-              decoration: BoxDecoration(
-                shape: BoxShape.rectangle,
-                border: Border.all(
-                  color: Colors.black,
-                  width: 1.0,
-                ),
-              ),
-              child: TextField(
-                controller: controller,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
+              padding: EdgeInsets.all(10.0),
+              child: Text(
+                '어떤 점이 불편하신가요? 신고 내용을 적어주세요.',
+                style: TextStyle(fontSize: 18),
               ),
             ),
-            TextButton(
-                onPressed: () {
-                  BlocProvider.of<ReportCubit>(context)
-                      .reportPost(postId: postId, text: controller.text.trim());
-                },
-                child: Text('신고하기'))
+            SizedBox(
+              height: 10,
+            ),
+            Padding(
+              padding: EdgeInsets.all(10.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                ),
+                controller: controller,
+                keyboardType: TextInputType.multiline,
+                maxLines: 20,
+              ),
+            ),
           ],
         ),
       ),

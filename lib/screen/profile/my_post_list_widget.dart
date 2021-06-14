@@ -31,6 +31,7 @@ class _MyPostListWidgetState extends State<MyPostListWidget> {
               BlocProvider.of<MyPostCubit>(context).getInitialPostList();
             },
             child: ListView.builder(
+                shrinkWrap: true,
                 itemCount: state.postList.length + 1,
                 itemBuilder: (BuildContext context, int index) {
                   if (index < state.postList.length) {
