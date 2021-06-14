@@ -73,6 +73,9 @@ class _MyPostListWidgetState extends State<MyPostListWidget> {
                                 height: 5,
                               ),
                               Text(post.createdAt.split('T')[0]),
+                              SizedBox(
+                                height: 5,
+                              ),
                               Divider()
                             ]),
                       ),

@@ -18,6 +18,7 @@ import 'package:golden_balance_flutter/repository/post_repository.dart';
 import 'package:golden_balance_flutter/screen/splash_screen.dart';
 
 import 'bloc/cubit/admin_feed_cubit.dart';
+import 'bloc/cubit/admin_scoring_cubit.dart';
 import 'bloc/cubit/auth_cubit.dart';
 import 'bloc/cubit/upload_cubit.dart';
 import 'constant/color.dart';
@@ -97,6 +98,9 @@ class GoldenBalance extends StatelessWidget {
                 MyCommentCubit(memberRepository: MemberRepository())),
         BlocProvider<ReportCubit>(
             create: (_) => ReportCubit(memberRepository: MemberRepository())),
+        BlocProvider<AdminScoringCubit>(
+            create: (_) =>
+                AdminScoringCubit(adminRepository: AdminRepository())),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

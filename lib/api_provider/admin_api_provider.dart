@@ -22,7 +22,7 @@ class AdminApiProvider {
   }
 
   Future<Response> scoreAllPost() async {
-    Response response = await _dio.get('admin/post/scoring');
+    Response response = await _dio.post('admin/post/scoring');
 
     return response;
   }

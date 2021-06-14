@@ -29,6 +29,7 @@ class _$CommentTearOff {
       required int likeCount,
       required int nestedCommentCount,
       required String createdAt,
+      required String postTitle,
       String? updatedAt,
       required int memberLikeCount}) {
     return _Comment(
@@ -40,6 +41,7 @@ class _$CommentTearOff {
       likeCount: likeCount,
       nestedCommentCount: nestedCommentCount,
       createdAt: createdAt,
+      postTitle: postTitle,
       updatedAt: updatedAt,
       memberLikeCount: memberLikeCount,
     );
@@ -63,6 +65,7 @@ mixin _$Comment {
   int get likeCount => throw _privateConstructorUsedError;
   int get nestedCommentCount => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
+  String get postTitle => throw _privateConstructorUsedError;
   String? get updatedAt => throw _privateConstructorUsedError; //[nullable]
   int get memberLikeCount => throw _privateConstructorUsedError;
 
@@ -84,6 +87,7 @@ abstract class $CommentCopyWith<$Res> {
       int likeCount,
       int nestedCommentCount,
       String createdAt,
+      String postTitle,
       String? updatedAt,
       int memberLikeCount});
 }
@@ -106,6 +110,7 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
     Object? likeCount = freezed,
     Object? nestedCommentCount = freezed,
     Object? createdAt = freezed,
+    Object? postTitle = freezed,
     Object? updatedAt = freezed,
     Object? memberLikeCount = freezed,
   }) {
@@ -142,6 +147,10 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
+      postTitle: postTitle == freezed
+          ? _value.postTitle
+          : postTitle // ignore: cast_nullable_to_non_nullable
+              as String,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -168,6 +177,7 @@ abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
       int likeCount,
       int nestedCommentCount,
       String createdAt,
+      String postTitle,
       String? updatedAt,
       int memberLikeCount});
 }
@@ -191,6 +201,7 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
     Object? likeCount = freezed,
     Object? nestedCommentCount = freezed,
     Object? createdAt = freezed,
+    Object? postTitle = freezed,
     Object? updatedAt = freezed,
     Object? memberLikeCount = freezed,
   }) {
@@ -227,6 +238,10 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as String,
+      postTitle: postTitle == freezed
+          ? _value.postTitle
+          : postTitle // ignore: cast_nullable_to_non_nullable
+              as String,
       updatedAt: updatedAt == freezed
           ? _value.updatedAt
           : updatedAt // ignore: cast_nullable_to_non_nullable
@@ -252,6 +267,7 @@ class _$_Comment implements _Comment {
       required this.likeCount,
       required this.nestedCommentCount,
       required this.createdAt,
+      required this.postTitle,
       this.updatedAt,
       required this.memberLikeCount});
 
@@ -275,13 +291,15 @@ class _$_Comment implements _Comment {
   @override
   final String createdAt;
   @override
+  final String postTitle;
+  @override
   final String? updatedAt;
   @override //[nullable]
   final int memberLikeCount;
 
   @override
   String toString() {
-    return 'Comment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, postId: $postId, text: $text, likeCount: $likeCount, nestedCommentCount: $nestedCommentCount, createdAt: $createdAt, updatedAt: $updatedAt, memberLikeCount: $memberLikeCount)';
+    return 'Comment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, postId: $postId, text: $text, likeCount: $likeCount, nestedCommentCount: $nestedCommentCount, createdAt: $createdAt, postTitle: $postTitle, updatedAt: $updatedAt, memberLikeCount: $memberLikeCount)';
   }
 
   @override
@@ -309,6 +327,9 @@ class _$_Comment implements _Comment {
             (identical(other.createdAt, createdAt) ||
                 const DeepCollectionEquality()
                     .equals(other.createdAt, createdAt)) &&
+            (identical(other.postTitle, postTitle) ||
+                const DeepCollectionEquality()
+                    .equals(other.postTitle, postTitle)) &&
             (identical(other.updatedAt, updatedAt) ||
                 const DeepCollectionEquality()
                     .equals(other.updatedAt, updatedAt)) &&
@@ -328,6 +349,7 @@ class _$_Comment implements _Comment {
       const DeepCollectionEquality().hash(likeCount) ^
       const DeepCollectionEquality().hash(nestedCommentCount) ^
       const DeepCollectionEquality().hash(createdAt) ^
+      const DeepCollectionEquality().hash(postTitle) ^
       const DeepCollectionEquality().hash(updatedAt) ^
       const DeepCollectionEquality().hash(memberLikeCount);
 
@@ -352,6 +374,7 @@ abstract class _Comment implements Comment {
       required int likeCount,
       required int nestedCommentCount,
       required String createdAt,
+      required String postTitle,
       String? updatedAt,
       required int memberLikeCount}) = _$_Comment;
 
@@ -373,6 +396,8 @@ abstract class _Comment implements Comment {
   int get nestedCommentCount => throw _privateConstructorUsedError;
   @override
   String get createdAt => throw _privateConstructorUsedError;
+  @override
+  String get postTitle => throw _privateConstructorUsedError;
   @override
   String? get updatedAt => throw _privateConstructorUsedError;
   @override //[nullable]

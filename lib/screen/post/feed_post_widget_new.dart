@@ -339,41 +339,43 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
                                   showModalBottomSheet(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Builder(builder: (context) {
-                                              Member? currentMember =
-                                                  BlocProvider.of<AuthCubit>(
-                                                          context)
-                                                      .getCurrentMember();
-                                              if (currentMember != null &&
-                                                  (post.authorId ==
-                                                          currentMember.id ||
-                                                      currentMember.role ==
-                                                          'admin')) {
-                                                return ListTile(
-                                                  onTap: () {},
-                                                  leading: Icon(Icons.delete),
-                                                  title: Text('삭제'),
-                                                );
-                                              } else {
-                                                return ListTile(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                PostReportScreen(
-                                                                    postId: post
-                                                                        .id)));
-                                                  },
-                                                  leading: Icon(Icons.report),
-                                                  title: Text('신고하기'),
-                                                );
-                                              }
-                                            }),
-                                          ],
+                                        return SafeArea(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Builder(builder: (context) {
+                                                Member? currentMember =
+                                                    BlocProvider.of<AuthCubit>(
+                                                            context)
+                                                        .getCurrentMember();
+                                                if (currentMember != null &&
+                                                    (post.authorId ==
+                                                            currentMember.id ||
+                                                        currentMember.role ==
+                                                            'admin')) {
+                                                  return ListTile(
+                                                    onTap: () {},
+                                                    leading: Icon(Icons.delete),
+                                                    title: Text('삭제'),
+                                                  );
+                                                } else {
+                                                  return ListTile(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  PostReportScreen(
+                                                                      postId: post
+                                                                          .id)));
+                                                    },
+                                                    leading: Icon(Icons.report),
+                                                    title: Text('신고하기'),
+                                                  );
+                                                }
+                                              }),
+                                            ],
+                                          ),
                                         );
                                       });
                                 }),

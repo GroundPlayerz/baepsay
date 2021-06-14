@@ -34,6 +34,7 @@ class _MyCommentListWidgetState extends State<MyCommentListWidget> {
                   if (index < state.commentList.length) {
                     final Comment comment = state.commentList[index];
                     return GestureDetector(
+                      behavior: HitTestBehavior.translucent,
                       onTap: () {
                         Navigator.push(
                             context,
@@ -41,14 +42,31 @@ class _MyCommentListWidgetState extends State<MyCommentListWidget> {
                                 builder: (context) =>
                                     SinglePostWidget(postId: comment.postId)));
                       },
-                      child: Card(
-                        color: Colors.green,
+                      child: Container(
+                        padding: EdgeInsets.all(10),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('댓글 내용: ' + comment.text),
-                              Text('생성일: ' + comment.createdAt),
+                              Text(
+                                comment.text,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(comment.createdAt.split('T')[0]),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(comment.postTitle),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Divider()
                             ]),
                       ),
                     );

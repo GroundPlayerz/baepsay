@@ -16,6 +16,7 @@ _$_Comment _$_$_CommentFromJson(Map<String, dynamic> json) {
     likeCount: json['like_count'] as int,
     nestedCommentCount: json['nested_comment_count'] as int,
     createdAt: json['created_at'] as String,
+    postTitle: json['post_title'] as String,
     updatedAt: json['updated_at'] as String?,
     memberLikeCount: json['member_like_count'] as int,
   );
@@ -31,6 +32,7 @@ Map<String, dynamic> _$_$_CommentToJson(_$_Comment instance) =>
       'like_count': instance.likeCount,
       'nested_comment_count': instance.nestedCommentCount,
       'created_at': instance.createdAt,
+      'post_title': instance.postTitle,
       'updated_at': instance.updatedAt,
       'member_like_count': instance.memberLikeCount,
     };

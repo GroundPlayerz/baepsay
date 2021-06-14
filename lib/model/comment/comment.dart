@@ -15,6 +15,7 @@ class Comment with _$Comment {
     required int likeCount,
     required int nestedCommentCount,
     required String createdAt,
+    required String postTitle,
     String? updatedAt, //[nullable]
     required int memberLikeCount,
   }) = _Comment;

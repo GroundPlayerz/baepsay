@@ -71,6 +71,9 @@ class _MyVotedPostListWidgetState extends State<MyVotedPostListWidget> {
                                 height: 5,
                               ),
                               Text(post.createdAt.split('T')[0]),
+                              SizedBox(
+                                height: 5,
+                              ),
                               Divider()
                             ]),
                       ),

@@ -38,32 +38,34 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
                   showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ListTile(
-                              title: Text('프로필 편집'),
-                              leading: Icon(Icons.edit),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            ProfileEditScreen()));
-                              },
-                            ),
-                            ListTile(
-                              title: Text('설정'),
-                              leading: Icon(Icons.settings),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SettingsScreen()));
-                              },
-                            ),
-                          ],
+                        return SafeArea(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                title: Text('프로필 편집'),
+                                leading: Icon(Icons.edit),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProfileEditScreen()));
+                                },
+                              ),
+                              ListTile(
+                                title: Text('설정'),
+                                leading: Icon(Icons.settings),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              SettingsScreen()));
+                                },
+                              ),
+                            ],
+                          ),
                         );
                       });
                 }),
@@ -74,18 +76,16 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
             if (state is FirebaseSignedIn) {
               return Column(
                 children: [
-                  Row(children: [
-                    Expanded(child: Text(state.member.profileName)),
-                    state.member.profilePhotoUrl != null
-                        ? CircleAvatar(
-                            radius: 24,
-                            foregroundImage: CachedNetworkImageProvider(
-                              state.member.profilePhotoUrl!,
-                            ),
-                            backgroundColor: Colors.white,
-                          )
-                        : Container(),
-                  ]),
+                  state.member.profilePhotoUrl != null
+                      ? CircleAvatar(
+                          radius: 24,
+                          foregroundImage: CachedNetworkImageProvider(
+                            state.member.profilePhotoUrl!,
+                          ),
+                          backgroundColor: Colors.white,
+                        )
+                      : Container(),
+                  Text(state.member.profileName),
                   state.member.role == 'admin'
                       ? TextButton(
                           onPressed: () {
@@ -123,7 +123,7 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
                     ],
                   ),
                   Container(
-                    height: 500,
+                    height: 400,
                     child: Builder(builder: (context) {
                       if (selectedTab == 0) {
                         return MyPostListWidget();
