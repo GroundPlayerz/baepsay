@@ -108,6 +108,25 @@ class CommentScreenCubit extends Cubit<CommentScreenState> {
     }
   }
 
+  void deleteComment({required int commentIndex}) async {
+    try {
+      if (state is CommentScreenLoaded) {
+        final parsedState = (state as CommentScreenLoaded);
+        final hasMore = parsedState.hasMore;
+        List<Comment> commentList = [...parsedState.commentList];
+        Comment comment = commentList[commentIndex];
+        commentList.removeAt(commentIndex);
+        emit(CommentScreenLoaded(
+            commentList: commentList, hasMore: hasMore, isLoadingMore: false));
+        await memberRepository.deleteComment(commentId: comment.id);
+      }
+    } catch (e) {
+      emit(CommentScreenError(message: e.toString()));
+    }
+  }
+
+  void updateComment({required int commentIndex, required String text}) async {}
+
   Future<void> createComment({required int postId, required text}) async {
     try {
       if (state is CommentScreenLoaded) {

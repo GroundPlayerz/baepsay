@@ -10,6 +10,7 @@ class NestedComment with _$NestedComment {
     required int id,
     required String profileName,
     required String? profilePhotoUrl,
+    required int memberId,
     required int commentId,
     required String text,
     required int likeCount,

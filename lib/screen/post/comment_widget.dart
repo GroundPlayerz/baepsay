@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
+import 'package:golden_balance_flutter/screen/post/comment_report_screen.dart';
 import 'package:golden_balance_flutter/screen/post/nested_comment_screen.dart';
+import 'package:golden_balance_flutter/util/widget.dart';
 
 class CommentWidget extends StatefulWidget {
   //Comment comment;
@@ -167,7 +170,63 @@ class _CommentWidgetState extends State<CommentWidget> {
                           //더보기 버튼
                           GestureDetector(
                             onTap: () {
-                              //Todo
+                              //Todo 다른사람 댓글이면 신고하기, 내 댓글이면 수정하기, 삭제하기 일단 요청을 보내고 프론트에서만 처리하기
+                              int? currentMemberId =
+                                  BlocProvider.of<AuthCubit>(context)
+                                      .getMemberId();
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SafeArea(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          ListTile(
+                                            title: Text('신고하기'),
+                                            leading: Icon(Icons.report),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          CommentReportScreen(
+                                                            commentId:
+                                                                comment.id,
+                                                          )));
+                                            },
+                                          ),
+                                          comment.memberId == currentMemberId
+                                              ? ListTile(
+                                                  title: Text('삭제하기'),
+                                                  leading: Icon(Icons.delete),
+                                                  onTap: () {
+                                                    showDeleteAlertDialog(
+                                                        context,
+                                                        title: '의견 삭제',
+                                                        content:
+                                                            '정말로 의견을 삭제하시겠습니까?',
+                                                        onPressed: () {
+                                                      BlocProvider.of<
+                                                                  CommentScreenCubit>(
+                                                              context)
+                                                          .deleteComment(
+                                                              commentIndex:
+                                                                  commentIndex);
+                                                    });
+                                                  },
+                                                )
+                                              : Container(),
+                                          comment.memberId == currentMemberId
+                                              ? ListTile(
+                                                  title: Text('수정하기'),
+                                                  leading: Icon(Icons.edit),
+                                                  onTap: () {},
+                                                )
+                                              : Container(),
+                                        ],
+                                      ),
+                                    );
+                                  });
                             },
                             behavior: HitTestBehavior.opaque,
                             child: Padding(

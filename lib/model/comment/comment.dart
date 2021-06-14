@@ -12,6 +12,7 @@ class Comment with _$Comment {
     required String? profilePhotoUrl,
     required int postId,
     required String text,
+    required int memberId,
     required int likeCount,
     required int nestedCommentCount,
     required String createdAt,

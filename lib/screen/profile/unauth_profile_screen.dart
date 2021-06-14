@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:golden_balance_flutter/screen/admin/admin_screen.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/profile/profile_edit_screen.dart';
 import 'package:golden_balance_flutter/screen/setting/settings_screen.dart';
 
@@ -88,7 +89,7 @@ class _UnauthProfileScreenState extends State<UnauthProfileScreen> {
                 ),
               );
             } else if (state is AuthError) {
-              return Text(state.message);
+              return ErrorScreen();
             }
             return Container();
           },

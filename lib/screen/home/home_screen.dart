@@ -7,6 +7,7 @@ import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/post/feed_post_widget.dart';
 import 'package:golden_balance_flutter/screen/post/feed_post_widget_new.dart';
 import 'package:golden_balance_flutter/screen/profile/auth_profile_screen.dart';
@@ -201,12 +202,12 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             );
           } else if (feedState is HomeFeedError) {
-            print(feedState.message);
+            return ErrorScreen();
           } else if (feedState is HomeFeedInitialLoading) {
             return Center(child: CircularProgressIndicator());
             //Text('스켈레톤 띄우기');
           }
-          return Text(feedState.toString());
+          return Center(child: CircularProgressIndicator());
         }),
       );
     });

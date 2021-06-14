@@ -26,6 +26,7 @@ class _$CommentTearOff {
       required String? profilePhotoUrl,
       required int postId,
       required String text,
+      required int memberId,
       required int likeCount,
       required int nestedCommentCount,
       required String createdAt,
@@ -38,6 +39,7 @@ class _$CommentTearOff {
       profilePhotoUrl: profilePhotoUrl,
       postId: postId,
       text: text,
+      memberId: memberId,
       likeCount: likeCount,
       nestedCommentCount: nestedCommentCount,
       createdAt: createdAt,
@@ -62,6 +64,7 @@ mixin _$Comment {
   String? get profilePhotoUrl => throw _privateConstructorUsedError;
   int get postId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
+  int get memberId => throw _privateConstructorUsedError;
   int get likeCount => throw _privateConstructorUsedError;
   int get nestedCommentCount => throw _privateConstructorUsedError;
   String get createdAt => throw _privateConstructorUsedError;
@@ -84,6 +87,7 @@ abstract class $CommentCopyWith<$Res> {
       String? profilePhotoUrl,
       int postId,
       String text,
+      int memberId,
       int likeCount,
       int nestedCommentCount,
       String createdAt,
@@ -107,6 +111,7 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
     Object? profilePhotoUrl = freezed,
     Object? postId = freezed,
     Object? text = freezed,
+    Object? memberId = freezed,
     Object? likeCount = freezed,
     Object? nestedCommentCount = freezed,
     Object? createdAt = freezed,
@@ -135,6 +140,10 @@ class _$CommentCopyWithImpl<$Res> implements $CommentCopyWith<$Res> {
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
+              as int,
       likeCount: likeCount == freezed
           ? _value.likeCount
           : likeCount // ignore: cast_nullable_to_non_nullable
@@ -174,6 +183,7 @@ abstract class _$CommentCopyWith<$Res> implements $CommentCopyWith<$Res> {
       String? profilePhotoUrl,
       int postId,
       String text,
+      int memberId,
       int likeCount,
       int nestedCommentCount,
       String createdAt,
@@ -198,6 +208,7 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
     Object? profilePhotoUrl = freezed,
     Object? postId = freezed,
     Object? text = freezed,
+    Object? memberId = freezed,
     Object? likeCount = freezed,
     Object? nestedCommentCount = freezed,
     Object? createdAt = freezed,
@@ -226,6 +237,10 @@ class __$CommentCopyWithImpl<$Res> extends _$CommentCopyWithImpl<$Res>
           ? _value.text
           : text // ignore: cast_nullable_to_non_nullable
               as String,
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
+              as int,
       likeCount: likeCount == freezed
           ? _value.likeCount
           : likeCount // ignore: cast_nullable_to_non_nullable
@@ -264,6 +279,7 @@ class _$_Comment implements _Comment {
       required this.profilePhotoUrl,
       required this.postId,
       required this.text,
+      required this.memberId,
       required this.likeCount,
       required this.nestedCommentCount,
       required this.createdAt,
@@ -285,6 +301,8 @@ class _$_Comment implements _Comment {
   @override
   final String text;
   @override
+  final int memberId;
+  @override
   final int likeCount;
   @override
   final int nestedCommentCount;
@@ -299,7 +317,7 @@ class _$_Comment implements _Comment {
 
   @override
   String toString() {
-    return 'Comment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, postId: $postId, text: $text, likeCount: $likeCount, nestedCommentCount: $nestedCommentCount, createdAt: $createdAt, postTitle: $postTitle, updatedAt: $updatedAt, memberLikeCount: $memberLikeCount)';
+    return 'Comment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, postId: $postId, text: $text, memberId: $memberId, likeCount: $likeCount, nestedCommentCount: $nestedCommentCount, createdAt: $createdAt, postTitle: $postTitle, updatedAt: $updatedAt, memberLikeCount: $memberLikeCount)';
   }
 
   @override
@@ -318,6 +336,9 @@ class _$_Comment implements _Comment {
                 const DeepCollectionEquality().equals(other.postId, postId)) &&
             (identical(other.text, text) ||
                 const DeepCollectionEquality().equals(other.text, text)) &&
+            (identical(other.memberId, memberId) ||
+                const DeepCollectionEquality()
+                    .equals(other.memberId, memberId)) &&
             (identical(other.likeCount, likeCount) ||
                 const DeepCollectionEquality()
                     .equals(other.likeCount, likeCount)) &&
@@ -346,6 +367,7 @@ class _$_Comment implements _Comment {
       const DeepCollectionEquality().hash(profilePhotoUrl) ^
       const DeepCollectionEquality().hash(postId) ^
       const DeepCollectionEquality().hash(text) ^
+      const DeepCollectionEquality().hash(memberId) ^
       const DeepCollectionEquality().hash(likeCount) ^
       const DeepCollectionEquality().hash(nestedCommentCount) ^
       const DeepCollectionEquality().hash(createdAt) ^
@@ -371,6 +393,7 @@ abstract class _Comment implements Comment {
       required String? profilePhotoUrl,
       required int postId,
       required String text,
+      required int memberId,
       required int likeCount,
       required int nestedCommentCount,
       required String createdAt,
@@ -390,6 +413,8 @@ abstract class _Comment implements Comment {
   int get postId => throw _privateConstructorUsedError;
   @override
   String get text => throw _privateConstructorUsedError;
+  @override
+  int get memberId => throw _privateConstructorUsedError;
   @override
   int get likeCount => throw _privateConstructorUsedError;
   @override

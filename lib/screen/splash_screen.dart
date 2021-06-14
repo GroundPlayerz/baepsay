@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'home/home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -58,22 +59,9 @@ class _SplashScreenState extends State<SplashScreen> {
         } else if (state is FirebaseSignedIn) {
           return HomeScreen();
         } else if (state is AuthError) {
-          return Text(state.message);
+          return ErrorScreen();
         }
-        return Scaffold(
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '황금 밸런스',
-                  style: TextStyle(fontSize: 40.0),
-                ),
-                Icon(Icons.check_circle_outline)
-              ],
-            ),
-          ),
-        );
+        return Scaffold(body: Center(child: CircularProgressIndicator()));
       },
     );
   }

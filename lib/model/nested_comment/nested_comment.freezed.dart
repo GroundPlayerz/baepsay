@@ -24,6 +24,7 @@ class _$NestedCommentTearOff {
       {required int id,
       required String profileName,
       required String? profilePhotoUrl,
+      required int memberId,
       required int commentId,
       required String text,
       required int likeCount,
@@ -34,6 +35,7 @@ class _$NestedCommentTearOff {
       id: id,
       profileName: profileName,
       profilePhotoUrl: profilePhotoUrl,
+      memberId: memberId,
       commentId: commentId,
       text: text,
       likeCount: likeCount,
@@ -56,6 +58,7 @@ mixin _$NestedComment {
   int get id => throw _privateConstructorUsedError;
   String get profileName => throw _privateConstructorUsedError;
   String? get profilePhotoUrl => throw _privateConstructorUsedError;
+  int get memberId => throw _privateConstructorUsedError;
   int get commentId => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   int get likeCount => throw _privateConstructorUsedError;
@@ -78,6 +81,7 @@ abstract class $NestedCommentCopyWith<$Res> {
       {int id,
       String profileName,
       String? profilePhotoUrl,
+      int memberId,
       int commentId,
       String text,
       int likeCount,
@@ -100,6 +104,7 @@ class _$NestedCommentCopyWithImpl<$Res>
     Object? id = freezed,
     Object? profileName = freezed,
     Object? profilePhotoUrl = freezed,
+    Object? memberId = freezed,
     Object? commentId = freezed,
     Object? text = freezed,
     Object? likeCount = freezed,
@@ -120,6 +125,10 @@ class _$NestedCommentCopyWithImpl<$Res>
           ? _value.profilePhotoUrl
           : profilePhotoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
+              as int,
       commentId: commentId == freezed
           ? _value.commentId
           : commentId // ignore: cast_nullable_to_non_nullable
@@ -159,6 +168,7 @@ abstract class _$NestedCommentCopyWith<$Res>
       {int id,
       String profileName,
       String? profilePhotoUrl,
+      int memberId,
       int commentId,
       String text,
       int likeCount,
@@ -183,6 +193,7 @@ class __$NestedCommentCopyWithImpl<$Res>
     Object? id = freezed,
     Object? profileName = freezed,
     Object? profilePhotoUrl = freezed,
+    Object? memberId = freezed,
     Object? commentId = freezed,
     Object? text = freezed,
     Object? likeCount = freezed,
@@ -203,6 +214,10 @@ class __$NestedCommentCopyWithImpl<$Res>
           ? _value.profilePhotoUrl
           : profilePhotoUrl // ignore: cast_nullable_to_non_nullable
               as String?,
+      memberId: memberId == freezed
+          ? _value.memberId
+          : memberId // ignore: cast_nullable_to_non_nullable
+              as int,
       commentId: commentId == freezed
           ? _value.commentId
           : commentId // ignore: cast_nullable_to_non_nullable
@@ -239,6 +254,7 @@ class _$_NestedComment implements _NestedComment {
       {required this.id,
       required this.profileName,
       required this.profilePhotoUrl,
+      required this.memberId,
       required this.commentId,
       required this.text,
       required this.likeCount,
@@ -256,6 +272,8 @@ class _$_NestedComment implements _NestedComment {
   @override
   final String? profilePhotoUrl;
   @override
+  final int memberId;
+  @override
   final int commentId;
   @override
   final String text;
@@ -270,7 +288,7 @@ class _$_NestedComment implements _NestedComment {
 
   @override
   String toString() {
-    return 'NestedComment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, commentId: $commentId, text: $text, likeCount: $likeCount, createdAt: $createdAt, updatedAt: $updatedAt, memberLikeCount: $memberLikeCount)';
+    return 'NestedComment(id: $id, profileName: $profileName, profilePhotoUrl: $profilePhotoUrl, memberId: $memberId, commentId: $commentId, text: $text, likeCount: $likeCount, createdAt: $createdAt, updatedAt: $updatedAt, memberLikeCount: $memberLikeCount)';
   }
 
   @override
@@ -285,6 +303,9 @@ class _$_NestedComment implements _NestedComment {
             (identical(other.profilePhotoUrl, profilePhotoUrl) ||
                 const DeepCollectionEquality()
                     .equals(other.profilePhotoUrl, profilePhotoUrl)) &&
+            (identical(other.memberId, memberId) ||
+                const DeepCollectionEquality()
+                    .equals(other.memberId, memberId)) &&
             (identical(other.commentId, commentId) ||
                 const DeepCollectionEquality()
                     .equals(other.commentId, commentId)) &&
@@ -310,6 +331,7 @@ class _$_NestedComment implements _NestedComment {
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(profileName) ^
       const DeepCollectionEquality().hash(profilePhotoUrl) ^
+      const DeepCollectionEquality().hash(memberId) ^
       const DeepCollectionEquality().hash(commentId) ^
       const DeepCollectionEquality().hash(text) ^
       const DeepCollectionEquality().hash(likeCount) ^
@@ -333,6 +355,7 @@ abstract class _NestedComment implements NestedComment {
       {required int id,
       required String profileName,
       required String? profilePhotoUrl,
+      required int memberId,
       required int commentId,
       required String text,
       required int likeCount,
@@ -349,6 +372,8 @@ abstract class _NestedComment implements NestedComment {
   String get profileName => throw _privateConstructorUsedError;
   @override
   String? get profilePhotoUrl => throw _privateConstructorUsedError;
+  @override
+  int get memberId => throw _privateConstructorUsedError;
   @override
   int get commentId => throw _privateConstructorUsedError;
   @override

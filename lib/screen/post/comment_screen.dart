@@ -7,6 +7,7 @@ import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
 
 import 'comment_widget.dart';
 
@@ -184,12 +185,12 @@ class _CommentScreenState extends State<CommentScreen> {
                       ),
                     );
                   } else if (commentScreenState is CommentScreenError) {
-                    print(commentScreenState.message);
+                    return ErrorScreen();
                   } else if (commentScreenState
                       is CommentScreenInitialLoading) {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   }
-                  return Text(commentScreenState.toString());
+                  return Center(child: CircularProgressIndicator());
                 },
               ),
 

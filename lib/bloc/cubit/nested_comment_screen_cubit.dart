@@ -122,6 +122,11 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
     }
   }
 
+  void deleteNestedComment({required int nestedCommentIndex}) async {}
+
+  void updateNestedComment(
+      {required int nestedCommentIndex, required String text}) async {}
+
   Future<void> createNestedComment(
       {required int commentId, required text}) async {
     try {

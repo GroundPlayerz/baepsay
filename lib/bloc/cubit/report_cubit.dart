@@ -19,4 +19,13 @@ class ReportCubit extends Cubit<ReportState> {
       emit(Error());
     }
   }
+
+  void reportComment({required int commentId, required String text}) async {
+    try {
+      await memberRepository.reportComment(commentId: commentId, text: text);
+      emit(Success());
+    } catch (e) {
+      emit(Error());
+    }
+  }
 }
