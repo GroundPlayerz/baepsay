@@ -30,7 +30,7 @@ void showDeleteAlertDialog(BuildContext context,
           ),
           TextButton(
             onPressed: () {
-              onPressed;
+              onPressed();
               Navigator.pop(context);
             },
             child: Text('삭제'),

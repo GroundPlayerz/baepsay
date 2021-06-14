@@ -206,6 +206,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                                         content:
                                                             '정말로 의견을 삭제하시겠습니까?',
                                                         onPressed: () {
+                                                      Navigator.pop(context);
                                                       BlocProvider.of<
                                                                   CommentScreenCubit>(
                                                               context)
