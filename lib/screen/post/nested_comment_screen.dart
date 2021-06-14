@@ -78,6 +78,37 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
     }
   }
 
+  // Widget _likeButton({required Comment comment}) => GestureDetector(
+  //       behavior: HitTestBehavior.opaque,
+  //       onTap: () {
+  //         setState(() {
+  //           BlocProvider.of<CommentScreenCubit>(context).pressLikeButton(
+  //             commentIndex: commentIndex,
+  //             memberLikeCount: comment.memberLikeCount,
+  //           );
+  //         });
+  //       },
+  //       child: Padding(
+  //         padding: EdgeInsets.only(left: 8, right: 16, top: 2),
+  //         child: Column(
+  //           children: [
+  //             comment.memberLikeCount == 0
+  //                 ? Icon(Icons.favorite_border_rounded,
+  //                     size: photoWidth, color: kWhiteColor.withOpacity(0.7))
+  //                 : Icon(Icons.favorite_rounded,
+  //                     size: photoWidth, color: kAccentPinkColor),
+  //             //SizedBox(width: 4),
+  //             (comment.likeCount == 0)
+  //                 ? Text('')
+  //                 : Text(comment.likeCount.toString(),
+  //                     style: kPostInfoNumberTextStyleOld.copyWith(
+  //                         fontSize: 14.0,
+  //                         color: Colors.white.withOpacity(0.7))),
+  //           ],
+  //         ),
+  //       ),
+  //     );
+
   Widget _likeButton({required Comment comment}) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
@@ -89,21 +120,25 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
           });
         },
         child: Padding(
-          padding: EdgeInsets.only(left: 8, right: 16, top: 2),
-          child: Column(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
             children: [
               comment.memberLikeCount == 0
-                  ? Icon(Icons.favorite_border_rounded,
-                      size: photoWidth, color: kWhiteColor.withOpacity(0.7))
-                  : Icon(Icons.favorite_rounded,
-                      size: photoWidth, color: kAccentPinkColor),
-              //SizedBox(width: 4),
+                  ? Image.asset(
+                      'icons/post_screen_icon_like_default@3x.png',
+                      color: kIconGreyColor_CBCBCB,
+                      width: 22,
+                    )
+                  : Image.asset(
+                      'icons/post_screen_icon_like_pressed@3x.png',
+                      color: kAccentPinkColor,
+                      width: 22,
+                    ),
+              SizedBox(width: 10),
               (comment.likeCount == 0)
                   ? Text('')
                   : Text(comment.likeCount.toString(),
-                      style: kPostInfoNumberTextStyleOld.copyWith(
-                          fontSize: 14.0,
-                          color: Colors.white.withOpacity(0.7))),
+                      style: kCommentInfoTextStyle),
             ],
           ),
         ),
@@ -121,11 +156,17 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kWhiteColor,
       appBar: AppBar(
-        title: Text('답글', style: kCommentAppBarSmallTextStyle),
-        centerTitle: false,
+        backgroundColor: kWhiteColor,
+        title: Text('답글', style: kNoto16R),
+        centerTitle: true,
         titleSpacing: 0,
         elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(0.5),
+          child: Divider(),
+        ),
       ),
       body: SafeArea(
         child: Column(
@@ -139,72 +180,102 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                     height: 15,
                     child: CircularProgressIndicator(),
                   ),
-            //divider
-            Container(
-              width: double.infinity,
-              height: 1,
-              color: kWhiteColor.withOpacity(0.3),
-            ),
             //원래 댓글
             BlocBuilder<CommentScreenCubit, CommentScreenState>(
                 builder: (context, state) {
               if (state is CommentScreenLoaded) {
                 Comment comment = state.commentList[commentIndex];
                 return Container(
-                  color: kWhiteColor.withOpacity(0.1),
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16, top: 16, bottom: 16),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+                  color: kBackgroundGreyColor,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 0),
+                      Padding(
+                        padding: EdgeInsets.only(left: 20, right: 0),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 20,
-                              height: 20,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(7.0),
-                                  color: Colors.grey),
-                              child: comment.profilePhotoUrl != null
-                                  ? Image.network(comment.profilePhotoUrl!)
-                                  : Image.asset(
-                                      'images/default_profile_photo.png'),
-                            ),
-                            SizedBox(width: sizeboxWidthBetweenPhotoAndName),
-                            SizedBox(
-                              width: MediaQuery.of(context).size.width -
-                                  sumConstantsWidth,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    comment.profileName +
-                                        '     ' +
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 24,
+                                      height: 24,
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.grey),
+                                      child: comment.profilePhotoUrl != null
+                                          ? Image.network(
+                                              comment.profilePhotoUrl!,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.asset(
+                                              'images/default_profile_photo.png',
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
+                                    SizedBox(
+                                        width: sizeboxWidthBetweenPhotoAndName),
+                                    Text(comment.profileName + '     ',
+                                        style: kCommentInfoTextStyle),
+                                    Text(
                                         _createdOrUpdatedAt(comment: comment)
                                             .split(' ')[0]
                                             .split('T')[0]
-                                            .replaceAll('-', '/'),
-                                    style: kCommentInfoTextStyle.copyWith(
-                                        color: kWhiteColor.withOpacity(0.7)),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    comment.text,
-                                    style: kCommentTextTextStyle,
-                                    softWrap: true,
-                                  ),
-                                ],
-                              ),
+                                            .replaceAll('-', '.'),
+                                        style: kCommentInfoTextStyle.copyWith(
+                                            color: kGreyColor2_999999)),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    //더보기 버튼
+                                    GestureDetector(
+                                      onTap: () {
+                                        //Todo
+                                      },
+                                      behavior: HitTestBehavior.opaque,
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 13, horizontal: 10),
+                                        child: SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: Icon(
+                                            Icons.more_horiz_sharp,
+                                            color: kIconGreyColor_CBCBCB,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            SizedBox(width: 8),
+                            SizedBox(height: 3),
+                            Text(
+                              comment.text,
+                              style: kCommentTextTextStyle,
+                              softWrap: true,
+                            ),
+                            SizedBox(height: 10),
                           ],
                         ),
-                        _likeButton(comment: comment),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          _likeButton(comment: comment),
+                        ],
+                      ),
+                    ],
                   ),
                 );
               } else {
@@ -215,13 +286,7 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                 ));
               }
             }),
-
-            //divider
-            Container(
-              width: double.infinity,
-              height: 1,
-              color: kWhiteColor.withOpacity(0.3),
-            ),
+            Divider(),
 
             //대댓글 listview
             BlocBuilder<NestedCommentScreenCubit, NestedCommentScreenState>(
@@ -253,12 +318,14 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                               nestedCommentScreenState
                                   .nestedCommentList.length) {
                             return Padding(
-                              padding: EdgeInsets.only(
-                                  left: 16 + 31,
-                                  top: nestedCommentIndex == 0 ? 17 : 7,
-                                  bottom: 13),
-                              child: NestedCommentWidget(
-                                  nestedCommentIndex: nestedCommentIndex),
+                              padding: const EdgeInsets.only(left: 10),
+                              child: Column(
+                                children: [
+                                  NestedCommentWidget(
+                                      nestedCommentIndex: nestedCommentIndex),
+                                  Divider(indent: 20),
+                                ],
+                              ),
                             );
                           }
                           if (!nestedCommentScreenState.isLoadingMore &&

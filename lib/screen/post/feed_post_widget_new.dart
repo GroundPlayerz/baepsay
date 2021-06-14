@@ -5,6 +5,7 @@ import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
+import 'package:golden_balance_flutter/constant/spacings.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/member/member.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
@@ -27,10 +28,10 @@ class FeedPostWidgetNew extends StatefulWidget {
 
 class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
   late int postIndex;
-  double outerHorizontalPadding = 10;
-  double innerHorizontalPadding = 20;
-  late double mediaWidthHeight;
-  late double completeButtonWidth;
+
+  bool isMediaQueryCalculationDone = false;
+  late final double mediaWidthHeight;
+  late final double completeButtonWidth;
 
   late double safeAreaTopHeight;
   late double safeAreaVerticalHeight;
@@ -274,14 +275,16 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
 
   @override
   Widget build(BuildContext context) {
-    mediaWidthHeight = (MediaQuery.of(context).size.width -
-            (outerHorizontalPadding + innerHorizontalPadding) * 2 -
-            24) /
-        2;
-    completeButtonWidth = MediaQuery.of(context).size.width -
-        (outerHorizontalPadding + innerHorizontalPadding) * 2;
+    if (!isMediaQueryCalculationDone) {
+      mediaWidthHeight = (MediaQuery.of(context).size.width -
+              (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
+              24) /
+          2;
+      completeButtonWidth = MediaQuery.of(context).size.width -
+          (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
+      isMediaQueryCalculationDone = true;
+    }
 
-    print(MediaQuery.of(context).padding.bottom);
     return BlocBuilder<HomeFeedCubit, HomeFeedState>(builder: (context, state) {
       if (state is HomeFeedLoaded) {
         Post post = state.feed[postIndex];
@@ -324,7 +327,7 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
               //Rounded 컨테이너
               child: Container(
                 margin:
-                    EdgeInsets.symmetric(horizontal: outerHorizontalPadding),
+                    EdgeInsets.symmetric(horizontal: kOuterHorizontalPadding),
                 decoration: BoxDecoration(
                   color: kWhiteColor,
                   borderRadius: BorderRadius.all(
@@ -403,7 +406,7 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
                         ),
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: innerHorizontalPadding),
+                              horizontal: kInnerHorizontalPadding),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -492,7 +495,7 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
                       children: [
                         Padding(
                           padding: EdgeInsets.symmetric(
-                              horizontal: innerHorizontalPadding),
+                              horizontal: kInnerHorizontalPadding),
                           child: Column(
                             children: [
                               //투표 버튼
