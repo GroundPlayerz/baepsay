@@ -152,6 +152,8 @@ TextStyle kAppBarTitleTextStyle = kNoto16R;
 TextStyle kAppBarButtonTextStyle = kNoto16B.copyWith(color: Colors.red);
 
 //Comment
+TextStyle kCommentAppBarTextStyle = kNoto20B;
+TextStyle kCommentAppBarSmallTextStyle = kNoto18B;
 TextStyle kCommentInfoTextStyle = kNoto12R;
 TextStyle kCommentTextTextStyle = kNoto13R;
 TextStyle kCommentLikeNumberTextStyle = kSkia16R;
