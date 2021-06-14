@@ -64,16 +64,50 @@ class _CommentWidgetState extends State<CommentWidget> {
           child: Row(
             children: [
               comment.memberLikeCount == 0
-                  ? Icon(Icons.favorite_border_rounded,
-                      size: photoWidth, color: kIconGreyColor_CBCBCB)
-                  : Icon(Icons.favorite_rounded,
-                      size: photoWidth, color: kAccentPinkColor),
+                  ? Image.asset(
+                      'icons/post_screen_icon_like_default@3x.png',
+                      color: kIconGreyColor_CBCBCB,
+                      width: 22,
+                    )
+                  : Image.asset(
+                      'icons/post_screen_icon_like_pressed@3x.png',
+                      color: kAccentPinkColor,
+                      width: 22,
+                    ),
               SizedBox(width: 10),
               (comment.likeCount == 0)
                   ? Text('')
                   : Text(comment.likeCount.toString(),
-                      style: kCommentTextTextStyle.copyWith(
-                          color: kGreyColor1_767676)),
+                      style: kCommentInfoTextStyle),
+            ],
+          ),
+        ),
+      );
+  Widget _commentButton({required Comment comment}) => GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => NestedCommentScreen(
+                        commentId: comment.id,
+                        commentIndex: commentIndex,
+                      )));
+        },
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: [
+              Image.asset(
+                'icons/post_screen_icon_comment@3x.png',
+                color: kIconGreyColor_CBCBCB,
+                height: 20,
+              ),
+              SizedBox(width: 10),
+              (comment.nestedCommentCount == 0)
+                  ? Text('')
+                  : Text(comment.nestedCommentCount.toString() + '개 답글',
+                      style: kCommentInfoTextStyle),
             ],
           ),
         ),
@@ -107,27 +141,25 @@ class _CommentWidgetState extends State<CommentWidget> {
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle, color: Colors.grey),
                             child: comment.profilePhotoUrl != null
-                                ? Image.network(comment.profilePhotoUrl!)
+                                ? Image.network(
+                                    comment.profilePhotoUrl!,
+                                    fit: BoxFit.cover,
+                                  )
                                 : Image.asset(
-                                    'images/default_profile_photo.png'),
+                                    'images/default_profile_photo.png',
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                           SizedBox(width: sizeboxWidthBetweenPhotoAndName),
-                          RichText(
-                            text: TextSpan(
-                              text: comment.profileName + '     ',
-                              style: kCommentTextTextStyle,
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: _createdOrUpdatedAt(comment: comment)
-                                      .split(' ')[0]
-                                      .split('T')[0]
-                                      .replaceAll('-', '.'),
-                                  style: kCommentInfoTextStyle.copyWith(
-                                      color: kGreyColor2_999999),
-                                ),
-                              ],
-                            ),
-                          ),
+                          Text(comment.profileName + '     ',
+                              style: kCommentInfoTextStyle),
+                          Text(
+                              _createdOrUpdatedAt(comment: comment)
+                                  .split(' ')[0]
+                                  .split('T')[0]
+                                  .replaceAll('-', '.'),
+                              style: kCommentInfoTextStyle.copyWith(
+                                  color: kGreyColor2_999999)),
                         ],
                       ),
                       Row(
@@ -158,6 +190,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 3),
                   Text(
                     comment.text,
                     style: kCommentTextTextStyle,
@@ -171,32 +204,7 @@ class _CommentWidgetState extends State<CommentWidget> {
             Row(
               children: [
                 _likeButton(comment: comment),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NestedCommentScreen(
-                                  commentId: comment.id,
-                                  commentIndex: commentIndex,
-                                )));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Row(
-                      children: [
-                        Icon(Icons.mode_comment_outlined,
-                            size: photoWidth, color: kIconGreyColor_CBCBCB),
-                        SizedBox(width: 10),
-                        (comment.nestedCommentCount == 0)
-                            ? Text('')
-                            : Text(comment.likeCount.toString() + '개 답글',
-                                style: kCommentTextTextStyle),
-                      ],
-                    ),
-                  ),
-                ),
+                _commentButton(comment: comment),
               ],
             ),
           ],

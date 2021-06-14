@@ -172,12 +172,15 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Row(
           children: [
-            Icon(
-              Icons.favorite_border_rounded,
-              size: 35,
-              color: kAccentPinkColor.withOpacity(0.4),
-            ),
-            SizedBox(width: 11),
+            Opacity(
+                opacity: 0.4,
+                child: Image.asset(
+                  'icons/post_screen_icon_like_default@3x.png',
+                  color: kIconGreyColor_CBCBCB,
+                  width: 28,
+                  height: 28,
+                )),
+            SizedBox(width: 14),
             Text(
               post.likeCount.toString(),
               style: kPostInfoNumberTextStyle.copyWith(
@@ -199,11 +202,19 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
           child: Row(
             children: [
               post.memberLikeCount == 0
-                  ? Icon(Icons.favorite_border_rounded,
-                      size: 35, color: kIconGreyColor_CBCBCB)
-                  : Icon(Icons.favorite_rounded,
-                      size: 35, color: kAccentPinkColor),
-              SizedBox(width: 11),
+                  ? Image.asset(
+                      'icons/post_screen_icon_like_default@3x.png',
+                      color: kIconGreyColor_CBCBCB,
+                      width: 28,
+                      height: 28,
+                    )
+                  : Image.asset(
+                      'icons/post_screen_icon_like_pressed@3x.png',
+                      color: kAccentPinkColor,
+                      width: 28,
+                      height: 28,
+                    ),
+              SizedBox(width: 14),
               Text(
                 post.likeCount.toString(),
                 style: kPostInfoNumberTextStyle,
@@ -216,9 +227,15 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Row(
           children: [
-            Icon(Icons.mode_comment_outlined,
-                size: 30, color: kIconGreyColor_CBCBCB.withOpacity(0.4)),
-            SizedBox(width: 11),
+            Opacity(
+              opacity: 0.4,
+              child: Image.asset(
+                'icons/post_screen_icon_comment@3x.png',
+                color: kIconGreyColor_CBCBCB,
+                height: 26,
+              ),
+            ),
+            SizedBox(width: 17),
             Text((post.commentCount).toString(),
                 style: kPostInfoNumberTextStyle.copyWith(
                     color: kGreyColor1_767676.withOpacity(0.4))),
@@ -242,9 +259,12 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             children: [
-              Icon(Icons.mode_comment_outlined,
-                  size: 30, color: kIconGreyColor_CBCBCB),
-              SizedBox(width: 11),
+              Image.asset(
+                'icons/post_screen_icon_comment@3x.png',
+                color: kIconGreyColor_CBCBCB,
+                height: 26,
+              ),
+              SizedBox(width: 17),
               Text((post.commentCount).toString(),
                   style: kPostInfoNumberTextStyle),
             ],

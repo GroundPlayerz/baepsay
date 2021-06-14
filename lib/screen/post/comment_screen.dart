@@ -80,17 +80,18 @@ class _CommentScreenState extends State<CommentScreen> {
               if (commentScreenState is CommentScreenLoaded) {
                 return Row(
                   children: [
-                    Text('의견  ', style: kNoto18B.copyWith(fontSize: 20.0)),
-                    Text(postCommentCount.toString(),
-                        style: kSkia18B.copyWith(fontSize: 18.0)),
+                    Text('의견 ', style: kCommentAppBarTextStyle),
+                    Text('(' + postCommentCount.toString() + ')',
+                        style: kCommentAppBarSmallTextStyle),
                   ],
                 );
               } else if (commentScreenState is CommentScreenError) {
-                print(commentScreenState.message);
+                return Text('...', style: kCommentAppBarTextStyle);
+                //print(commentScreenState.message);
               } else if (commentScreenState is CommentScreenInitialLoading) {
-                return Text('의견  ', style: kNoto18B.copyWith(fontSize: 20.0));
+                return Text('...', style: kCommentAppBarTextStyle);
               }
-              return Text(commentScreenState.toString());
+              return Text('...', style: kCommentAppBarTextStyle);
             },
           ),
           actions: [
@@ -136,10 +137,10 @@ class _CommentScreenState extends State<CommentScreen> {
                     if (commentScreenState.commentList.isEmpty) {
                       return Expanded(
                         child: Container(
-                          //height: 100,
                           width: MediaQuery.of(context).size.width,
+                          //height: 100,
                           //color: Colors.red,
-                          child: Text('아직 댓글이 없습니다.'),
+                          //child: Text('아직 댓글이 없습니다.'),
                         ),
                       );
                     }

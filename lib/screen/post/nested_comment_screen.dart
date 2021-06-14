@@ -122,7 +122,7 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('대댓', style: kNoto18B),
+        title: Text('답글', style: kCommentAppBarSmallTextStyle),
         centerTitle: false,
         titleSpacing: 0,
         elevation: 0,
