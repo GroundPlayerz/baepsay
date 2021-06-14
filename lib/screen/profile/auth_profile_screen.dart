@@ -18,7 +18,32 @@ class AuthProfileScreen extends StatefulWidget {
 }
 
 class _AuthProfileScreenState extends State<AuthProfileScreen> {
-  int selectedTab = 0;
+  int selectedTabIndex = 0;
+
+  Widget selectButtonTab({required textButtonTitle, required index}) {
+    return Expanded(
+      child: Column(
+        children: [
+          TextButton(
+              onPressed: () {
+                setState(() {
+                  selectedTabIndex = index;
+                });
+              },
+              child: Text(textButtonTitle)),
+          selectedTabIndex == index
+              ? Container(
+                  height: 2.0,
+                  color: Colors.black,
+                )
+              : Container(
+                  height: 1.0,
+                  color: Colors.grey,
+                ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +55,12 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('내 프로필'),
+          title: Text(
+            BlocProvider.of<AuthCubit>(context).getProfileName() != null
+                ? BlocProvider.of<AuthCubit>(context).getProfileName()!
+                : '이름없음',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           actions: [
             IconButton(
                 icon: Icon(Icons.more_horiz),
@@ -76,16 +106,18 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
             if (state is FirebaseSignedIn) {
               return Column(
                 children: [
+                  SizedBox(
+                    height: 10,
+                  ),
                   state.member.profilePhotoUrl != null
                       ? CircleAvatar(
-                          radius: 24,
+                          radius: 36,
                           foregroundImage: CachedNetworkImageProvider(
                             state.member.profilePhotoUrl!,
                           ),
                           backgroundColor: Colors.white,
                         )
                       : Container(),
-                  Text(state.member.profileName),
                   state.member.role == 'admin'
                       ? TextButton(
                           onPressed: () {
@@ -99,35 +131,16 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
                       : Container(),
                   Row(
                     children: [
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              selectedTab = 0;
-                            });
-                          },
-                          child: Text('내 게시물')),
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              selectedTab = 1;
-                            });
-                          },
-                          child: Text('투표한 게시물')),
-                      TextButton(
-                          onPressed: () {
-                            setState(() {
-                              selectedTab = 2;
-                            });
-                          },
-                          child: Text('내가 쓴 댓글')),
+                      selectButtonTab(textButtonTitle: '내 어젠다', index: 0),
+                      selectButtonTab(textButtonTitle: '투표한 어젠다', index: 1),
+                      selectButtonTab(textButtonTitle: '내가 쓴 의견', index: 2),
                     ],
                   ),
-                  Container(
-                    height: 400,
+                  Expanded(
                     child: Builder(builder: (context) {
-                      if (selectedTab == 0) {
+                      if (selectedTabIndex == 0) {
                         return MyPostListWidget();
-                      } else if (selectedTab == 1) {
+                      } else if (selectedTabIndex == 1) {
                         return MyVotedPostListWidget();
                       } else {
                         return MyCommentListWidget();
