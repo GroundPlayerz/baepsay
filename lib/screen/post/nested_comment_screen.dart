@@ -354,10 +354,12 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                   return Expanded(
                     child: Container(
                       width: double.infinity,
-                      child: Container(
-                        width: 15,
-                        height: 15,
-                        child: CircularProgressIndicator(),
+                      child: Center(
+                        child: Container(
+                          width: 15,
+                          height: 15,
+                          child: CircularProgressIndicator(),
+                        ),
                       ),
                     ),
                   );

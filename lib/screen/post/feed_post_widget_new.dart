@@ -455,7 +455,7 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
                                   ),
                                   Column(
                                     children: [
-                                      mediaList[0]['type'] == 'image'
+                                      mediaList[1]['type'] == 'image'
                                           ? Container(
                                               decoration: BoxDecoration(),
                                               width: mediaWidthHeight,
