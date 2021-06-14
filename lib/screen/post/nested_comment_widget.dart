@@ -15,7 +15,6 @@ class NestedCommentWidget extends StatefulWidget {
 }
 
 class _NestedCommentWidgetState extends State<NestedCommentWidget> {
-  //Todo: 나중에 실제 Comment에 맞게 바꾸기
   late int nestedCommentIndex;
 
   final double leftPadding = 16 + 31;
@@ -45,32 +44,67 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
       return nestedComment.updatedAt!;
     }
   }
+  //
+  // Widget _likeButton({required NestedComment nestedComment}) => GestureDetector(
+  //       behavior: HitTestBehavior.opaque,
+  //       onTap: () {
+  //         setState(() {
+  //           BlocProvider.of<NestedCommentScreenCubit>(context).pressLikeButton(
+  //               nestedCommentIndex: nestedCommentIndex,
+  //               userLikeCount: nestedComment.memberLikeCount);
+  //         });
+  //       },
+  //       child: Padding(
+  //         padding: const EdgeInsets.only(left: 8, right: 16, top: 2),
+  //         child: Column(
+  //           children: [
+  //             nestedComment.memberLikeCount == 0
+  //                 ? Icon(Icons.favorite_border_rounded,
+  //                     size: 20, color: kWhiteColor.withOpacity(0.7))
+  //                 : Icon(Icons.favorite_rounded,
+  //                     size: 20, color: kAccentPinkColor),
+  //             //SizedBox(width: 4),
+  //             (nestedComment.memberLikeCount == 0)
+  //                 ? Text('')
+  //                 : Text(nestedComment.likeCount.toString(),
+  //                     style: kPostInfoNumberTextStyleOld.copyWith(
+  //                         fontSize: 14.0,
+  //                         color: Colors.white.withOpacity(0.7))),
+  //           ],
+  //         ),
+  //       ),
+  //     );
 
   Widget _likeButton({required NestedComment nestedComment}) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
           setState(() {
             BlocProvider.of<NestedCommentScreenCubit>(context).pressLikeButton(
-                nestedCommentIndex: nestedCommentIndex,
-                userLikeCount: nestedComment.memberLikeCount);
+              nestedCommentIndex: nestedCommentIndex,
+              userLikeCount: nestedComment.memberLikeCount,
+            );
           });
         },
         child: Padding(
-          padding: const EdgeInsets.only(left: 8, right: 16, top: 2),
-          child: Column(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
             children: [
               nestedComment.memberLikeCount == 0
-                  ? Icon(Icons.favorite_border_rounded,
-                      size: 20, color: kWhiteColor.withOpacity(0.7))
-                  : Icon(Icons.favorite_rounded,
-                      size: 20, color: kAccentPinkColor),
-              //SizedBox(width: 4),
-              (nestedComment.memberLikeCount == 0)
+                  ? Image.asset(
+                      'icons/post_screen_icon_like_default@3x.png',
+                      color: kIconGreyColor_CBCBCB,
+                      width: 22,
+                    )
+                  : Image.asset(
+                      'icons/post_screen_icon_like_pressed@3x.png',
+                      color: kAccentPinkColor,
+                      width: 22,
+                    ),
+              SizedBox(width: 10),
+              (nestedComment.likeCount == 0)
                   ? Text('')
                   : Text(nestedComment.likeCount.toString(),
-                      style: kPostInfoNumberTextStyleOld.copyWith(
-                          fontSize: 14.0,
-                          color: Colors.white.withOpacity(0.7))),
+                      style: kCommentInfoTextStyle),
             ],
           ),
         ),
@@ -84,60 +118,148 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
         NestedComment nestedComment =
             state.nestedCommentList[nestedCommentIndex];
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 20,
-                      height: 20,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(7.0),
-                          color: Colors.grey),
-                      child: nestedComment.profilePhotoUrl != null
-                          ? Image.network(nestedComment.profilePhotoUrl!)
-                          : Image.asset('images/default_profile_photo.png'),
-                    ),
-                    SizedBox(width: sizeboxWidthBetweenPhotoAndName),
-                    SizedBox(
-                      width:
-                          MediaQuery.of(context).size.width - sumConstantsWidth,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+            SizedBox(height: 0),
+            Padding(
+              padding: EdgeInsets.only(left: 20, right: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
                         children: [
-                          Text(
-                            nestedComment.profileName +
-                                '     ' +
-                                _createdOrUpdatedAt(
-                                        nestedComment: nestedComment)
-                                    .split(' ')[0]
-                                    .split('T')[0]
-                                    .replaceAll('-', '/'),
-                            style: kCommentInfoTextStyle.copyWith(
-                                color: kWhiteColor.withOpacity(0.7)),
+                          Container(
+                            width: 24,
+                            height: 24,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.grey),
+                            child: nestedComment.profilePhotoUrl != null
+                                ? Image.network(
+                                    nestedComment.profilePhotoUrl!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.asset(
+                                    'images/default_profile_photo.png',
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
-                          SizedBox(height: 4),
+                          SizedBox(width: sizeboxWidthBetweenPhotoAndName),
+                          Text(nestedComment.profileName + '     ',
+                              style: kCommentInfoTextStyle),
                           Text(
-                            nestedComment.text,
-                            style: kCommentTextTextStyle,
-                            softWrap: true,
+                              _createdOrUpdatedAt(nestedComment: nestedComment)
+                                  .split(' ')[0]
+                                  .split('T')[0]
+                                  .replaceAll('-', '.'),
+                              style: kCommentInfoTextStyle.copyWith(
+                                  color: kGreyColor2_999999)),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          //더보기 버튼
+                          GestureDetector(
+                            onTap: () {
+                              //Todo
+                            },
+                            behavior: HitTestBehavior.opaque,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 13, horizontal: 10),
+                              child: SizedBox(
+                                height: 24,
+                                width: 24,
+                                child: Icon(
+                                  Icons.more_horiz_sharp,
+                                  color: kIconGreyColor_CBCBCB,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(width: 8),
-                  ],
-                ),
+                    ],
+                  ),
+                  SizedBox(height: 3),
+                  Text(
+                    nestedComment.text,
+                    style: kCommentTextTextStyle,
+                    softWrap: true,
+                  ),
+                  SizedBox(height: 10),
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Row(
+              children: [
                 _likeButton(nestedComment: nestedComment),
               ],
             ),
           ],
         );
+        // return Column(
+        //   children: [
+        //     Row(
+        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Row(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Container(
+        //               width: 20,
+        //               height: 20,
+        //               clipBehavior: Clip.antiAlias,
+        //               decoration: BoxDecoration(
+        //                   borderRadius: BorderRadius.circular(7.0),
+        //                   color: Colors.grey),
+        //               child: nestedComment.profilePhotoUrl != null
+        //                   ? Image.network(nestedComment.profilePhotoUrl!)
+        //                   : Image.asset('images/default_profile_photo.png'),
+        //             ),
+        //             SizedBox(width: sizeboxWidthBetweenPhotoAndName),
+        //             SizedBox(
+        //               width:
+        //                   MediaQuery.of(context).size.width - sumConstantsWidth,
+        //               child: Column(
+        //                 crossAxisAlignment: CrossAxisAlignment.start,
+        //                 children: [
+        //                   Text(
+        //                     nestedComment.profileName +
+        //                         '     ' +
+        //                         _createdOrUpdatedAt(
+        //                                 nestedComment: nestedComment)
+        //                             .split(' ')[0]
+        //                             .split('T')[0]
+        //                             .replaceAll('-', '/'),
+        //                     style: kCommentInfoTextStyle.copyWith(
+        //                         color: kWhiteColor.withOpacity(0.7)),
+        //                   ),
+        //                   SizedBox(height: 4),
+        //                   Text(
+        //                     nestedComment.text,
+        //                     style: kCommentTextTextStyle,
+        //                     softWrap: true,
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //             SizedBox(width: 8),
+        //           ],
+        //         ),
+        //         _likeButton(nestedComment: nestedComment),
+        //       ],
+        //     ),
+        //   ],
+        // );
       } else {
         //Todo: 스켈레톤
         return Container();
