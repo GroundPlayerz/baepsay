@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -47,19 +48,17 @@ class _UploadScreenState extends State<UploadScreen> {
 
   Widget _contentTextField(double _convertRatio,
       {required TextEditingController controller}) {
-    return IntrinsicWidth(
+    return Container(
       child: TextField(
+        cursorColor: kAccentPurpleColor,
         controller: controller,
         focusNode: myFocusNode,
         decoration: InputDecoration(
           hintText: '항목 입력..',
-          hintStyle: kNoto18R.copyWith(
-              fontSize: 18 * _convertRatio,
-              color: Colors.white.withOpacity(0.7)),
+          hintStyle: kPostContentTextStyle.copyWith(color: kGreyColor2_999999),
           border: InputBorder.none,
         ),
-        style: kNoto18R.copyWith(
-            fontSize: 18 * _convertRatio, color: Colors.white),
+        style: kPostContentTextStyle,
         keyboardType: TextInputType.multiline,
         maxLines: null,
         textAlign: TextAlign.center,
@@ -72,26 +71,20 @@ class _UploadScreenState extends State<UploadScreen> {
     required TextEditingController controller,
   }) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: kPostGradient70,
-      ),
+      decoration: BoxDecoration(),
       child: TextField(
         controller: controller,
         focusNode: myFocusNode,
+        cursorColor: kAccentPurpleColor,
+        cursorWidth: 2.2,
         decoration: InputDecoration(
-            contentPadding:
-                EdgeInsets.only(top: 17, bottom: 17, left: 16, right: 16),
-            hintText: '제목 입력..',
-            hintStyle: kNoto18B.copyWith(
-                fontSize: 18 * _convertRatio,
-                color: Colors.white.withOpacity(0.7)),
-            border: InputBorder.none,
-            counterText: ""
-            // alignLabelWithHint: false,
-            ),
-        style: kNoto18B.copyWith(
-            fontSize: 18 * _convertRatio, color: Colors.white),
-        maxLength: 100,
+          //contentPadding: EdgeInsets.all(0),
+          hintText: '제목 입력..',
+          hintStyle: kPostTitleTextStyle.copyWith(color: kGreyColor2_999999),
+          border: InputBorder.none,
+          counterText: '',
+        ),
+        style: kPostTitleTextStyle,
         keyboardType: TextInputType.multiline,
         maxLines: null,
       ),
@@ -106,7 +99,7 @@ class _UploadScreenState extends State<UploadScreen> {
         IconButton(
             icon: Icon(
               Icons.image_outlined,
-              color: Colors.white,
+              color: kIconGreyColor_CBCBCB,
             ),
             onPressed: () async {
               setState(() {
@@ -328,6 +321,37 @@ class _UploadScreenState extends State<UploadScreen> {
 
     double _mediaWidth = MediaQuery.of(context).size.width;
     double _convertRatio = MediaQuery.of(context).size.width / 375;
+
+    Widget _mediaStack(
+            {required UploadScreenMediaModel whichUploadMediaModel,
+            required int whichMedia}) =>
+        Stack(
+          children: [
+            Container(
+              width: mediaWidthHeight,
+              height: mediaWidthHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xffF4F4F4),
+              ),
+            ),
+            whichUploadMediaModel.mediaFile == null
+                ? SizedBox()
+                : Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: _imagePreview(
+                          imageFile: whichUploadMediaModel.mediaFile!,
+                          whichMedia: whichMedia),
+                    ),
+                  ),
+            whichUploadMediaModel.mediaFile == null
+                ? Positioned.fill(
+                    child: _mediaButtonsArea(whichMedia: whichMedia))
+                : SizedBox(),
+          ],
+        );
+
     return BlocListener<UploadCubit, UploadState>(
       listener: (context, state) {
         if (state is Uploading) {
@@ -511,7 +535,7 @@ class _UploadScreenState extends State<UploadScreen> {
                               //-----덩어리시작1------
                               Column(
                                 children: [
-                                  SizedBox(height: 40),
+                                  SizedBox(height: 30),
                                   Padding(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: kInnerHorizontalPadding),
@@ -519,12 +543,9 @@ class _UploadScreenState extends State<UploadScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          '제목',
-                                          // post.title,
-                                          style: kPostTitleTextStyle,
-                                        ),
-                                        SizedBox(height: 30.0),
+                                        _postTitleTextField(_convertRatio,
+                                            controller: postTitleController),
+                                        SizedBox(height: 18.0),
                                         Row(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -534,86 +555,33 @@ class _UploadScreenState extends State<UploadScreen> {
                                             //항목 1
                                             Column(
                                               children: [
-                                                // mediaList[0]['type'] == 'image'
-                                                //     ? Container(
-                                                //         decoration:
-                                                //             BoxDecoration(),
-                                                //         width: mediaWidthHeight,
-                                                //         height:
-                                                //             mediaWidthHeight,
-                                                //         child: ClipRRect(
-                                                //           borderRadius:
-                                                //               BorderRadius
-                                                //                   .circular(10),
-                                                //           child:
-                                                //               CachedNetworkImage(
-                                                //             imageUrl:
-                                                //                 mediaList[0]
-                                                //                     ['url'],
-                                                //             fit: BoxFit.cover,
-                                                //           ),
-                                                //         ),
-                                                //       )
-                                                //     : SizedBox(),
-                                                SizedBox(height: 13),
-                                                // Container(
-                                                //   width: mediaWidthHeight,
-                                                //   child: Text(
-                                                //     post.firstContentText,
-                                                //     style:
-                                                //         kPostContentTextStyle,
-                                                //     textAlign: TextAlign.center,
-                                                //   ),
-                                                // ),
+                                                _mediaStack(
+                                                    whichUploadMediaModel:
+                                                        firstUploadMediaModel,
+                                                    whichMedia: 1),
+                                                SizedBox(height: 1),
                                                 Container(
                                                   width: mediaWidthHeight,
-                                                  color: Colors.black
-                                                      .withOpacity(0.5),
-                                                  // padding: EdgeInsets.only(
-                                                  //     left: 20 * _convertRatio,
-                                                  //     right: 20 * _convertRatio,
-                                                  //     top: 6 * _convertRatio,
-                                                  //     bottom: 6 * _convertRatio),
                                                   child: _contentTextField(
                                                       _convertRatio,
                                                       controller:
                                                           firstContentController),
-                                                )
+                                                ),
                                               ],
                                             ),
                                             Column(
                                               children: [
-                                                // mediaList[0]['type'] == 'image'
-                                                //     ? Container(
-                                                //         decoration:
-                                                //             BoxDecoration(),
-                                                //         width: mediaWidthHeight,
-                                                //         height:
-                                                //             mediaWidthHeight,
-                                                //         child: ClipRRect(
-                                                //           borderRadius:
-                                                //               BorderRadius
-                                                //                   .circular(10),
-                                                //           child:
-                                                //               CachedNetworkImage(
-                                                //             imageUrl:
-                                                //                 mediaList[1]
-                                                //                     ['url'],
-                                                //             fit: BoxFit.cover,
-                                                //           ),
-                                                //         ),
-                                                //       )
-                                                //     : SizedBox(),
-                                                SizedBox(height: 13),
+                                                _mediaStack(
+                                                    whichUploadMediaModel:
+                                                        secondUploadMediaModel,
+                                                    whichMedia: 2),
+                                                SizedBox(height: 1),
                                                 Container(
                                                   width: mediaWidthHeight,
-                                                  child: Text(
-                                                    '2번째',
-                                                    // post.secondContentText,
-                                                    style:
-                                                        kPostContentTextStyle,
-                                                    textAlign: TextAlign.center,
-                                                  ),
+                                                  child: _contentTextField(
+                                                      _convertRatio,
+                                                      controller:
+                                                          secondContentController),
                                                 ),
                                               ],
                                             ),
@@ -639,18 +607,22 @@ class _UploadScreenState extends State<UploadScreen> {
                                           children: [
                                             //항목 1 선택버튼
                                             Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Container(
-                                                  width: 44,
-                                                  height: 44,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: kWhiteColor,
-                                                    border: Border.all(
-                                                      width: 2,
-                                                      color: Color(0xffD5D5D5),
+                                              child: Opacity(
+                                                opacity: 0.3,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    width: 44,
+                                                    height: 44,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color:
+                                                            Color(0xffD5D5D5),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
@@ -658,18 +630,22 @@ class _UploadScreenState extends State<UploadScreen> {
                                             ),
                                             //항목 2 선택버튼
                                             Expanded(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Container(
-                                                  width: 44,
-                                                  height: 44,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: kWhiteColor,
-                                                    border: Border.all(
-                                                      width: 2,
-                                                      color: Color(0xffD5D5D5),
+                                              child: Opacity(
+                                                opacity: 0.3,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    width: 44,
+                                                    height: 44,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color:
+                                                            Color(0xffD5D5D5),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
