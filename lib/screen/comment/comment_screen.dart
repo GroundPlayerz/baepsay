@@ -1,13 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
-import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'comment_widget.dart';
 
@@ -20,6 +22,9 @@ class CommentScreen extends StatefulWidget {
 }
 
 class _CommentScreenState extends State<CommentScreen> {
+  final String iosTestUnitId = 'ca-app-pub-3940256099942544/2934735716';
+  final String androidTestUnitId = 'ca-app-pub-3940256099942544/6300978111';
+  BannerAd? banner;
   late int postId;
   late int postCommentCount;
   FocusNode? _myFocusNode;
@@ -51,6 +56,12 @@ class _CommentScreenState extends State<CommentScreen> {
       BlocProvider.of<CommentScreenCubit>(context)
           .getInitialCommentList(postId: postId);
     });
+    banner = BannerAd(
+      size: AdSize.smartBanner,
+      adUnitId: Platform.isIOS ? iosTestUnitId : androidTestUnitId,
+      listener: BannerAdListener(),
+      request: AdRequest(),
+    )..load();
   }
 
   @override
@@ -118,10 +129,13 @@ class _CommentScreenState extends State<CommentScreen> {
             children: [
               //Todo: 광고 영역
               Container(
-                color: Colors.grey,
                 width: MediaQuery.of(context).size.width,
                 height: 75,
-                child: Center(child: Text('광고 영역')),
+                child: banner == null
+                    ? Container()
+                    : AdWidget(
+                        ad: banner!,
+                      ),
               ),
               //SizedBox(height: 10),
               //댓글 업로드중 생기는 circularindicator

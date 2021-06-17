@@ -1,3 +1,5 @@
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,6 +37,8 @@ void main() async {
 
 class GoldenBalance extends StatelessWidget {
   // This widget is the root of your application.
+
+  FirebaseAnalytics analytics = FirebaseAnalytics();
 
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
@@ -107,6 +111,9 @@ class GoldenBalance extends StatelessWidget {
                 AdminScoringCubit(adminRepository: AdminRepository())),
       ],
       child: MaterialApp(
+        navigatorObservers: [
+          FirebaseAnalyticsObserver(analytics: analytics),
+        ],
         title: 'Flutter Demo',
         themeMode: ThemeMode.light,
         theme: ThemeData(

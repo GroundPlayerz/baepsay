@@ -11,6 +11,7 @@ import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/upload_state.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen_media_model.dart';
+import 'package:golden_balance_flutter/util/widget.dart';
 import 'package:pedantic/pedantic.dart';
 
 class ProfileEditScreen extends StatefulWidget {
@@ -48,46 +49,14 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
     return BlocListener<UploadCubit, UploadState>(
       listener: (context, state) {
         if (state is Uploading) {
-          Fluttertoast.showToast(
-            msg: '변경된 정보를 적용중입니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          showToast(msg: '변경된 정보를 적용중입니다.');
         } else if (state is Compressing) {
-          Fluttertoast.showToast(
-            msg: '이미지 파일을 압축중입니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          showToast(msg: '이미지 파일을 압축중입니다.');
         } else if (state is Uploaded) {
-          Fluttertoast.showToast(
-            msg: '프로필이 성공적으로 변경되었습니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          showToast(msg: '프로필이 성공적으로 변경되었습니다.');
           Phoenix.rebirth(context);
         } else if (state is Error) {
-          Fluttertoast.showToast(
-            msg: '문제가 발생하였습니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          showToast(msg: '문제가 발생하였습니다.');
           Phoenix.rebirth(context);
         }
       },
@@ -96,6 +65,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
         child: Scaffold(
           appBar: AppBar(
             title: Text('프로필 편집'),
+            elevation: 0,
             actions: [
               TextButton(
                 onPressed: () async {
@@ -114,15 +84,7 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                       imageBytes: imageBytes,
                     );
                   } else {
-                    unawaited(Fluttertoast.showToast(
-                      msg: '프로필 이름을 작성해주세요',
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.CENTER,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.grey,
-                      textColor: Colors.white,
-                      fontSize: 16.0,
-                    ));
+                    showToast(msg: '프로필 이름을 작성해주세요');
                   }
                 },
                 child: Text('완료'),
@@ -138,16 +100,40 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                 builder: (context, authState) {
                   if (authState is FirebaseSignedIn) {
                     return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            children: [
-                              Text('프로필 사진'),
-                              Builder(builder: (context) {
+                          Divider(),
+                          Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '프로필 사진',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    showToast(msg: '파일을 불러오는 중입니다.');
+                                    await uploadMediaModel.setImageFile();
+                                    setState(() {});
+                                  },
+                                  child: Text('편집'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Builder(
+                              builder: (context) {
                                 if (authState.member.profilePhotoUrl != null &&
                                     uploadMediaModel.mediaFile == null) {
                                   return CircleAvatar(
-                                    radius: 24,
+                                    radius: 40.5,
                                     foregroundImage: CachedNetworkImageProvider(
                                       authState.member.profilePhotoUrl!,
                                     ),
@@ -157,8 +143,8 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
                                 if (uploadMediaModel.mediaFile != null) {
                                   return Container(
-                                      height: 100,
-                                      width: 100,
+                                      height: 81,
+                                      width: 81,
                                       child: Image.file(
                                         uploadMediaModel.mediaFile!,
                                         fit: BoxFit.cover,
@@ -167,40 +153,42 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
 
                                 return Container(
                                   color: Colors.grey,
-                                  height: 100,
-                                  width: 100,
+                                  height: 81,
+                                  width: 81,
                                 );
-                              }),
-                              TextButton(
-                                onPressed: () async {
-                                  unawaited(Fluttertoast.showToast(
-                                    msg: '파일을 불러오는 중입니다.',
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.CENTER,
-                                    timeInSecForIosWeb: 1,
-                                    backgroundColor: Colors.grey,
-                                    textColor: Colors.white,
-                                    fontSize: 16.0,
-                                  ));
-                                  await uploadMediaModel.setImageFile();
-                                  setState(() {});
-                                },
-                                child: Text('프로필 사진 변경'),
-                              ),
-                            ],
+                              },
+                            ),
                           ),
-                          Row(
-                            children: [
-                              Text('프로필 이름'),
-                              Container(
-                                width: 100,
-                                child: TextField(
-                                  focusNode: myFocusNode,
-                                  controller: _controller,
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Divider(),
+                          Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '이름',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16.0),
                                 ),
-                              )
-                            ],
-                          )
+                                SizedBox(
+                                  width: 16.0,
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    child: TextField(
+                                      focusNode: myFocusNode,
+                                      controller: _controller,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Divider(),
                         ]);
                   } else if (authState is AuthError) {
                     return ErrorScreen();

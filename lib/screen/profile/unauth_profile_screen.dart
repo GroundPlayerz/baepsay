@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/screen/admin/admin_screen.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/profile/profile_edit_screen.dart';
@@ -33,32 +34,7 @@ class _UnauthProfileScreenState extends State<UnauthProfileScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('내 프로필'),
-          actions: [
-            IconButton(
-                icon: Icon(Icons.more_horiz),
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ListTile(
-                              title: Text('프로필 편집'),
-                              leading: Icon(Icons.edit),
-                              onTap: () {},
-                            ),
-                            ListTile(
-                              title: Text('설정'),
-                              leading: Icon(Icons.settings),
-                              onTap: () {},
-                            ),
-                          ],
-                        );
-                      });
-                }),
-          ],
+          title: Text('로그인이 필요합니다'),
         ),
         body: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
@@ -71,7 +47,10 @@ class _UnauthProfileScreenState extends State<UnauthProfileScreen> {
                       onPressed: () {
                         BlocProvider.of<AuthCubit>(context).signInGoogle();
                       },
-                      child: Text('구글 로그인하기'),
+                      child: Text(
+                        '구글 로그인하기',
+                        style: TextStyle(color: kAccentPurpleColor),
+                      ),
                     ),
                     Icon(
                       Icons.lock,
