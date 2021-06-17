@@ -162,10 +162,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: MediaQuery.of(context).size.height -
                             (safeAreaTopHeight + AppBar().preferredSize.height),
                         width: double.infinity,
-                        child: FeedPostWidgetNew(
-                            postIndex: index,
-                            safeAreaTopHeight: safeAreaTopHeight,
-                            safeAreaVerticalHeight: safeAreaVerticalHeight),
+                        child: FeedPostWidgetNew(postIndex: index),
                       ),
                     ]),
                   );

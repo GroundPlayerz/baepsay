@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/device_media_query_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
@@ -14,13 +15,10 @@ import 'package:golden_balance_flutter/screen/post/post_report_screen.dart';
 
 class FeedPostWidgetNew extends StatefulWidget {
   final int postIndex;
-  final double safeAreaTopHeight;
-  final double safeAreaVerticalHeight;
 
-  FeedPostWidgetNew(
-      {required this.postIndex,
-      required this.safeAreaTopHeight,
-      required this.safeAreaVerticalHeight});
+  FeedPostWidgetNew({
+    required this.postIndex,
+  });
 
   @override
   _FeedPostWidgetNewState createState() => _FeedPostWidgetNewState();
@@ -28,13 +26,9 @@ class FeedPostWidgetNew extends StatefulWidget {
 
 class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
   late int postIndex;
-
-  bool isMediaQueryCalculationDone = false;
   late final double mediaWidthHeight;
   late final double completeButtonWidth;
-
-  late double safeAreaTopHeight;
-  late double safeAreaVerticalHeight;
+  late final double safeAreaVerticalHeight;
 
   int selectedContent = -1; //선택안된거임.
 
@@ -44,9 +38,18 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
     super.initState();
     postIndex = widget.postIndex;
     BlocProvider.of<HomeFeedCubit>(context).viewPost(postIndex: postIndex);
-
-    safeAreaTopHeight = widget.safeAreaTopHeight;
-    safeAreaVerticalHeight = widget.safeAreaVerticalHeight;
+    // safeAreaTopHeight =
+    //     BlocProvider.of<DeviceMediaQueryCubit>(context).getSafeAreaTopHeight();
+    safeAreaVerticalHeight = BlocProvider.of<DeviceMediaQueryCubit>(context)
+        .getSafeAreaVerticalHeight();
+    mediaWidthHeight =
+        (BlocProvider.of<DeviceMediaQueryCubit>(context).getDeviceWidth() -
+                (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
+                24) /
+            2;
+    completeButtonWidth =
+        BlocProvider.of<DeviceMediaQueryCubit>(context).getDeviceWidth() -
+            (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
   }
 
   void tapContent(int tappedContent) {
@@ -275,15 +278,15 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
 
   @override
   Widget build(BuildContext context) {
-    if (!isMediaQueryCalculationDone) {
-      mediaWidthHeight = (MediaQuery.of(context).size.width -
-              (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
-              24) /
-          2;
-      completeButtonWidth = MediaQuery.of(context).size.width -
-          (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
-      isMediaQueryCalculationDone = true;
-    }
+    // if (!isMediaQueryCalculationDone) {
+    //   mediaWidthHeight = (MediaQuery.of(context).size.width -
+    //           (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
+    //           24) /
+    //       2;
+    //   completeButtonWidth = MediaQuery.of(context).size.width -
+    //       (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
+    //   isMediaQueryCalculationDone = true;
+    // }
 
     return BlocBuilder<HomeFeedCubit, HomeFeedState>(builder: (context, state) {
       if (state is HomeFeedLoaded) {
@@ -308,401 +311,388 @@ class _FeedPostWidgetNewState extends State<FeedPostWidgetNew> {
             }
           }
         }
-        print('MediaQuery.size.height : ' +
-            MediaQuery.of(context).size.height.toString());
-        print('kToolbarHeight : ' + kToolbarHeight.toString());
-        print('MediaQuery.padding.vertical : ' +
-            MediaQuery.of(context).padding.vertical.toString());
 
-        return SafeArea(
-          child: ListView(children: [
-            SizedBox(height: 5),
-            ConstrainedBox(
-              constraints: BoxConstraints(
-                  minHeight: MediaQuery.of(context).size.height -
-                      AppBar().preferredSize.height -
-                      safeAreaVerticalHeight -
-                      15),
+        return ListView(children: [
+          SizedBox(height: 5),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height -
+                    AppBar().preferredSize.height -
+                    safeAreaVerticalHeight -
+                    15),
 
-              //Rounded 컨테이너
-              child: Container(
-                margin:
-                    EdgeInsets.symmetric(horizontal: kOuterHorizontalPadding),
-                decoration: BoxDecoration(
-                  color: kWhiteColor,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+            //Rounded 컨테이너
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: kOuterHorizontalPadding),
+              decoration: BoxDecoration(
+                color: kWhiteColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 0,
+                    blurRadius: 6,
+                    offset: Offset(0, 3), // changes position of shadow
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      spreadRadius: 0,
-                      blurRadius: 6,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    //-----덩어리시작1------
-                    Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(),
-                            IconButton(
-                                icon: Icon(
-                                  Icons.more_horiz_sharp,
-                                  color: kIconGreyColor_CBCBCB,
-                                ),
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return SafeArea(
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Builder(builder: (context) {
-                                                return ListTile(
-                                                  onTap: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                PostReportScreen(
-                                                                    postId: post
-                                                                        .id)));
-                                                  },
-                                                  leading: Icon(Icons.report),
-                                                  title: Text('신고하기'),
-                                                );
-                                              }),
-                                            ],
-                                          ),
-                                        );
-                                      });
-                                }),
-                          ],
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: kInnerHorizontalPadding),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '참여  ' +
-                                    (post.firstContentVoteCount +
-                                            post.secondContentVoteCount)
-                                        .toString(),
-                                style: kPostInfoTextStyle,
-                              ),
-                              Text(post.title, style: kPostTitleTextStyle),
-                              SizedBox(height: 30.0),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  //항목 1
-                                  Column(
-                                    children: [
-                                      mediaList[0]['type'] == 'image'
-                                          ? Container(
-                                              decoration: BoxDecoration(),
-                                              width: mediaWidthHeight,
-                                              height: mediaWidthHeight,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: CachedNetworkImage(
-                                                  imageUrl: mediaList[0]['url'],
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )
-                                          : SizedBox(),
-                                      SizedBox(height: 13),
-                                      Container(
-                                        width: mediaWidthHeight,
-                                        child: Text(
-                                          post.firstContentText,
-                                          style: kPostContentTextStyle,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      mediaList[1]['type'] == 'image'
-                                          ? Container(
-                                              decoration: BoxDecoration(),
-                                              width: mediaWidthHeight,
-                                              height: mediaWidthHeight,
-                                              child: ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: CachedNetworkImage(
-                                                  imageUrl: mediaList[1]['url'],
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                            )
-                                          : SizedBox(),
-                                      SizedBox(height: 13),
-                                      Container(
-                                        width: mediaWidthHeight,
-                                        child: Text(
-                                          post.secondContentText,
-                                          style: kPostContentTextStyle,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  //항목 2
-                                ],
-                              ),
-                              SizedBox(height: 38.0),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    //----덩어리시작 2----
-                    Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: kInnerHorizontalPadding),
-                          child: Column(
-                            children: [
-                              //투표 버튼
-                              post.memberVoteChoice == null
-                                  ? Row(
-                                      children: [
-                                        //항목 1 선택버튼
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              tapContent(1);
-                                            },
-                                            behavior: HitTestBehavior.opaque,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                width: 44,
-                                                height: 44,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: kWhiteColor,
-                                                  border: Border.all(
-                                                    width: 2,
-                                                    color: selectedContent == 1
-                                                        ? kAccentPinkColor
-                                                            .withOpacity(0.5)
-                                                        : Color(0xffD5D5D5),
-                                                  ),
-                                                ),
-                                                child: selectedContent == 1
-                                                    ? Center(
-                                                        child: Container(
-                                                          width: 28,
-                                                          height: 28,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color:
-                                                                kAccentPinkColor,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Container(),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        //항목 2 선택버튼
-                                        Expanded(
-                                          child: GestureDetector(
-                                            onTap: () {
-                                              tapContent(2);
-                                            },
-                                            behavior: HitTestBehavior.opaque,
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                width: 44,
-                                                height: 44,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: kWhiteColor,
-                                                  border: Border.all(
-                                                    width: 2,
-                                                    color: selectedContent == 2
-                                                        ? kAccentPinkColor
-                                                            .withOpacity(0.5)
-                                                        : Color(0xffD5D5D5),
-                                                  ),
-                                                ),
-                                                child: selectedContent == 2
-                                                    ? Center(
-                                                        child: Container(
-                                                          width: 28,
-                                                          height: 28,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            shape:
-                                                                BoxShape.circle,
-                                                            color:
-                                                                kAccentPinkColor,
-                                                          ),
-                                                        ),
-                                                      )
-                                                    : Container(),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  : Row(
-                                      children: [
-                                        //항목 1 선택버튼
-                                        Expanded(
-                                          child: post.memberVoteChoice == 1
-                                              ? Container(
-                                                  width: 44,
-                                                  height: 44,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: kAccentPinkColor,
-                                                  ),
-                                                  child: Center(
-                                                    child: Icon(Icons.check,
-                                                        color: kWhiteColor),
-                                                  ),
-                                                )
-                                              : post.memberVoteChoice == 2
-                                                  ? Container()
-                                                  : Container(
-                                                      width: 44,
-                                                      height: 44,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: kWhiteColor,
-                                                        border: Border.all(
-                                                          width: 2,
-                                                          color:
-                                                              Color(0xffD5D5D5),
-                                                        ),
-                                                      ),
-                                                    ),
-                                        ),
-                                        //항목 2 선택버튼
-                                        Expanded(
-                                          child: post.memberVoteChoice == 2
-                                              ? Container(
-                                                  width: 44,
-                                                  height: 44,
-                                                  decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: kAccentPinkColor,
-                                                  ),
-                                                  child: Center(
-                                                    child: Icon(Icons.check,
-                                                        color: kWhiteColor),
-                                                  ),
-                                                )
-                                              : post.memberVoteChoice == 1
-                                                  ? Container()
-                                                  : Container(
-                                                      width: 44,
-                                                      height: 44,
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        color: kWhiteColor,
-                                                        border: Border.all(
-                                                          width: 2,
-                                                          color:
-                                                              Color(0xffD5D5D5),
-                                                        ),
-                                                      ),
-                                                    ),
-                                        ),
-                                      ],
-                                    ),
-                              SizedBox(height: 49.0),
-                              //투표 버튼, 투표 결과 영역
-                              post.memberVoteChoice != null
-                                  ? _voteResultWidget(
-                                      firstContentVoteCount:
-                                          post.firstContentVoteCount,
-                                      secondContentVoteCount:
-                                          post.secondContentVoteCount)
-                                  : selectedContent == -1
-                                      ? _completeButtonDeactivated()
-                                      : _completeButton(),
-                              SizedBox(
-                                height: 23,
-                              ),
-                            ],
-                          ),
-                        ),
-                        //좋아요, 댓글 버튼
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            //좋아요 버튼
-                            post.memberVoteChoice == null
-                                ? _likeButtonDeactivated(post)
-                                : _likeButton(post),
-
-                            // 댓글 버튼
-                            post.memberVoteChoice == null
-                                ? _commentButtonDeactivated(post)
-                                : _commentButton(post: post, postId: post.id),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                      ],
-                    ),
-                  ],
-                ),
+                ],
               ),
-            ),
-            SizedBox(height: 30),
-            //아래 Info Area
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '시작일  ' + post.createdAt.split('T')[0].replaceAll('-', '/'),
-                    style: kPostInfoTextStyleOld.copyWith(
-                        color: kGreyColor2_999999),
+                  //-----덩어리시작1------
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(),
+                          IconButton(
+                              icon: Icon(
+                                Icons.more_horiz_sharp,
+                                color: kIconGreyColor_CBCBCB,
+                              ),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Builder(builder: (context) {
+                                            return ListTile(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PostReportScreen(
+                                                                postId:
+                                                                    post.id)));
+                                              },
+                                              leading: Icon(Icons.report),
+                                              title: Text('신고하기'),
+                                            );
+                                          }),
+                                        ],
+                                      );
+                                    });
+                              }),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kInnerHorizontalPadding),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '참여  ' +
+                                  (post.firstContentVoteCount +
+                                          post.secondContentVoteCount)
+                                      .toString(),
+                              style: kPostInfoTextStyle,
+                            ),
+                            Text(post.title, style: kPostTitleTextStyle),
+                            SizedBox(height: 30.0),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                //항목 1
+                                Column(
+                                  children: [
+                                    mediaList[0]['type'] == 'image'
+                                        ? Container(
+                                            decoration: BoxDecoration(),
+                                            width: mediaWidthHeight,
+                                            height: mediaWidthHeight,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl: mediaList[0]['url'],
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                    SizedBox(height: 13),
+                                    Container(
+                                      width: mediaWidthHeight,
+                                      child: Text(
+                                        post.firstContentText,
+                                        style: kPostContentTextStyle,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    mediaList[1]['type'] == 'image'
+                                        ? Container(
+                                            decoration: BoxDecoration(),
+                                            width: mediaWidthHeight,
+                                            height: mediaWidthHeight,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl: mediaList[1]['url'],
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                    SizedBox(height: 13),
+                                    Container(
+                                      width: mediaWidthHeight,
+                                      child: Text(
+                                        post.secondContentText,
+                                        style: kPostContentTextStyle,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                //항목 2
+                              ],
+                            ),
+                            SizedBox(height: 38.0),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    'BY  ' + post.profileName,
-                    style: kPostInfoTextStyleOld.copyWith(
-                        color: kGreyColor2_999999),
+                  //----덩어리시작 2----
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kInnerHorizontalPadding),
+                        child: Column(
+                          children: [
+                            //투표 버튼
+                            post.memberVoteChoice == null
+                                ? Row(
+                                    children: [
+                                      //항목 1 선택버튼
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            tapContent(1);
+                                          },
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 44,
+                                              height: 44,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kWhiteColor,
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: selectedContent == 1
+                                                      ? kAccentPinkColor
+                                                          .withOpacity(0.5)
+                                                      : Color(0xffD5D5D5),
+                                                ),
+                                              ),
+                                              child: selectedContent == 1
+                                                  ? Center(
+                                                      child: Container(
+                                                        width: 28,
+                                                        height: 28,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color:
+                                                              kAccentPinkColor,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      //항목 2 선택버튼
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            tapContent(2);
+                                          },
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 44,
+                                              height: 44,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kWhiteColor,
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: selectedContent == 2
+                                                      ? kAccentPinkColor
+                                                          .withOpacity(0.5)
+                                                      : Color(0xffD5D5D5),
+                                                ),
+                                              ),
+                                              child: selectedContent == 2
+                                                  ? Center(
+                                                      child: Container(
+                                                        width: 28,
+                                                        height: 28,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color:
+                                                              kAccentPinkColor,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      //항목 1 선택버튼
+                                      Expanded(
+                                        child: post.memberVoteChoice == 1
+                                            ? Container(
+                                                width: 44,
+                                                height: 44,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: kAccentPinkColor,
+                                                ),
+                                                child: Center(
+                                                  child: Icon(Icons.check,
+                                                      color: kWhiteColor),
+                                                ),
+                                              )
+                                            : post.memberVoteChoice == 2
+                                                ? Container()
+                                                : Container(
+                                                    width: 44,
+                                                    height: 44,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color:
+                                                            Color(0xffD5D5D5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                      ),
+                                      //항목 2 선택버튼
+                                      Expanded(
+                                        child: post.memberVoteChoice == 2
+                                            ? Container(
+                                                width: 44,
+                                                height: 44,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: kAccentPinkColor,
+                                                ),
+                                                child: Center(
+                                                  child: Icon(Icons.check,
+                                                      color: kWhiteColor),
+                                                ),
+                                              )
+                                            : post.memberVoteChoice == 1
+                                                ? Container()
+                                                : Container(
+                                                    width: 44,
+                                                    height: 44,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color:
+                                                            Color(0xffD5D5D5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                      ),
+                                    ],
+                                  ),
+                            SizedBox(height: 49.0),
+                            //투표 버튼, 투표 결과 영역
+                            post.memberVoteChoice != null
+                                ? _voteResultWidget(
+                                    firstContentVoteCount:
+                                        post.firstContentVoteCount,
+                                    secondContentVoteCount:
+                                        post.secondContentVoteCount)
+                                : selectedContent == -1
+                                    ? _completeButtonDeactivated()
+                                    : _completeButton(),
+                            SizedBox(
+                              height: 23,
+                            ),
+                          ],
+                        ),
+                      ),
+                      //좋아요, 댓글 버튼
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //좋아요 버튼
+                          post.memberVoteChoice == null
+                              ? _likeButtonDeactivated(post)
+                              : _likeButton(post),
+
+                          // 댓글 버튼
+                          post.memberVoteChoice == null
+                              ? _commentButtonDeactivated(post)
+                              : _commentButton(post: post, postId: post.id),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                    ],
                   ),
                 ],
               ),
             ),
-            SizedBox(height: 30),
-          ]),
-        );
+          ),
+          SizedBox(height: 30),
+          //아래 Info Area
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '시작일  ' + post.createdAt.split('T')[0].replaceAll('-', '/'),
+                  style:
+                      kPostInfoTextStyleOld.copyWith(color: kGreyColor2_999999),
+                ),
+                Text(
+                  'BY  ' + post.profileName,
+                  style:
+                      kPostInfoTextStyleOld.copyWith(color: kGreyColor2_999999),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 30),
+        ]);
       } else {
         return Container(
           child: Text('스켈레톤'),
