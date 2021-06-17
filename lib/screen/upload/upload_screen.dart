@@ -72,7 +72,7 @@ class _UploadScreenState extends State<UploadScreen> {
                 fontSize: 18 * _convertRatio,
                 color: Colors.white.withOpacity(0.7)),
             border: InputBorder.none,
-            counterText: ""
+            counterText: ''
             // alignLabelWithHint: false,
             ),
         style: kNoto18B.copyWith(

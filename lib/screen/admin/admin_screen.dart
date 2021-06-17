@@ -30,7 +30,7 @@ class AdminScreen extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => ReportedPostScreen()));
             },
-            child: Text('신고된 게시물'),
+            child: Text('신고된 어젠다'),
           ),
           TextButton(
             onPressed: () {
@@ -39,7 +39,7 @@ class AdminScreen extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => ReportedCommentScreen()));
             },
-            child: Text('신고된 댓글'),
+            child: Text('신고된 의견'),
           ),
           TextButton(
             onPressed: () {
@@ -48,19 +48,20 @@ class AdminScreen extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => ReportedNestedCommentScreen()));
             },
-            child: Text('신고된 대댓글'),
+            child: Text('신고된 답글'),
           ),
           TextButton(
               onPressed: () {
                 BlocProvider.of<AdminScoringCubit>(context).scorePost();
               },
-              child: Text('게시물 스코어링')),
+              child: Text('어젠다 스코어링')),
           BlocBuilder<AdminScoringCubit, AdminScoringState>(
               builder: (context, state) {
             if (state is Processing) {
-              return CircularProgressIndicator();
+              return Center(child: CircularProgressIndicator());
             } else if (state is Complete) {
-              return Text(state.scoringPostCount.toString());
+              return Center(
+                  child: Text('총 어젠다 수: ' + state.scoringPostCount.toString()));
             } else if (state is Error) {
               return Text(state.message);
             }

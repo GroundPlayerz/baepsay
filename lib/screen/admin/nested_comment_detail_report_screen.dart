@@ -1,26 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/reported_nested_comment_cubit.dart';
+
 import 'package:golden_balance_flutter/model/report/report.dart';
 
-class PostDetailReportScreen extends StatelessWidget {
-  final int postId;
+class NestedCommentDetailReportScreen extends StatelessWidget {
+  final int nestedCommentId;
 
-  const PostDetailReportScreen({required this.postId});
+  const NestedCommentDetailReportScreen({required this.nestedCommentId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('어젠다 신고 상세 내용'),
+        title: Text('의견 신고 상세 내용'),
         actions: [
-          TextButton(onPressed: () {}, child: Text('게시물 이동')),
+          TextButton(onPressed: () {}, child: Text('게시물로 이동')),
         ],
       ),
       body: SafeArea(
         child: FutureBuilder<List<Report>?>(
-            future: BlocProvider.of<ReportedPostCubit>(context)
-                .getPostDetailReport(postId: postId),
+            future: BlocProvider.of<ReportedNestedCommentCubit>(context)
+                .getNestedCommentDetailReport(nestedCommentId: nestedCommentId),
             builder:
                 (BuildContext context, AsyncSnapshot<List<Report>?> snapshot) {
               if (snapshot.hasData) {

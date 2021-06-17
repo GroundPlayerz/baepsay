@@ -18,7 +18,7 @@ class Error extends UploadState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [this.message];
+  List<Object?> get props => [message];
 }
 
 class Compressing extends UploadState {

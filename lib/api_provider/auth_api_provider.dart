@@ -89,6 +89,6 @@ class AuthApiProvider {
 
   Future<void> _signOutGoogle() async {
     await _googleSignIn.signOut();
-    log("[login_service] _signOutGoogle() - User Signed Out with google.");
+    log('[login_service] _signOutGoogle() - User Signed Out with google.');
   }
 }

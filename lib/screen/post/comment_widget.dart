@@ -7,6 +7,7 @@ import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
+import 'package:golden_balance_flutter/model/member/member.dart';
 import 'package:golden_balance_flutter/screen/post/comment_report_screen.dart';
 import 'package:golden_balance_flutter/screen/post/nested_comment_screen.dart';
 import 'package:golden_balance_flutter/util/widget.dart';
@@ -171,9 +172,9 @@ class _CommentWidgetState extends State<CommentWidget> {
                           GestureDetector(
                             onTap: () {
                               //Todo 다른사람 댓글이면 신고하기, 내 댓글이면 수정하기, 삭제하기 일단 요청을 보내고 프론트에서만 처리하기
-                              int? currentMemberId =
+                              Member? currentMember =
                                   BlocProvider.of<AuthCubit>(context)
-                                      .getMemberId();
+                                      .getCurrentMember();
                               showModalBottomSheet(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -195,7 +196,9 @@ class _CommentWidgetState extends State<CommentWidget> {
                                                           )));
                                             },
                                           ),
-                                          comment.memberId == currentMemberId
+                                          comment.memberId ==
+                                                      currentMember?.id ||
+                                                  currentMember?.role == 'admin'
                                               ? ListTile(
                                                   title: Text('삭제하기'),
                                                   leading: Icon(Icons.delete),
@@ -217,7 +220,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                                   },
                                                 )
                                               : Container(),
-                                          comment.memberId == currentMemberId
+                                          comment.memberId == currentMember?.id
                                               ? ListTile(
                                                   title: Text('수정하기'),
                                                   leading: Icon(Icons.edit),

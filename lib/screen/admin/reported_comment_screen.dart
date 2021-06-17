@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/reported_comment_state.dart';
+import 'package:golden_balance_flutter/screen/admin/comment_detail_report_screen.dart';
 
 class ReportedCommentScreen extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _ReportedCommentScreenState extends State<ReportedCommentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('신고된 댓글'),
+        title: Text('신고된 의견'),
       ),
       body: BlocBuilder<ReportedCommentCubit, ReportedCommentState>(
         builder: (context, state) {
@@ -41,12 +42,40 @@ class _ReportedCommentScreenState extends State<ReportedCommentScreen> {
                       if (index < state.feed.length) {
                         final comment = state.feed[index];
                         return GestureDetector(
-                          onTap: () {},
-                          child: Card(
+                          behavior: HitTestBehavior.translucent,
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CommentDetailReportScreen(
+                                            commentId: comment.id)));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10.0),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(comment.text),
+                                Text(
+                                  comment.text,
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
                                 Text('신고 수: ' + comment.reportCount.toString()),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(comment.createdAt.split('T')[0]),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Divider()
                               ],
                             ),
                           ),

@@ -134,7 +134,6 @@ class AuthCubit extends Cubit<AuthState> {
       final accessToken = Token.fromJson(resp.data['access_token']);
       final Member member = Member.fromJson(resp.data['member']);
       await _secureStorage.delete(key: 'access_token');
-      await _secureStorage.delete(key: 'user_id');
       await _secureStorage.write(
           key: 'access_token', value: accessToken.accessToken);
       emit(FirebaseSignedIn(member));

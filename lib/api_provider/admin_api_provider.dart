@@ -40,7 +40,7 @@ class AdminApiProvider {
     return response;
   }
 
-  Future<Response> getPostReport({required int postId}) async {
+  Future<Response> getPostDetailReport({required int postId}) async {
     Response response = await _dio.get('admin/report/post/$postId');
 
     return response;
@@ -61,7 +61,7 @@ class AdminApiProvider {
     return response;
   }
 
-  Future<Response> getCommentReport({required int commentId}) async {
+  Future<Response> getCommentDetailReport({required int commentId}) async {
     Response response = await _dio.get('admin/report/comment/$commentId');
 
     return response;
@@ -80,7 +80,7 @@ class AdminApiProvider {
     return response;
   }
 
-  Future<Response> getNestedCommentReportDetail(
+  Future<Response> getNestedCommentDetailReport(
       {required int nestedCommentId}) async {
     Response response =
         await _dio.get('admin/report/comment/nested/$nestedCommentId');

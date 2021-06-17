@@ -18,7 +18,7 @@ class UploadScreenMediaModel {
           ?.files;
       return _paths;
     } on PlatformException catch (e) {
-      print("Unsupported operation" + e.toString());
+      print('Unsupported operation' + e.toString());
       return null;
     } catch (ex) {
       print(ex);

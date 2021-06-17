@@ -65,26 +65,26 @@ class DioLoggingInterceptors extends dio.Interceptor {
           (responseCode == 401 || responseCode == 422)) {
         _dio.interceptors.requestLock.lock();
         _dio.interceptors.responseLock.lock();
-        String? userId = await _secureStorage.read(key: 'user_id');
+        String? memberId = await _secureStorage.read(key: 'member_id');
         User? currentUser = _auth.currentUser;
         dio.Response? resp;
-        if (userId == null && currentUser != null) {
+        if (currentUser != null) {
           resp = await Dio(dio.BaseOptions(
             baseUrl: 'http://34.64.204.217/api/',
             connectTimeout: 5000,
             receiveTimeout: 3000,
           )).post('auth/authenticated/access-token',
               data: {'email': currentUser.email});
-        } else if (userId != null && currentUser == null) {
+        } else {
           resp = await Dio(BaseOptions(
             baseUrl: 'http://34.64.204.217/api/',
             connectTimeout: 5000,
             receiveTimeout: 3000,
           )).post('auth/unauthenticated/access-token',
-              data: {'user_id': userId});
+              data: {'member_id': memberId});
         }
         //ToDO: 고쳐야됨
-        final token = Token.fromJson(resp!.data['access_token']);
+        final token = Token.fromJson(resp.data['access_token']);
         String newAccessToken = token.accessToken;
         await _secureStorage.delete(key: 'access_token');
         await _secureStorage.write(key: 'access_token', value: newAccessToken);

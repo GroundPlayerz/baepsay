@@ -16,24 +16,24 @@ class AdminRepository {
       await adminApiProvider.getReportedPost(
           reportCountCursor: reportCountCursor, idCursor: idCursor);
 
-  Future<Response> getPostReport({required int postId}) async =>
-      await adminApiProvider.getPostReport(postId: postId);
+  Future<Response> getPostDetailReport({required int postId}) async =>
+      await adminApiProvider.getPostDetailReport(postId: postId);
 
   Future<Response> getReportedComment(
           {int? reportCountCursor, int? idCursor}) async =>
       await adminApiProvider.getReportedComment(
           reportCountCursor: reportCountCursor, idCursor: idCursor);
 
-  Future<Response> getCommentReport({required int commentId}) async =>
-      await adminApiProvider.getCommentReport(commentId: commentId);
+  Future<Response> getCommentDetailReport({required int commentId}) async =>
+      await adminApiProvider.getCommentDetailReport(commentId: commentId);
 
   Future<Response> getReportedNestedComment(
           {int? reportCountCursor, int? idCursor}) async =>
       await adminApiProvider.getReportedNestedComment(
           reportCountCursor: reportCountCursor, idCursor: idCursor);
 
-  Future<Response> getNestedCommentReportDetail(
+  Future<Response> getNestedCommentDetailReport(
           {required int nestedCommentId}) async =>
-      adminApiProvider.getNestedCommentReportDetail(
+      adminApiProvider.getNestedCommentDetailReport(
           nestedCommentId: nestedCommentId);
 }

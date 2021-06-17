@@ -30,10 +30,9 @@ class _SplashScreenState extends State<SplashScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '황금 밸런스',
+                    '뱁새',
                     style: TextStyle(fontSize: 40.0, color: kAccentPinkColor),
                   ),
-                  Icon(Icons.check_circle_outline)
                 ],
               ),
             ),

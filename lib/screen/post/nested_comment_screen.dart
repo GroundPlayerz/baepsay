@@ -78,37 +78,6 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
     }
   }
 
-  // Widget _likeButton({required Comment comment}) => GestureDetector(
-  //       behavior: HitTestBehavior.opaque,
-  //       onTap: () {
-  //         setState(() {
-  //           BlocProvider.of<CommentScreenCubit>(context).pressLikeButton(
-  //             commentIndex: commentIndex,
-  //             memberLikeCount: comment.memberLikeCount,
-  //           );
-  //         });
-  //       },
-  //       child: Padding(
-  //         padding: EdgeInsets.only(left: 8, right: 16, top: 2),
-  //         child: Column(
-  //           children: [
-  //             comment.memberLikeCount == 0
-  //                 ? Icon(Icons.favorite_border_rounded,
-  //                     size: photoWidth, color: kWhiteColor.withOpacity(0.7))
-  //                 : Icon(Icons.favorite_rounded,
-  //                     size: photoWidth, color: kAccentPinkColor),
-  //             //SizedBox(width: 4),
-  //             (comment.likeCount == 0)
-  //                 ? Text('')
-  //                 : Text(comment.likeCount.toString(),
-  //                     style: kPostInfoNumberTextStyleOld.copyWith(
-  //                         fontSize: 14.0,
-  //                         color: Colors.white.withOpacity(0.7))),
-  //           ],
-  //         ),
-  //       ),
-  //     );
-
   Widget _likeButton({required Comment comment}) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {

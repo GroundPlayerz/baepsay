@@ -8,11 +8,11 @@ import 'package:golden_balance_flutter/repository/member_repository.dart';
 
 class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
   final CommentRepository commentRepository;
-  final MemberRepository userRepository;
+  final MemberRepository memberRepository;
 
   NestedCommentScreenCubit({
     required this.commentRepository,
-    required this.userRepository,
+    required this.memberRepository,
   }) : super(Empty());
 
   void setEmptyState() {
@@ -110,10 +110,10 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
             isLoadingMore: false));
 
         if (changedNestedComment.memberLikeCount == 0) {
-          await userRepository.cancelLikeNestedComment(
+          await memberRepository.cancelLikeNestedComment(
               nestedCommentId: changedNestedComment.id);
         } else {
-          await userRepository.likeNestedComment(
+          await memberRepository.likeNestedComment(
               nestedCommentId: changedNestedComment.id);
         }
       }
@@ -122,7 +122,24 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
     }
   }
 
-  void deleteNestedComment({required int nestedCommentIndex}) async {}
+  void deleteNestedComment({required int nestedCommentIndex}) async {
+    try {
+      if (state is NestedCommentScreenLoaded) {
+        final parsedState = (state as NestedCommentScreenLoaded);
+        final hasMore = parsedState.hasMore;
+        List<NestedComment> commentList = [...parsedState.nestedCommentList];
+        NestedComment comment = commentList[nestedCommentIndex];
+        commentList.removeAt(nestedCommentIndex);
+        emit(NestedCommentScreenLoaded(
+            nestedCommentList: commentList,
+            hasMore: hasMore,
+            isLoadingMore: false));
+        await memberRepository.deleteNestedComment(nestedCommentId: comment.id);
+      }
+    } catch (e) {
+      emit(NestedCommentScreenError(message: e.toString()));
+    }
+  }
 
   void updateNestedComment(
       {required int nestedCommentIndex, required String text}) async {}
@@ -136,7 +153,7 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
         List<NestedComment> prevNestedCommentList = [
           ...parsedState.nestedCommentList
         ];
-        final Response response = await userRepository.createNestedComment(
+        final Response response = await memberRepository.createNestedComment(
             commentId: commentId, text: text);
 
         final List<NestedComment> uploadedNestedCommentList = response

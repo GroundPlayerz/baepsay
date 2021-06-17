@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/nested_comment_screen_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
+import 'package:golden_balance_flutter/model/member/member.dart';
 import 'package:golden_balance_flutter/model/nested_comment/nested_comment.dart';
+import 'package:golden_balance_flutter/screen/post/nested_comment_report_screen.dart';
+import 'package:golden_balance_flutter/util/widget.dart';
 
 class NestedCommentWidget extends StatefulWidget {
   final int nestedCommentIndex;
@@ -44,36 +48,6 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
       return nestedComment.updatedAt!;
     }
   }
-  //
-  // Widget _likeButton({required NestedComment nestedComment}) => GestureDetector(
-  //       behavior: HitTestBehavior.opaque,
-  //       onTap: () {
-  //         setState(() {
-  //           BlocProvider.of<NestedCommentScreenCubit>(context).pressLikeButton(
-  //               nestedCommentIndex: nestedCommentIndex,
-  //               userLikeCount: nestedComment.memberLikeCount);
-  //         });
-  //       },
-  //       child: Padding(
-  //         padding: const EdgeInsets.only(left: 8, right: 16, top: 2),
-  //         child: Column(
-  //           children: [
-  //             nestedComment.memberLikeCount == 0
-  //                 ? Icon(Icons.favorite_border_rounded,
-  //                     size: 20, color: kWhiteColor.withOpacity(0.7))
-  //                 : Icon(Icons.favorite_rounded,
-  //                     size: 20, color: kAccentPinkColor),
-  //             //SizedBox(width: 4),
-  //             (nestedComment.memberLikeCount == 0)
-  //                 ? Text('')
-  //                 : Text(nestedComment.likeCount.toString(),
-  //                     style: kPostInfoNumberTextStyleOld.copyWith(
-  //                         fontSize: 14.0,
-  //                         color: Colors.white.withOpacity(0.7))),
-  //           ],
-  //         ),
-  //       ),
-  //     );
 
   Widget _likeButton({required NestedComment nestedComment}) => GestureDetector(
         behavior: HitTestBehavior.opaque,
@@ -164,7 +138,67 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
                           //더보기 버튼
                           GestureDetector(
                             onTap: () {
-                              //Todo
+                              Member? currentMember =
+                                  BlocProvider.of<AuthCubit>(context)
+                                      .getCurrentMember();
+                              showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SafeArea(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          ListTile(
+                                            title: Text('신고하기'),
+                                            leading: Icon(Icons.report),
+                                            onTap: () {
+                                              Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          NestedCommentReportScreen(
+                                                            nestedCommentId:
+                                                                nestedComment
+                                                                    .id,
+                                                          )));
+                                            },
+                                          ),
+                                          nestedComment.memberId ==
+                                                      currentMember?.id ||
+                                                  currentMember?.role == 'admin'
+                                              ? ListTile(
+                                                  title: Text('삭제하기'),
+                                                  leading: Icon(Icons.delete),
+                                                  onTap: () {
+                                                    showDeleteAlertDialog(
+                                                        context,
+                                                        title: '의견 삭제',
+                                                        content:
+                                                            '정말로 의견을 삭제하시겠습니까?',
+                                                        onPressed: () {
+                                                      Navigator.pop(context);
+                                                      BlocProvider.of<
+                                                                  NestedCommentScreenCubit>(
+                                                              context)
+                                                          .deleteNestedComment(
+                                                              nestedCommentIndex:
+                                                                  nestedCommentIndex);
+                                                    });
+                                                  },
+                                                )
+                                              : Container(),
+                                          nestedComment.memberId ==
+                                                  currentMember?.id
+                                              ? ListTile(
+                                                  title: Text('수정하기'),
+                                                  leading: Icon(Icons.edit),
+                                                  onTap: () {},
+                                                )
+                                              : Container(),
+                                        ],
+                                      ),
+                                    );
+                                  });
                             },
                             behavior: HitTestBehavior.opaque,
                             child: Padding(

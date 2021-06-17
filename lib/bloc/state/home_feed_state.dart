@@ -19,7 +19,7 @@ class HomeFeedError extends HomeFeedState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [this.message];
+  List<Object?> get props => [message];
 }
 
 class HomeFeedInitialLoading extends HomeFeedState {
@@ -41,5 +41,5 @@ class HomeFeedLoaded extends HomeFeedState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [this.feed, hasMore, isLoadingMore];
+  List<Object?> get props => [feed, hasMore, isLoadingMore];
 }

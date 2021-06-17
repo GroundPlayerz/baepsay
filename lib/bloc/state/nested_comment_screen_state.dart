@@ -19,7 +19,7 @@ class NestedCommentScreenError extends NestedCommentScreenState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [this.message];
+  List<Object?> get props => [message];
 }
 
 class NestedCommentScreenInitialLoading extends NestedCommentScreenState {

@@ -88,7 +88,8 @@ class _ReportedPostScreenState extends State<ReportedPostScreen> {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        Text('점수: ' + post.score.toString()),
+                                        Text('점수: ' +
+                                            post.score.toStringAsFixed(2)),
                                         SizedBox(
                                           width: 10,
                                         ),

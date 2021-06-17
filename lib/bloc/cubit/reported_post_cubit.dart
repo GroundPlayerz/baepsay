@@ -60,10 +60,10 @@ class ReportedPostCubit extends Cubit<ReportedPostState> {
     }
   }
 
-  Future<List<Report>?> getPostReport({required int postId}) async {
+  Future<List<Report>?> getPostDetailReport({required int postId}) async {
     try {
       final Response response =
-          await adminRepository.getPostReport(postId: postId);
+          await adminRepository.getPostDetailReport(postId: postId);
       final List<Report> reportList = response.data['result']
           .map<Report>((e) => Report.fromJson(e))
           .toList();

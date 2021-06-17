@@ -31,7 +31,7 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('관리자 게시물 피드'),
+        title: Text('관리자 어젠다 피드'),
       ),
       //backgroundColor: Colors.white,
       body: BlocBuilder<AdminFeedCubit, AdminFeedState>(
@@ -92,8 +92,12 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    Text('점수: ' + post.score.toString()),
+                                    Text(
+                                        '점수: ' + post.score.toStringAsFixed(2)),
                                   ],
+                                ),
+                                SizedBox(
+                                  height: 5,
                                 ),
                                 Divider()
                               ]),

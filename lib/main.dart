@@ -11,6 +11,7 @@ import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.da
 import 'package:golden_balance_flutter/bloc/cubit/post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/report_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/reported_nested_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
 import 'package:golden_balance_flutter/repository/admin_repository.dart';
 import 'package:golden_balance_flutter/repository/comment_repository.dart';
@@ -76,7 +77,7 @@ class GoldenBalance extends StatelessWidget {
         BlocProvider<NestedCommentScreenCubit>(
           create: (_) => NestedCommentScreenCubit(
               commentRepository: CommentRepository(),
-              userRepository: MemberRepository()),
+              memberRepository: MemberRepository()),
         ),
         BlocProvider<ReportedPostCubit>(
             create: (_) =>
@@ -84,6 +85,9 @@ class GoldenBalance extends StatelessWidget {
         BlocProvider<ReportedCommentCubit>(
             create: (_) =>
                 ReportedCommentCubit(adminRepository: AdminRepository())),
+        BlocProvider<ReportedNestedCommentCubit>(
+            create: (_) =>
+                ReportedNestedCommentCubit(adminRepository: AdminRepository())),
         BlocProvider<PostCubit>(
             create: (_) => PostCubit(
                 postRepository: PostRepository(),

@@ -28,4 +28,15 @@ class ReportCubit extends Cubit<ReportState> {
       emit(Error());
     }
   }
+
+  void reportNestedComment(
+      {required int nestedCommentId, required String text}) async {
+    try {
+      await memberRepository.reportNestedComment(
+          nestedCommentId: nestedCommentId, text: text);
+      emit(Success());
+    } catch (e) {
+      emit(Error());
+    }
+  }
 }

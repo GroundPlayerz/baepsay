@@ -60,10 +60,10 @@ class ReportedCommentCubit extends Cubit<ReportedCommentState> {
     }
   }
 
-  Future<List<Report>?> getCommentReport({required int commentId}) async {
+  Future<List<Report>?> getCommentDetailReport({required int commentId}) async {
     try {
       final Response response =
-          await adminRepository.getCommentReport(commentId: commentId);
+          await adminRepository.getCommentDetailReport(commentId: commentId);
       final List<Report> reportList = response.data['result']
           .map<Report>((e) => Report.fromJson(e))
           .toList();
