@@ -8,7 +8,7 @@ import 'package:golden_balance_flutter/bloc/state/nested_comment_screen_state.da
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
-import 'package:golden_balance_flutter/screen/post/nested_comment_widget.dart';
+import 'package:golden_balance_flutter/screen/nested_comment/nested_comment_widget.dart';
 
 class NestedCommentScreen extends StatefulWidget {
   final int commentIndex;

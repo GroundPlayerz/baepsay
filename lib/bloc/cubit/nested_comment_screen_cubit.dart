@@ -142,7 +142,29 @@ class NestedCommentScreenCubit extends Cubit<NestedCommentScreenState> {
   }
 
   void updateNestedComment(
-      {required int nestedCommentIndex, required String text}) async {}
+      {required int nestedCommentIndex, required String text}) async {
+    try {
+      if (state is NestedCommentScreenLoaded) {
+        final parsedState = (state as NestedCommentScreenLoaded);
+        final hasMore = parsedState.hasMore;
+        List<NestedComment> nestedCommentList = [
+          ...parsedState.nestedCommentList
+        ];
+
+        NestedComment changedNestedComment =
+            nestedCommentList[nestedCommentIndex].copyWith(text: text);
+        nestedCommentList[nestedCommentIndex] = changedNestedComment;
+        emit(NestedCommentScreenLoaded(
+            nestedCommentList: nestedCommentList,
+            hasMore: hasMore,
+            isLoadingMore: false));
+        await memberRepository.updateNestedComment(
+            nestedCommentId: changedNestedComment.id, text: text);
+      }
+    } catch (e) {
+      emit(NestedCommentScreenError(message: e.toString()));
+    }
+  }
 
   Future<void> createNestedComment(
       {required int commentId, required text}) async {

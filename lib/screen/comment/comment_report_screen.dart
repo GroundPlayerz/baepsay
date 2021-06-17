@@ -5,6 +5,7 @@ import 'package:golden_balance_flutter/bloc/cubit/report_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/report_state.dart';
 import 'package:golden_balance_flutter/repository/member_repository.dart';
 import 'package:golden_balance_flutter/screen/home/home_screen.dart';
+import 'package:golden_balance_flutter/util/widget.dart';
 
 class CommentReportScreen extends StatefulWidget {
   final int commentId;
@@ -55,15 +56,7 @@ class _CommentReportScreenState extends State<CommentReportScreen> {
           if (state is Success) {
             Navigator.pop(context);
           } else if (state is Error) {
-            Fluttertoast.showToast(
-              msg: '문제가 발생하였습니다.',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
+            showToast(msg: '문제가 발생하였습니다.');
             Navigator.pop(context);
           }
         },

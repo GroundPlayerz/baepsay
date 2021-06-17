@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,9 +10,6 @@ import 'package:golden_balance_flutter/model/media_for_upload.dart';
 import 'package:golden_balance_flutter/screen/home/home_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen_media_model.dart';
 import 'package:golden_balance_flutter/util/widget.dart';
-import 'package:pedantic/pedantic.dart';
-
-import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../bloc/cubit/upload_cubit.dart';
 import '../../bloc/state/upload_state.dart';

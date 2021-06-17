@@ -2,30 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
-import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
-import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
+import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.dart';
+import 'package:golden_balance_flutter/bloc/state/nested_comment_screen_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
-import 'package:golden_balance_flutter/model/comment/comment.dart';
 import 'package:golden_balance_flutter/model/member/member.dart';
-import 'package:golden_balance_flutter/screen/post/comment_report_screen.dart';
-import 'package:golden_balance_flutter/screen/post/nested_comment_screen.dart';
+import 'package:golden_balance_flutter/model/nested_comment/nested_comment.dart';
+import 'package:golden_balance_flutter/screen/nested_comment/nested_comment_edit_screen.dart';
+import 'package:golden_balance_flutter/screen/nested_comment/nested_comment_report_screen.dart';
 import 'package:golden_balance_flutter/util/widget.dart';
 
-class CommentWidget extends StatefulWidget {
-  //Comment comment;
-  int commentIndex;
-  CommentWidget({required this.commentIndex});
+class NestedCommentWidget extends StatefulWidget {
+  final int nestedCommentIndex;
+  NestedCommentWidget({required this.nestedCommentIndex});
   @override
-  _CommentWidgetState createState() => _CommentWidgetState();
+  _NestedCommentWidgetState createState() => _NestedCommentWidgetState();
 }
 
-class _CommentWidgetState extends State<CommentWidget> {
-  //Todo: 나중에 실제 Comment에 맞게 바꾸기
-  // late Comment comment;
-  late int commentIndex;
+class _NestedCommentWidgetState extends State<NestedCommentWidget> {
+  late int nestedCommentIndex;
 
-  final double leftPadding = 16;
+  final double leftPadding = 16 + 31;
   final double photoWidth = 20;
   final double sizeboxWidthBetweenPhotoAndName = 11;
   final double sizeboxWidthBetweenTextAndLikeButton = 8;
@@ -36,7 +33,7 @@ class _CommentWidgetState extends State<CommentWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    commentIndex = widget.commentIndex;
+    nestedCommentIndex = widget.nestedCommentIndex;
 
     sumConstantsWidth = leftPadding +
         photoWidth +
@@ -45,21 +42,21 @@ class _CommentWidgetState extends State<CommentWidget> {
         likebuttonWidth;
   }
 
-  String _createdOrUpdatedAt({required Comment comment}) {
-    if (comment.updatedAt == null) {
-      return comment.createdAt;
+  String _createdOrUpdatedAt({required NestedComment nestedComment}) {
+    if (nestedComment.updatedAt == null) {
+      return nestedComment.createdAt;
     } else {
-      return comment.updatedAt!;
+      return nestedComment.updatedAt!;
     }
   }
 
-  Widget _likeButton({required Comment comment}) => GestureDetector(
+  Widget _likeButton({required NestedComment nestedComment}) => GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () {
           setState(() {
-            BlocProvider.of<CommentScreenCubit>(context).pressLikeButton(
-              commentIndex: commentIndex,
-              memberLikeCount: comment.memberLikeCount,
+            BlocProvider.of<NestedCommentScreenCubit>(context).pressLikeButton(
+              nestedCommentIndex: nestedCommentIndex,
+              userLikeCount: nestedComment.memberLikeCount,
             );
           });
         },
@@ -67,7 +64,7 @@ class _CommentWidgetState extends State<CommentWidget> {
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             children: [
-              comment.memberLikeCount == 0
+              nestedComment.memberLikeCount == 0
                   ? Image.asset(
                       'icons/post_screen_icon_like_default@3x.png',
                       color: kIconGreyColor_CBCBCB,
@@ -79,38 +76,9 @@ class _CommentWidgetState extends State<CommentWidget> {
                       width: 22,
                     ),
               SizedBox(width: 10),
-              (comment.likeCount == 0)
+              (nestedComment.likeCount == 0)
                   ? Text('')
-                  : Text(comment.likeCount.toString(),
-                      style: kCommentInfoTextStyle),
-            ],
-          ),
-        ),
-      );
-  Widget _commentButton({required Comment comment}) => GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => NestedCommentScreen(
-                        commentId: comment.id,
-                        commentIndex: commentIndex,
-                      )));
-        },
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-          child: Row(
-            children: [
-              Image.asset(
-                'icons/post_screen_icon_comment@3x.png',
-                color: kIconGreyColor_CBCBCB,
-                height: 20,
-              ),
-              SizedBox(width: 10),
-              (comment.nestedCommentCount == 0)
-                  ? Text('')
-                  : Text(comment.nestedCommentCount.toString() + '개 답글',
+                  : Text(nestedComment.likeCount.toString(),
                       style: kCommentInfoTextStyle),
             ],
           ),
@@ -119,11 +87,11 @@ class _CommentWidgetState extends State<CommentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CommentScreenCubit, CommentScreenState>(
+    return BlocBuilder<NestedCommentScreenCubit, NestedCommentScreenState>(
         builder: (context, state) {
-      if (state is CommentScreenLoaded) {
-        Comment comment = state.commentList[commentIndex];
-
+      if (state is NestedCommentScreenLoaded) {
+        NestedComment nestedComment =
+            state.nestedCommentList[nestedCommentIndex];
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -144,9 +112,9 @@ class _CommentWidgetState extends State<CommentWidget> {
                             clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle, color: Colors.grey),
-                            child: comment.profilePhotoUrl != null
+                            child: nestedComment.profilePhotoUrl != null
                                 ? Image.network(
-                                    comment.profilePhotoUrl!,
+                                    nestedComment.profilePhotoUrl!,
                                     fit: BoxFit.cover,
                                   )
                                 : Image.asset(
@@ -155,10 +123,10 @@ class _CommentWidgetState extends State<CommentWidget> {
                                   ),
                           ),
                           SizedBox(width: sizeboxWidthBetweenPhotoAndName),
-                          Text(comment.profileName + '     ',
+                          Text(nestedComment.profileName + '     ',
                               style: kCommentInfoTextStyle),
                           Text(
-                              _createdOrUpdatedAt(comment: comment)
+                              _createdOrUpdatedAt(nestedComment: nestedComment)
                                   .split(' ')[0]
                                   .split('T')[0]
                                   .replaceAll('-', '.'),
@@ -171,7 +139,6 @@ class _CommentWidgetState extends State<CommentWidget> {
                           //더보기 버튼
                           GestureDetector(
                             onTap: () {
-                              //Todo 다른사람 댓글이면 신고하기, 내 댓글이면 수정하기, 삭제하기 일단 요청을 보내고 프론트에서만 처리하기
                               Member? currentMember =
                                   BlocProvider.of<AuthCubit>(context)
                                       .getCurrentMember();
@@ -190,13 +157,14 @@ class _CommentWidgetState extends State<CommentWidget> {
                                                   context,
                                                   MaterialPageRoute(
                                                       builder: (context) =>
-                                                          CommentReportScreen(
-                                                            commentId:
-                                                                comment.id,
+                                                          NestedCommentReportScreen(
+                                                            nestedCommentId:
+                                                                nestedComment
+                                                                    .id,
                                                           )));
                                             },
                                           ),
-                                          comment.memberId ==
+                                          nestedComment.memberId ==
                                                       currentMember?.id ||
                                                   currentMember?.role == 'admin'
                                               ? ListTile(
@@ -211,20 +179,32 @@ class _CommentWidgetState extends State<CommentWidget> {
                                                         onPressed: () {
                                                       Navigator.pop(context);
                                                       BlocProvider.of<
-                                                                  CommentScreenCubit>(
+                                                                  NestedCommentScreenCubit>(
                                                               context)
-                                                          .deleteComment(
-                                                              commentIndex:
-                                                                  commentIndex);
+                                                          .deleteNestedComment(
+                                                              nestedCommentIndex:
+                                                                  nestedCommentIndex);
                                                     });
                                                   },
                                                 )
                                               : Container(),
-                                          comment.memberId == currentMember?.id
+                                          nestedComment.memberId ==
+                                                  currentMember?.id
                                               ? ListTile(
                                                   title: Text('수정하기'),
                                                   leading: Icon(Icons.edit),
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                NestedCommentEditScreen(
+                                                                    nestedCommentIndex:
+                                                                        nestedCommentIndex,
+                                                                    nestedComment:
+                                                                        nestedComment)));
+                                                  },
                                                 )
                                               : Container(),
                                         ],
@@ -255,7 +235,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                   ),
                   SizedBox(height: 3),
                   Text(
-                    comment.text,
+                    nestedComment.text,
                     style: kCommentTextTextStyle,
                     softWrap: true,
                   ),
@@ -266,12 +246,66 @@ class _CommentWidgetState extends State<CommentWidget> {
             SizedBox(height: 10),
             Row(
               children: [
-                _likeButton(comment: comment),
-                _commentButton(comment: comment),
+                _likeButton(nestedComment: nestedComment),
               ],
             ),
           ],
         );
+        // return Column(
+        //   children: [
+        //     Row(
+        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Row(
+        //           crossAxisAlignment: CrossAxisAlignment.start,
+        //           children: [
+        //             Container(
+        //               width: 20,
+        //               height: 20,
+        //               clipBehavior: Clip.antiAlias,
+        //               decoration: BoxDecoration(
+        //                   borderRadius: BorderRadius.circular(7.0),
+        //                   color: Colors.grey),
+        //               child: nestedComment.profilePhotoUrl != null
+        //                   ? Image.network(nestedComment.profilePhotoUrl!)
+        //                   : Image.asset('images/default_profile_photo.png'),
+        //             ),
+        //             SizedBox(width: sizeboxWidthBetweenPhotoAndName),
+        //             SizedBox(
+        //               width:
+        //                   MediaQuery.of(context).size.width - sumConstantsWidth,
+        //               child: Column(
+        //                 crossAxisAlignment: CrossAxisAlignment.start,
+        //                 children: [
+        //                   Text(
+        //                     nestedComment.profileName +
+        //                         '     ' +
+        //                         _createdOrUpdatedAt(
+        //                                 nestedComment: nestedComment)
+        //                             .split(' ')[0]
+        //                             .split('T')[0]
+        //                             .replaceAll('-', '/'),
+        //                     style: kCommentInfoTextStyle.copyWith(
+        //                         color: kWhiteColor.withOpacity(0.7)),
+        //                   ),
+        //                   SizedBox(height: 4),
+        //                   Text(
+        //                     nestedComment.text,
+        //                     style: kCommentTextTextStyle,
+        //                     softWrap: true,
+        //                   ),
+        //                 ],
+        //               ),
+        //             ),
+        //             SizedBox(width: 8),
+        //           ],
+        //         ),
+        //         _likeButton(nestedComment: nestedComment),
+        //       ],
+        //     ),
+        //   ],
+        // );
       } else {
         //Todo: 스켈레톤
         return Container();

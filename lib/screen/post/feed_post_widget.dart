@@ -6,7 +6,7 @@ import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
-import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
+import 'package:golden_balance_flutter/screen/comment/comment_screen.dart';
 
 class FeedPostWidget extends StatefulWidget {
   final int postIndex;

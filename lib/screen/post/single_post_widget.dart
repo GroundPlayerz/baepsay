@@ -6,7 +6,7 @@ import 'package:golden_balance_flutter/bloc/state/post_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
-import 'package:golden_balance_flutter/screen/post/comment_screen.dart';
+import 'package:golden_balance_flutter/screen/comment/comment_screen.dart';
 
 class SinglePostWidget extends StatefulWidget {
   final int postId;
