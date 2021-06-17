@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
+import 'package:golden_balance_flutter/constant/spacings.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/media_for_upload.dart';
 import 'package:golden_balance_flutter/screen/home/home_screen.dart';
@@ -18,11 +20,24 @@ import '../../bloc/state/upload_state.dart';
 import '../../constant/color.dart';
 
 class UploadScreen extends StatefulWidget {
+  final double safeAreaTopHeight;
+  final double safeAreaVerticalHeight;
+
+  UploadScreen(
+      {required this.safeAreaTopHeight, required this.safeAreaVerticalHeight});
+
   @override
   _UploadScreenState createState() => _UploadScreenState();
 }
 
 class _UploadScreenState extends State<UploadScreen> {
+  bool isMediaQueryCalculationDone = false;
+  late final double mediaWidthHeight;
+  late final double completeButtonWidth;
+
+  late double safeAreaTopHeight;
+  late double safeAreaVerticalHeight;
+
   FocusNode? myFocusNode;
   final TextEditingController postTitleController = TextEditingController();
   final TextEditingController firstContentController = TextEditingController();
@@ -33,19 +48,17 @@ class _UploadScreenState extends State<UploadScreen> {
 
   Widget _contentTextField(double _convertRatio,
       {required TextEditingController controller}) {
-    return IntrinsicWidth(
+    return Container(
       child: TextField(
+        cursorColor: kAccentPurpleColor,
         controller: controller,
         focusNode: myFocusNode,
         decoration: InputDecoration(
           hintText: '항목 입력..',
-          hintStyle: kNoto18R.copyWith(
-              fontSize: 18 * _convertRatio,
-              color: Colors.white.withOpacity(0.7)),
+          hintStyle: kPostContentTextStyle.copyWith(color: kGreyColor2_999999),
           border: InputBorder.none,
         ),
-        style: kNoto18R.copyWith(
-            fontSize: 18 * _convertRatio, color: Colors.white),
+        style: kPostContentTextStyle,
         keyboardType: TextInputType.multiline,
         maxLines: null,
         textAlign: TextAlign.center,
@@ -58,26 +71,20 @@ class _UploadScreenState extends State<UploadScreen> {
     required TextEditingController controller,
   }) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: kPostGradient70,
-      ),
+      decoration: BoxDecoration(),
       child: TextField(
         controller: controller,
         focusNode: myFocusNode,
+        cursorColor: kAccentPurpleColor,
+        cursorWidth: 2.2,
         decoration: InputDecoration(
-            contentPadding:
-                EdgeInsets.only(top: 17, bottom: 17, left: 16, right: 16),
-            hintText: '제목 입력..',
-            hintStyle: kNoto18B.copyWith(
-                fontSize: 18 * _convertRatio,
-                color: Colors.white.withOpacity(0.7)),
-            border: InputBorder.none,
-            counterText: ""
-            // alignLabelWithHint: false,
-            ),
-        style: kNoto18B.copyWith(
-            fontSize: 18 * _convertRatio, color: Colors.white),
-        maxLength: 100,
+          //contentPadding: EdgeInsets.all(0),
+          hintText: '제목 입력..',
+          hintStyle: kPostTitleTextStyle.copyWith(color: kGreyColor2_999999),
+          border: InputBorder.none,
+          counterText: '',
+        ),
+        style: kPostTitleTextStyle,
         keyboardType: TextInputType.multiline,
         maxLines: null,
       ),
@@ -92,21 +99,13 @@ class _UploadScreenState extends State<UploadScreen> {
         IconButton(
             icon: Icon(
               Icons.image_outlined,
-              color: Colors.white,
+              color: kIconGreyColor_CBCBCB,
             ),
             onPressed: () async {
               setState(() {
                 isScreenTouchable = false;
               });
-              unawaited(Fluttertoast.showToast(
-                msg: '파일을 불러오는 중입니다.',
-                toastLength: Toast.LENGTH_SHORT,
-                gravity: ToastGravity.CENTER,
-                timeInSecForIosWeb: 1,
-                backgroundColor: Colors.red,
-                textColor: Colors.white,
-                fontSize: 16.0,
-              ));
+              showToast(msg: '파일을 불러오는 중입니다.');
               if (whichMedia == 1) {
                 await firstUploadMediaModel.setImageFile();
               } else {
@@ -151,116 +150,42 @@ class _UploadScreenState extends State<UploadScreen> {
     );
   }
 
-  Widget _emptyMediaWidget() {
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        FocusScope.of(context).unfocus();
-      },
-      child: Container(
-          //color: Colors.white.withOpacity(0.5),
-          ),
-    );
-  }
-
-  Widget _firstStackedWidget(double _convertRatio, double _mediaWidth) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(gradient: kPostGradient50),
-          width: _mediaWidth,
-          height: 305 * _convertRatio,
-        ),
-        Positioned.fill(
-          child: Builder(
-            builder: (context) {
-              if (firstUploadMediaModel.mediaFile == null) {
-                return _emptyMediaWidget();
-              } else {
-                return _imagePreview(
-                    imageFile: firstUploadMediaModel.mediaFile!, whichMedia: 1);
-              }
-            },
-          ),
-        ),
-        firstUploadMediaModel.mediaFile == null
-            ? Positioned(
-                bottom: 150 * _convertRatio,
-                child: _mediaButtonsArea(whichMedia: 1),
-              )
-            : Container(),
-        Positioned(
-            bottom: 40 * _convertRatio,
-            child: Container(
-              width: _mediaWidth * 0.8,
-              color: Colors.black.withOpacity(0.5),
-              padding: EdgeInsets.only(
-                  left: 20 * _convertRatio,
-                  right: 20 * _convertRatio,
-                  top: 6 * _convertRatio,
-                  bottom: 6 * _convertRatio),
-              child: _contentTextField(_convertRatio,
-                  controller: firstContentController),
-            )),
-      ],
-    );
-  }
-
-  Widget _secondStackedWidget(double _convertRatio, double _mediaWidth) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Container(
-          decoration: BoxDecoration(gradient: kPostGradient50),
-          width: _mediaWidth,
-          height: 305 * _convertRatio,
-        ),
-        Positioned.fill(
-          child: Builder(
-            builder: (context) {
-              if (secondUploadMediaModel.mediaFile == null) {
-                return _emptyMediaWidget();
-              } else {
-                return _imagePreview(
-                    imageFile: secondUploadMediaModel.mediaFile!,
-                    whichMedia: 2);
-              }
-            },
-          ),
-        ),
-        Positioned(
-            top: 40 * _convertRatio,
-            child: Container(
-              width: _mediaWidth * 0.8,
-              color: Colors.black.withOpacity(0.5),
-              padding: EdgeInsets.only(
-                  left: 20 * _convertRatio,
-                  right: 20 * _convertRatio,
-                  top: 6 * _convertRatio,
-                  bottom: 6 * _convertRatio),
-              child: _contentTextField(_convertRatio,
-                  controller: secondContentController),
-            )),
-        secondUploadMediaModel.mediaFile == null
-            ? Positioned(
-                top: 150 * _convertRatio,
-                child: _mediaButtonsArea(whichMedia: 2),
-              )
-            : Container(),
-      ],
-    );
-  }
-
-  bool isNextButtonEnabled() {
-    if (postTitleController.text.trim().length >= 2 &&
-        firstContentController.text.trim().length >= 2 &&
-        secondContentController.text.trim().length >= 2) {
+  bool checkIsUploadable() {
+    if (postTitleController.text.trim().isNotEmpty &&
+        firstContentController.text.trim().isNotEmpty &&
+        secondContentController.text.trim().isNotEmpty) {
       return true;
     } else {
       return false;
     }
   }
+
+  void _showUnuploadableAlertDialog() {
+    if (postTitleController.text.trim().isEmpty) {
+      showPostUploadAlertDialog(context, title: '제목을 입력해 주세요.');
+    } else if (firstContentController.text.trim().isEmpty ||
+        secondContentController.text.trim().isEmpty) {
+      showPostUploadAlertDialog(context, title: '항목을 입력해 주세요.');
+    }
+  }
+
+  Widget _completeButtonDeactivated() => Opacity(
+        opacity: 0.3,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 10.0),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: kIconGreyColor_CBCBCB,
+            borderRadius: BorderRadius.all(Radius.circular(11)),
+          ),
+          child: Center(
+            child: Text(
+              '완료',
+              style: kNoto16M.copyWith(color: kWhiteColor),
+            ),
+          ),
+        ),
+      );
 
   @override
   void initState() {
@@ -268,6 +193,9 @@ class _UploadScreenState extends State<UploadScreen> {
     super.initState();
     BlocProvider.of<AuthCubit>(context).getAccessTokenByState();
     BlocProvider.of<UploadCubit>(context).setDefaultState();
+
+    safeAreaTopHeight = widget.safeAreaTopHeight;
+    safeAreaVerticalHeight = widget.safeAreaVerticalHeight;
   }
 
   @override
@@ -281,55 +209,65 @@ class _UploadScreenState extends State<UploadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double _mediaWidth = MediaQuery.of(context).size.width;
+    if (!isMediaQueryCalculationDone) {
+      mediaWidthHeight = (MediaQuery.of(context).size.width -
+              (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
+              24) /
+          2;
+      completeButtonWidth = MediaQuery.of(context).size.width -
+          (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
+      isMediaQueryCalculationDone = true;
+    }
+    //
+    // double _mediaWidth = MediaQuery.of(context).size.width;
     double _convertRatio = MediaQuery.of(context).size.width / 375;
+
+    Widget _mediaStack(
+            {required UploadScreenMediaModel whichUploadMediaModel,
+            required int whichMedia}) =>
+        Stack(
+          children: [
+            Container(
+              width: mediaWidthHeight,
+              height: mediaWidthHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xffF4F4F4),
+              ),
+            ),
+            whichUploadMediaModel.mediaFile == null
+                ? SizedBox()
+                : Positioned.fill(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: _imagePreview(
+                          imageFile: whichUploadMediaModel.mediaFile!,
+                          whichMedia: whichMedia),
+                    ),
+                  ),
+            whichUploadMediaModel.mediaFile == null
+                ? Positioned.fill(
+                    child: _mediaButtonsArea(whichMedia: whichMedia))
+                : SizedBox(),
+          ],
+        );
+
     return BlocListener<UploadCubit, UploadState>(
       listener: (context, state) {
         if (state is Uploading) {
-          Fluttertoast.showToast(
-            msg: '게시물을 업로드 중입니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          showToast(msg: '게시물을 업로드 중입니다.');
         } else if (state is Compressing) {
-          Fluttertoast.showToast(
-            msg: '미디어 파일을 압축중입니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          showToast(msg: '미디어 파일을 압축중입니다.');
         } else if (state is Uploaded) {
-          Fluttertoast.showToast(
-            msg: '게시물이 성공적으로 업로드되었습니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          showToast(msg: '게시물이 성공적으로 업로드되었습니다.');
+
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => HomeScreen()),
               (route) => false);
         } else if (state is Error) {
-          Fluttertoast.showToast(
-            msg: '문제가 발생하였습니다.',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.red,
-            textColor: Colors.white,
-            fontSize: 16.0,
-          );
+          showToast(msg: '문제가 발생하였습니다.');
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
@@ -342,70 +280,78 @@ class _UploadScreenState extends State<UploadScreen> {
         child: Scaffold(
           // resizeToAvoidBottomInset: false,
           appBar: AppBar(
-            title: Text('게시물 작성'),
-            leading: IconButton(
-              icon: Icon(Icons.close),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            iconTheme: IconThemeData(color: Colors.white),
+            automaticallyImplyLeading: false,
+            centerTitle: false,
+            leadingWidth: 0,
+            titleSpacing: 0,
             elevation: 0,
-            actionsIconTheme: IconThemeData(color: Colors.white),
-            actions: [
-              TextButton(
-                onPressed: isNextButtonEnabled()
-                    ? () async {
-                        // ToDo: CircularIndicator Alert Dialogue 띄우기
-                        setState(() {
-                          isScreenTouchable = false;
-                        });
-                        List<MediaForUpload> mediaList = [];
-                        if (firstUploadMediaModel.mediaFileType == 'image') {
-                          Uint8List? firstImage =
-                              await BlocProvider.of<UploadCubit>(context)
-                                  .compressImage(
-                                      imageFile:
-                                          firstUploadMediaModel.mediaFile!);
-                          if (firstImage != null) {
-                            mediaList.add(MediaForUpload(
-                                media: firstImage,
-                                type: 'image',
-                                contentOrder: 1));
-                          }
-                        }
-                        if (secondUploadMediaModel.mediaFileType == 'image') {
-                          Uint8List? secondImage =
-                              await BlocProvider.of<UploadCubit>(context)
-                                  .compressImage(
-                                      imageFile:
-                                          secondUploadMediaModel.mediaFile!);
-                          if (secondImage != null) {
-                            mediaList.add(MediaForUpload(
-                                media: secondImage,
-                                type: 'image',
-                                contentOrder: 2));
-                          }
-                        }
-                        BlocProvider.of<UploadCubit>(context).uploadPost(
-                          title: postTitleController.text.trim(),
-                          firstContentText: firstContentController.text.trim(),
-                          secondContentText:
-                              secondContentController.text.trim(),
-                          mediaList: mediaList,
-                        );
-                      }
-                    : () {},
-                child: Text(
-                  '완료',
-                  style: TextStyle(
-                    color: isNextButtonEnabled()
-                        ? kAccentPinkColor
-                        : kAccentPinkColor.withOpacity(0.4),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text('닫기', style: kNoto16R),
                   ),
                 ),
-              )
-            ],
+                Text(''),
+                GestureDetector(
+                  onTap: () async {
+                    // ToDo: CircularIndicator Alert Dialogue 띄우기
+                    if (checkIsUploadable()) {
+                      setState(() {
+                        isScreenTouchable = false;
+                      });
+                      List<MediaForUpload> mediaList = [];
+                      if (firstUploadMediaModel.mediaFileType == 'image') {
+                        Uint8List? firstImage =
+                            await BlocProvider.of<UploadCubit>(context)
+                                .compressImage(
+                                    imageFile:
+                                        firstUploadMediaModel.mediaFile!);
+                        if (firstImage != null) {
+                          mediaList.add(MediaForUpload(
+                              media: firstImage,
+                              type: 'image',
+                              contentOrder: 1));
+                        }
+                      }
+                      if (secondUploadMediaModel.mediaFileType == 'image') {
+                        Uint8List? secondImage =
+                            await BlocProvider.of<UploadCubit>(context)
+                                .compressImage(
+                                    imageFile:
+                                        secondUploadMediaModel.mediaFile!);
+                        if (secondImage != null) {
+                          mediaList.add(MediaForUpload(
+                              media: secondImage,
+                              type: 'image',
+                              contentOrder: 2));
+                        }
+                      }
+                      BlocProvider.of<UploadCubit>(context).uploadPost(
+                        title: postTitleController.text.trim(),
+                        firstContentText: firstContentController.text.trim(),
+                        secondContentText: secondContentController.text.trim(),
+                        mediaList: mediaList,
+                      );
+                    } else {
+                      _showUnuploadableAlertDialog();
+                    }
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text('등록',
+                        style: kNoto16M.copyWith(
+                          color: kAccentPurpleColor,
+                        )),
+                  ),
+                ),
+              ],
+            ),
           ),
           body: GestureDetector(
             behavior: HitTestBehavior.translucent,
@@ -416,11 +362,185 @@ class _UploadScreenState extends State<UploadScreen> {
               // mainAxisAlignment: MainAxisAlignment.start,
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _postTitleTextField(_convertRatio,
-                    controller: postTitleController),
-                _firstStackedWidget(_convertRatio, _mediaWidth),
-                divider(color: Colors.white),
-                _secondStackedWidget(_convertRatio, _mediaWidth),
+                Container(
+                  height: MediaQuery.of(context).size.height -
+                      (safeAreaTopHeight + AppBar().preferredSize.height),
+                  width: double.infinity,
+                  child: SafeArea(
+                    child: ListView(children: [
+                      SizedBox(height: 5),
+                      ConstrainedBox(
+                        constraints: BoxConstraints(
+                            minHeight: MediaQuery.of(context).size.height -
+                                AppBar().preferredSize.height -
+                                safeAreaVerticalHeight -
+                                15),
+
+                        //Rounded 컨테이너
+                        child: Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: kOuterHorizontalPadding),
+                          decoration: BoxDecoration(
+                            color: kWhiteColor,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                spreadRadius: 0,
+                                blurRadius: 6,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              //-----덩어리시작1------
+                              Column(
+                                children: [
+                                  SizedBox(height: 30),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: kInnerHorizontalPadding),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        _postTitleTextField(_convertRatio,
+                                            controller: postTitleController),
+                                        SizedBox(height: 18.0),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            //항목 1
+                                            Column(
+                                              children: [
+                                                _mediaStack(
+                                                    whichUploadMediaModel:
+                                                        firstUploadMediaModel,
+                                                    whichMedia: 1),
+                                                SizedBox(height: 1),
+                                                Container(
+                                                  width: mediaWidthHeight,
+                                                  child: _contentTextField(
+                                                      _convertRatio,
+                                                      controller:
+                                                          firstContentController),
+                                                ),
+                                              ],
+                                            ),
+                                            Column(
+                                              children: [
+                                                _mediaStack(
+                                                    whichUploadMediaModel:
+                                                        secondUploadMediaModel,
+                                                    whichMedia: 2),
+                                                SizedBox(height: 1),
+                                                Container(
+                                                  width: mediaWidthHeight,
+                                                  child: _contentTextField(
+                                                      _convertRatio,
+                                                      controller:
+                                                          secondContentController),
+                                                ),
+                                              ],
+                                            ),
+                                            //항목 2
+                                          ],
+                                        ),
+                                        SizedBox(height: 38.0),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              //----덩어리시작 2----
+                              Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: kInnerHorizontalPadding),
+                                    child: Column(
+                                      children: [
+                                        //투표 버튼
+                                        Row(
+                                          children: [
+                                            //항목 1 선택버튼
+                                            Expanded(
+                                              child: Opacity(
+                                                opacity: 0.3,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    width: 44,
+                                                    height: 44,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color:
+                                                            Color(0xffD5D5D5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            //항목 2 선택버튼
+                                            Expanded(
+                                              child: Opacity(
+                                                opacity: 0.3,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    width: 44,
+                                                    height: 44,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color:
+                                                            Color(0xffD5D5D5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height: 49.0),
+                                        //투표 버튼, 투표 결과 영역
+                                        _completeButtonDeactivated(),
+                                        SizedBox(
+                                          height: 23,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  //좋아요, 댓글 버튼
+                                  SizedBox(height: 10),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 30),
+                    ]),
+                  ),
+                ),
               ],
             ),
           ),

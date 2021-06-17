@@ -12,7 +12,7 @@ import 'package:golden_balance_flutter/screen/post/feed_post_widget.dart';
 import 'package:golden_balance_flutter/screen/post/feed_post_widget_new.dart';
 import 'package:golden_balance_flutter/screen/profile/auth_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/profile/unauth_profile_screen.dart';
-import 'package:golden_balance_flutter/screen/upload/upload_screen_new.dart';
+import 'package:golden_balance_flutter/screen/upload/upload_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
