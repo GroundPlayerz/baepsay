@@ -4,6 +4,7 @@ import 'package:golden_balance_flutter/bloc/cubit/my_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/my_comment_state.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
 import 'package:golden_balance_flutter/screen/post/single_post_widget.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_widget_new.dart';
 
 class MyCommentListWidget extends StatefulWidget {
   @override

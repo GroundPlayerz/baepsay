@@ -4,6 +4,7 @@ import 'package:golden_balance_flutter/bloc/cubit/my_voted_post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/my_voted_post_state.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
 import 'package:golden_balance_flutter/screen/post/single_post_widget.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_widget_new.dart';
 
 class MyVotedPostListWidget extends StatefulWidget {
   @override

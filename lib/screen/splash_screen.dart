@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/device_media_query_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
@@ -21,6 +22,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<DeviceMediaQueryCubit>(context)
+        .initializeMediaQuery(context);
     return BlocBuilder<AuthCubit, AuthState>(
       builder: (context, state) {
         if (state is Checking) {

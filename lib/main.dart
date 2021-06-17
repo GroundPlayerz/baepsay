@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
+import 'package:golden_balance_flutter/bloc/cubit/device_media_query_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/my_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/my_post_cubit.dart';
@@ -105,6 +106,8 @@ class GoldenBalance extends StatelessWidget {
         BlocProvider<AdminScoringCubit>(
             create: (_) =>
                 AdminScoringCubit(adminRepository: AdminRepository())),
+        BlocProvider<DeviceMediaQueryCubit>(
+            create: (_) => DeviceMediaQueryCubit()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
