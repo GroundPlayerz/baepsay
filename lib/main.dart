@@ -20,6 +20,7 @@ import 'package:golden_balance_flutter/repository/admin_repository.dart';
 import 'package:golden_balance_flutter/repository/comment_repository.dart';
 import 'package:golden_balance_flutter/repository/post_repository.dart';
 import 'package:golden_balance_flutter/screen/splash_screen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'bloc/cubit/admin_feed_cubit.dart';
 import 'bloc/cubit/admin_scoring_cubit.dart';
@@ -32,6 +33,7 @@ import 'repository/member_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await MobileAds.instance.initialize();
   await Firebase.initializeApp();
   runApp(Phoenix(child: GoldenBalance()));
 }
