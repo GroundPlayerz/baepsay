@@ -9,7 +9,6 @@ import 'package:golden_balance_flutter/constant/spacings.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/screen/comment/comment_screen.dart';
-import 'package:golden_balance_flutter/screen/post/post_report_screen.dart';
 
 class SinglePostWidget extends StatefulWidget {
   final int postId;
@@ -403,50 +402,8 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                           //-----덩어리시작1------
                           Column(
                             children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(),
-                                  IconButton(
-                                      splashColor: Colors.transparent,
-                                      enableFeedback: false,
-                                      icon: Icon(
-                                        Icons.more_horiz_sharp,
-                                        color: kIconGreyColor_CBCBCB
-                                            .withOpacity(0.2),
-                                      ),
-                                      onPressed: () {
-                                        // showModalBottomSheet(
-                                        //     context: context,
-                                        //     builder: (BuildContext context) {
-                                        //       return SafeArea(
-                                        //         child: Column(
-                                        //           mainAxisSize: MainAxisSize.min,
-                                        //           children: [
-                                        //             Builder(builder: (context) {
-                                        //               return ListTile(
-                                        //                 onTap: () {
-                                        //                   Navigator.pop(context);
-                                        //                   Navigator.push(
-                                        //                       context,
-                                        //                       MaterialPageRoute(
-                                        //                           builder: (context) =>
-                                        //                               PostReportScreen(
-                                        //                                   postId:
-                                        //                                       post.id)));
-                                        //                 },
-                                        //                 leading:
-                                        //                     Icon(Icons.report),
-                                        //                 title: Text('신고하기'),
-                                        //               );
-                                        //             }),
-                                        //           ],
-                                        //         ),
-                                        //       );
-                                        //     });
-                                      }),
-                                ],
+                              SizedBox(
+                                height: 30.0,
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(

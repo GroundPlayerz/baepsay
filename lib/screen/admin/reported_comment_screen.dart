@@ -4,6 +4,7 @@ import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/reported_comment_state.dart';
 import 'package:golden_balance_flutter/screen/admin/comment_detail_report_screen.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
 
 class ReportedCommentScreen extends StatefulWidget {
   @override
@@ -97,7 +98,7 @@ class _ReportedCommentScreenState extends State<ReportedCommentScreen> {
               return Center(child: Text('신고된 댓글이 없습니다.'));
             }
           } else if (state is Error) {
-            return Center(child: Text(state.message));
+            return ErrorScreen();
           } else if (state is Loading) {
             return Center(
               child: CircularProgressIndicator(),

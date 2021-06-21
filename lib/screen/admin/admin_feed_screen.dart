@@ -4,8 +4,9 @@ import 'package:golden_balance_flutter/bloc/cubit/admin_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/admin_feed_state.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_widget.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_widget_new.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
 
 class AdminFeedScreen extends StatefulWidget {
   @override
@@ -122,7 +123,7 @@ class _AdminFeedScreenState extends State<AdminFeedScreen> {
             return Center(child: Text('No Data'));
           }
         } else if (state is FeedError) {
-          return Text(state.message);
+          return ErrorScreen();
         } else if (state is Loading) {
           return Center(
             child: CircularProgressIndicator(),

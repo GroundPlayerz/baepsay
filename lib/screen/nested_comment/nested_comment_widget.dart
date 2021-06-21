@@ -220,7 +220,7 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
                                 height: 24,
                                 width: 24,
                                 child: Icon(
-                                  Icons.more_horiz_sharp,
+                                  Icons.more_vert_sharp,
                                   color: kIconGreyColor_CBCBCB,
                                 ),
                               ),

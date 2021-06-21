@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/my_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/my_comment_state.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_widget.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_widget_new.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
 
 class MyCommentListWidget extends StatefulWidget {
   @override
@@ -87,10 +88,10 @@ class _MyCommentListWidgetState extends State<MyCommentListWidget> {
                 }),
           );
         } else {
-          return Center(child: Text('No Data'));
+          return Center(child: Text('투표한 어젠다에 의견을 작성해보세요'));
         }
       } else if (state is Error) {
-        return Text(state.message);
+        return ErrorScreen();
       } else if (state is Loading) {
         return Center(
           child: CircularProgressIndicator(),

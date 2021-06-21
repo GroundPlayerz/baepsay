@@ -1,61 +1,193 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_balance_flutter/bloc/cubit/device_media_query_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
+import 'package:golden_balance_flutter/constant/spacings.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/screen/comment/comment_screen.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
+import 'package:golden_balance_flutter/screen/post/post_report_screen.dart';
 
-class FeedPostWidget extends StatefulWidget {
+class FeedPostWidge extends StatefulWidget {
   final int postIndex;
-  FeedPostWidget({required this.postIndex});
+
+  FeedPostWidge({
+    required this.postIndex,
+  });
 
   @override
-  _FeedPostWidgetState createState() => _FeedPostWidgetState();
+  _FeedPostWidgeState createState() => _FeedPostWidgeState();
 }
 
-class _FeedPostWidgetState extends State<FeedPostWidget> {
+class _FeedPostWidgeState extends State<FeedPostWidge> {
   late int postIndex;
+  late final double mediaWidthHeight;
+  late final double completeButtonWidth;
+  late final double safeAreaVerticalHeight;
 
-  final double _titleAreaHeight = 56;
-  bool _isTitleStretched = false;
+  int selectedContent = -1; //선택안된거임.
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     postIndex = widget.postIndex;
     BlocProvider.of<HomeFeedCubit>(context).viewPost(postIndex: postIndex);
+    // safeAreaTopHeight =
+    //     BlocProvider.of<DeviceMediaQueryCubit>(context).getSafeAreaTopHeight();
+    safeAreaVerticalHeight = BlocProvider.of<DeviceMediaQueryCubit>(context)
+        .getSafeAreaVerticalHeight();
+    mediaWidthHeight =
+        (BlocProvider.of<DeviceMediaQueryCubit>(context).getDeviceWidth() -
+                (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
+                24) /
+            2;
+    completeButtonWidth =
+        BlocProvider.of<DeviceMediaQueryCubit>(context).getDeviceWidth() -
+            (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
   }
 
-  Widget _imageWidget({required String url}) {
-    return Stack(children: [
-      Positioned.fill(
-        child: CachedNetworkImage(
-          imageUrl: url,
-          fit: BoxFit.cover,
+  void tapContent(int tappedContent) {
+    setState(() {
+      selectedContent = tappedContent;
+    });
+  }
+
+  Widget _completeButtonDeactivated() => Container(
+        padding: EdgeInsets.symmetric(vertical: 10.0),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: kAccentPinkColor.withOpacity(0.2),
+          borderRadius: BorderRadius.all(Radius.circular(11)),
         ),
-      ),
-      _topBlackGradient,
-      _bottomBlackGradient,
-    ]);
+        child: Center(
+          child: Text(
+            '완료',
+            style: kNoto16M.copyWith(color: kWhiteColor),
+          ),
+        ),
+      );
+  Widget _completeButton() => GestureDetector(
+        onTap: () {
+          //Todo
+          BlocProvider.of<HomeFeedCubit>(context)
+              .voteToPost(postIndex: postIndex, choice: selectedContent);
+        },
+        child: Container(
+          //padding: EdgeInsets.symmetric(vertical: 10.0),
+          width: double.infinity,
+          height: 45,
+          decoration: BoxDecoration(
+            color: kAccentPinkColor,
+            borderRadius: BorderRadius.all(Radius.circular(11)),
+          ),
+          child: Center(
+            child: Text(
+              '완료',
+              style: kNoto16M.copyWith(color: kWhiteColor),
+            ),
+          ),
+        ),
+      );
+
+  Widget _voteResultWidget(
+      {required int firstContentVoteCount,
+      required int secondContentVoteCount}) {
+    var firstPercent = 100 *
+        (firstContentVoteCount /
+            (firstContentVoteCount + secondContentVoteCount));
+    var secondPercent = 100 - firstPercent;
+    int firstPercentInt = firstPercent.toInt();
+    int secondPercentInt = secondPercent.toInt();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: 45 + (completeButtonWidth - 45 * 2) * firstPercent / 100,
+          height: 45,
+          decoration: firstPercent >= secondPercent
+              ? BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Color(0xffFF0045).withOpacity(0.3),
+                      Color(0xffEA425D).withOpacity(0.14),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(11),
+                      bottomLeft: Radius.circular(11)),
+                )
+              : BoxDecoration(
+                  color: Color(0xffF4F4F4),
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(11),
+                      bottomLeft: Radius.circular(11)),
+                ),
+          child: Center(
+            child: Text(
+              firstPercentInt.toString() + '%',
+              style: kPostVoteResultPercentTextStyle,
+            ),
+          ),
+        ),
+        Container(
+          width: 45 + (completeButtonWidth - 45 * 2) * secondPercent / 100,
+          height: 45,
+          decoration: secondPercent >= firstPercent
+              ? BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Color(0xffEA425D).withOpacity(0.14),
+                      Color(0xffFF0045).withOpacity(0.3),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(11),
+                      bottomRight: Radius.circular(11)),
+                )
+              : BoxDecoration(
+                  color: Color(0xffF4F4F4),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(11),
+                      bottomRight: Radius.circular(11)),
+                ),
+          child: Center(
+            child: Text(
+              secondPercentInt.toString() + '%',
+              style: kPostVoteResultPercentTextStyle,
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   Widget _likeButtonDeactivated(Post post) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Row(
           children: [
-            Icon(
-              Icons.favorite_border_rounded,
-              size: 35,
-              color: kWhiteColor.withOpacity(0.4),
-            ),
-            SizedBox(width: 11),
+            Opacity(
+                opacity: 0.4,
+                child: Image.asset(
+                  'icons/post_screen_icon_like_default@3x.png',
+                  color: kIconGreyColor_CBCBCB,
+                  width: 28,
+                  height: 28,
+                )),
+            SizedBox(width: 14),
             Text(
               post.likeCount.toString(),
-              style: kPostInfoNumberTextStyleOld.copyWith(
-                  color: kWhiteColor.withOpacity(0.4)),
+              style: kPostInfoNumberTextStyle.copyWith(
+                  color: kGreyColor1_767676.withOpacity(0.4)),
             ),
           ],
         ),
@@ -69,30 +201,47 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
           });
         },
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             children: [
               post.memberLikeCount == 0
-                  ? Icon(Icons.favorite_border_rounded,
-                      size: 35, color: kWhiteColor)
-                  : Icon(Icons.favorite_rounded,
-                      size: 35, color: kAccentPinkColor),
-              SizedBox(width: 11),
-              Text(post.likeCount.toString()),
+                  ? Image.asset(
+                      'icons/post_screen_icon_like_default@3x.png',
+                      color: kIconGreyColor_CBCBCB,
+                      width: 28,
+                      height: 28,
+                    )
+                  : Image.asset(
+                      'icons/post_screen_icon_like_pressed@3x.png',
+                      color: kAccentPinkColor,
+                      width: 28,
+                      height: 28,
+                    ),
+              SizedBox(width: 14),
+              Text(
+                post.likeCount.toString(),
+                style: kPostInfoNumberTextStyle,
+              ),
             ],
           ),
         ),
       );
   Widget _commentButtonDeactivated(Post post) => Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: Row(
           children: [
-            Icon(Icons.mode_comment_outlined,
-                size: 30, color: kWhiteColor.withOpacity(0.4)),
-            SizedBox(width: 11),
+            Opacity(
+              opacity: 0.4,
+              child: Image.asset(
+                'icons/post_screen_icon_comment@3x.png',
+                color: kIconGreyColor_CBCBCB,
+                height: 26,
+              ),
+            ),
+            SizedBox(width: 17),
             Text((post.commentCount).toString(),
-                style: kPostInfoNumberTextStyleOld.copyWith(
-                    color: kWhiteColor.withOpacity(0.4))),
+                style: kPostInfoNumberTextStyle.copyWith(
+                    color: kGreyColor1_767676.withOpacity(0.4))),
           ],
         ),
       );
@@ -110,584 +259,432 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
         },
         behavior: HitTestBehavior.opaque,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
             children: [
-              Icon(Icons.mode_comment_outlined, size: 30, color: kWhiteColor),
-              SizedBox(width: 11),
+              Image.asset(
+                'icons/post_screen_icon_comment@3x.png',
+                color: kIconGreyColor_CBCBCB,
+                height: 26,
+              ),
+              SizedBox(width: 17),
               Text((post.commentCount).toString(),
-                  style: kPostInfoNumberTextStyleOld),
+                  style: kPostInfoNumberTextStyle),
             ],
           ),
         ),
       );
-
-  Widget _postInfoWidgetArea(BuildContext context,
-          {required Post post, required int postId}) =>
-      Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(
-          top: 11,
-          bottom: MediaQuery.of(context).padding.bottom, //정도 내렸을 때 적당한듯..
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            //첫째줄
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  Text('투표', style: kPostInfoTextStyleOld),
-                  SizedBox(width: 4),
-                  Text(
-                      (post.firstContentVoteCount + post.secondContentVoteCount)
-                          .toString(),
-                      style:
-                          kPostInfoNumberTextStyleOld.copyWith(fontSize: 14)),
-                  SizedBox(width: 20),
-                  Text(post.profileName),
-                ],
-              ),
-            ),
-            //둘째줄
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                post.memberVoteChoice == null
-                    ? _likeButtonDeactivated(post)
-                    : _likeButton(post),
-                post.memberVoteChoice == null
-                    ? _commentButtonDeactivated(post)
-                    : _commentButton(post: post, postId: postId),
-              ],
-            ),
-          ],
-        ),
-      );
-  Widget _postTitleAreaWidget(BuildContext context, {required Post post}) =>
-      Stack(
-        children: [
-          Container(
-              color: kBackgroundNavyColor,
-              width: MediaQuery.of(context).size.width,
-              height: _titleAreaHeight),
-          Positioned(
-            child: Container(
-              height:
-                  !_isTitleStretched ? _titleAreaHeight : _titleAreaHeight + 30,
-              decoration: BoxDecoration(gradient: kPostGradient70),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16, top: 15, bottom: 15),
-                      child: Text(
-                        post.title,
-                        maxLines: !_isTitleStretched ? 1 : 2,
-                        style: kPostTitleTextStyleOld,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 3),
-                    child: IconButton(
-                        icon: !_isTitleStretched
-                            ? Icon(Icons.keyboard_arrow_down_rounded)
-                            : Icon(Icons.keyboard_arrow_up_rounded),
-                        onPressed: () {
-                          setState(() {
-                            if (!_isTitleStretched) {
-                              _isTitleStretched = true;
-                            } else {
-                              _isTitleStretched = false;
-                            }
-                          });
-                        }),
-                  )
-                ],
-              ),
-            ),
-          ),
-        ],
-      );
-
-  final Widget _topBlackGradient = Positioned.fill(
-    child: Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment(0, -0.7),
-            colors: [
-              Color(0x40000000),
-              Colors.transparent,
-            ]),
-      ),
-    ),
-  );
-  final Widget _bottomBlackGradient = Positioned.fill(
-    child: Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment(0, 0.7),
-            colors: [
-              Color(0x40000000),
-              Colors.transparent,
-            ]),
-      ),
-    ),
-  );
-
-  Widget _voteResultWidget(
-      {required int firstContentVoteCount,
-      required int secondContentVoteCount}) {
-    var firstPercent = 100 *
-        (firstContentVoteCount /
-            (firstContentVoteCount + secondContentVoteCount));
-    int firstPercentInt = firstPercent.toInt();
-    int secondPercentInt = 100 - firstPercentInt;
-    return Positioned.fill(
-      top: _titleAreaHeight,
-      child: Stack(
-        children: [
-          //색깔 배경
-          Column(
-            children: [
-              Expanded(
-                flex: firstPercentInt,
-                child: Container(
-                  color: Color(0xff0000BF).withOpacity(0.6),
-                ),
-              ),
-              Expanded(
-                flex: secondPercentInt,
-                child: Container(
-                  color: Color(0xffBF0000).withOpacity(0.6),
-                ),
-              ),
-            ],
-          ),
-          //퍼센트 띄우기
-          Column(
-            children: [
-              Expanded(
-                child: Center(
-                  child: Text(
-                    firstPercentInt.toString() + '%',
-                    style: kPostVoteResultPercentTextStyleOld,
-                  ),
-                ),
-              ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    secondPercentInt.toString() + '%',
-                    style: kPostVoteResultPercentTextStyleOld,
-                  ),
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _voteCompleteIconWidget(int whichContent, {required Post post}) {
-    if (post.memberVoteChoice != null &&
-        post.memberVoteChoice == whichContent) {
-      return Container(
-          height: 40,
-          width: 40,
-          child: Image.asset('images/icon_check_circle.png'));
-    } else {
-      return Container();
-    }
-  }
-
-  Widget _voteButton(int whichContent) {
-    return GestureDetector(
-      onTap: () {
-        if (whichContent == 1) {
-          BlocProvider.of<HomeFeedCubit>(context)
-              .voteToPost(postIndex: postIndex, choice: 1);
-        } else if (whichContent == 2) {
-          BlocProvider.of<HomeFeedCubit>(context)
-              .voteToPost(postIndex: postIndex, choice: 2);
-        }
-      },
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Container(
-          padding: EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.transparent,
-            borderRadius: BorderRadius.all(Radius.circular(10.0)),
-            border: Border.all(color: Colors.white, width: 2),
-          ),
-          child: Text('선택'),
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<HomeFeedCubit, HomeFeedState>(
-      builder: (context, state) {
-        if (state is HomeFeedLoaded) {
-          Post post = state.feed[postIndex];
-          List<Map<String, dynamic>> mediaList = [{}, {}];
+    return BlocBuilder<HomeFeedCubit, HomeFeedState>(builder: (context, state) {
+      if (state is HomeFeedLoaded) {
+        Post post = state.feed[postIndex];
+        List<Map<String, dynamic>> mediaList = [{}, {}];
 
-          if (post.mediaContentOrders != null) {
-            List<String> mediaContentOrdersList =
-                post.mediaContentOrders!.split(',');
-            List<String> mediaTypesList = post.mediaTypes!.split(',');
-            List<String> mediaUrlsList = post.mediaUrls!.split(',');
+        if (post.mediaContentOrders != null) {
+          List<String> mediaContentOrdersList =
+              post.mediaContentOrders!.split(',');
+          List<String> mediaTypesList = post.mediaTypes!.split(',');
+          List<String> mediaUrlsList = post.mediaUrls!.split(',');
 
-            for (int i = 0; i < mediaContentOrdersList.length; i++) {
-              if (mediaTypesList[i] == 'thumbnail') {
-                mediaList[int.parse(mediaContentOrdersList[i]) - 1]
-                    ['thumbnail_url'] = mediaUrlsList[i];
-              } else {
-                mediaList[int.parse(mediaContentOrdersList[i]) - 1]['type'] =
-                    mediaTypesList[i];
-                mediaList[int.parse(mediaContentOrdersList[i]) - 1]['url'] =
-                    mediaUrlsList[i];
-              }
+          for (int i = 0; i < mediaContentOrdersList.length; i++) {
+            if (mediaTypesList[i] == 'thumbnail') {
+              mediaList[int.parse(mediaContentOrdersList[i]) - 1]
+                  ['thumbnail_url'] = mediaUrlsList[i];
+            } else {
+              mediaList[int.parse(mediaContentOrdersList[i]) - 1]['type'] =
+                  mediaTypesList[i];
+              mediaList[int.parse(mediaContentOrdersList[i]) - 1]['url'] =
+                  mediaUrlsList[i];
             }
           }
-
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    //전체 배경
-                    Container(
-                      decoration: BoxDecoration(gradient: kPostGradient50),
-                    ),
-                    //미디어위젯
-                    Positioned.fill(
-                      top: _titleAreaHeight,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Builder(
-                              builder: (context) {
-                                if (mediaList[0]['type'] == 'image') {
-                                  return _imageWidget(url: mediaList[0]['url']);
-                                }
-                                return Container();
-                              },
-                            ),
-                          ),
-                          Expanded(
-                            child: Builder(
-                              builder: (context) {
-                                if (mediaList[1]['type'] == 'image') {
-                                  return _imageWidget(url: mediaList[1]['url']);
-                                }
-                                return Container();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    //투표비율위젯
-                    post.memberVoteChoice != null
-                        ? _voteResultWidget(
-                            firstContentVoteCount: post.firstContentVoteCount,
-                            secondContentVoteCount: post.secondContentVoteCount)
-                        : Container(),
-                    //항목 위젯
-                    Positioned.fill(
-                      top: _titleAreaHeight,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(
-                                      top: 6, bottom: 8, left: 20, right: 20),
-                                  color: Colors.black.withOpacity(0.5),
-                                  child: Text(
-                                    post.firstContentText,
-                                    style: kPostContentTextStyleOld,
-                                  ),
-                                ),
-                                SizedBox(height: 40.0),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                              child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SizedBox(height: 40.0),
-                              Container(
-                                padding: EdgeInsets.only(
-                                    top: 6, bottom: 8, left: 20, right: 20),
-                                color: Colors.black.withOpacity(0.5),
-                                child: Text(
-                                  post.secondContentText,
-                                  style: kPostContentTextStyleOld,
-                                ),
-                              ),
-                            ],
-                          )),
-                        ],
-                      ),
-                    ),
-                    Positioned.fill(
-                      top: _titleAreaHeight - 10,
-                      child: Center(
-                        child: Text(
-                          'vs',
-                          style: kPostVSTextStyleOld.copyWith(fontSize: 55),
-                        ),
-                      ),
-                    ),
-                    //투표 버튼
-                    Positioned.fill(
-                      top: _titleAreaHeight,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              padding: EdgeInsets.only(right: 20),
-                              child: post.memberVoteChoice == null
-                                  ? _voteButton(1)
-                                  : _voteCompleteIconWidget(1, post: post),
-                            ),
-                          ),
-                          //버튼2
-                          Expanded(
-                            child: Container(
-                              alignment: Alignment.centerRight,
-                              padding: EdgeInsets.only(right: 20),
-                              child: post.memberVoteChoice == null
-                                  ? _voteButton(2)
-                                  : _voteCompleteIconWidget(2, post: post),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    _postTitleAreaWidget(context, post: post),
-                  ],
-                ),
-              ),
-              _postInfoWidgetArea(context, post: post, postId: post.id),
-            ],
-          );
-        } else {
-          //스켈레톤
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    //전체 배경
-                    Container(
-                      decoration: BoxDecoration(gradient: kPostGradient50),
-                    ),
-                    //미디어위젯
-                    Positioned.fill(
-                      top: _titleAreaHeight,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: Container(),
-                          ),
-                          Expanded(
-                            child: Container(),
-                          ),
-                        ],
-                      ),
-                    ),
-                    //투표비율위젯
-                    //post.isVoted ? _voteResultWidget(firstContentVoteCount: post.firstContentVoteCount, secondContentVoteCount: post.secondContentVoteCount) : Container(),
-                    //항목 위젯
-                    Positioned.fill(
-                      top: _titleAreaHeight,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.only(
-                                      top: 6, bottom: 8, left: 20, right: 20),
-                                  color: Colors.black.withOpacity(0.5),
-                                  child: Text(
-                                    '...',
-                                    //post.firstContentText,
-                                    style: kPostContentTextStyleOld,
-                                  ),
-                                ),
-                                SizedBox(height: 40.0),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                SizedBox(height: 40.0),
-                                Container(
-                                  padding: EdgeInsets.only(
-                                      top: 6, bottom: 8, left: 20, right: 20),
-                                  color: Colors.black.withOpacity(0.5),
-                                  child: Text(
-                                    '...',
-                                    //post.secondContentText,
-                                    style: kPostContentTextStyleOld,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Positioned.fill(
-                      top: _titleAreaHeight - 10,
-                      child: Center(
-                        child: Text(
-                          'vs',
-                          style: kPostVSTextStyleOld.copyWith(fontSize: 55),
-                        ),
-                      ),
-                    ),
-                    //제목 위젯 스켈레톤
-                    Stack(
-                      children: [
-                        Container(
-                            color: kBackgroundNavyColor,
-                            width: MediaQuery.of(context).size.width,
-                            height: _titleAreaHeight),
-                        Positioned(
-                          child: Container(
-                            height: !_isTitleStretched
-                                ? _titleAreaHeight
-                                : _titleAreaHeight + 30,
-                            decoration:
-                                BoxDecoration(gradient: kPostGradient70),
-                            child: Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 16, top: 15, bottom: 15),
-                                child: Text(
-                                  '...',
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              //postInfo 위젯
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(
-                  top: 11,
-                  bottom:
-                      MediaQuery.of(context).padding.bottom, //정도 내렸을 때 적당한듯..
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    //첫째줄
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Row(
-                        children: [
-                          Text('...', style: kPostInfoTextStyleOld),
-                          SizedBox(width: 4),
-                          Text('...',
-                              style: kPostInfoNumberTextStyleOld.copyWith(
-                                  fontSize: 14)),
-                          SizedBox(width: 20),
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(9),
-                            child: Container(
-                              width: 20,
-                              height: 20,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          SizedBox(width: 11),
-                          Text('...'),
-                        ],
-                      ),
-                    ),
-                    //둘째줄
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        //좋아요
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
-                          child: Row(
-                            children: [
-                              Icon(
-                                Icons.favorite_border_rounded,
-                                size: 35,
-                                color: kWhiteColor.withOpacity(0.4),
-                              ),
-                              SizedBox(width: 11),
-                              Text(
-                                '...',
-                                style: kPostInfoNumberTextStyleOld.copyWith(
-                                    color: kWhiteColor.withOpacity(0.4)),
-                              ),
-                            ],
-                          ),
-                        ),
-                        //댓글
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 10),
-                          child: Row(
-                            children: [
-                              Icon(Icons.mode_comment_outlined,
-                                  size: 30,
-                                  color: kWhiteColor.withOpacity(0.4)),
-                              SizedBox(width: 11),
-                              Text('...',
-                                  style: kPostInfoNumberTextStyleOld.copyWith(
-                                      color: kWhiteColor.withOpacity(0.4))),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          );
         }
-      },
-    );
+
+        return ListView(children: [
+          SizedBox(height: 5),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height -
+                    AppBar().preferredSize.height -
+                    safeAreaVerticalHeight -
+                    15),
+
+            //Rounded 컨테이너
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: kOuterHorizontalPadding),
+              decoration: BoxDecoration(
+                color: kWhiteColor,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    spreadRadius: 0,
+                    blurRadius: 6,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  //-----덩어리시작1------
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(),
+                          IconButton(
+                              icon: Icon(
+                                Icons.more_horiz_sharp,
+                                color: kIconGreyColor_CBCBCB,
+                              ),
+                              onPressed: () {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Builder(builder: (context) {
+                                            return ListTile(
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PostReportScreen(
+                                                                postId:
+                                                                    post.id)));
+                                              },
+                                              leading: Icon(Icons.report),
+                                              title: Text('신고하기'),
+                                            );
+                                          }),
+                                        ],
+                                      );
+                                    });
+                              }),
+                        ],
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kInnerHorizontalPadding),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '참여  ' +
+                                  (post.firstContentVoteCount +
+                                          post.secondContentVoteCount)
+                                      .toString(),
+                              style: kPostInfoTextStyle,
+                            ),
+                            Text(post.title, style: kPostTitleTextStyle),
+                            SizedBox(height: 30.0),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                //항목 1
+                                Column(
+                                  children: [
+                                    mediaList[0]['type'] == 'image'
+                                        ? Container(
+                                            decoration: BoxDecoration(),
+                                            width: mediaWidthHeight,
+                                            height: mediaWidthHeight,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl: mediaList[0]['url'],
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                    SizedBox(height: 13),
+                                    Container(
+                                      width: mediaWidthHeight,
+                                      child: Text(
+                                        post.firstContentText,
+                                        style: kPostContentTextStyle,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    mediaList[1]['type'] == 'image'
+                                        ? Container(
+                                            decoration: BoxDecoration(),
+                                            width: mediaWidthHeight,
+                                            height: mediaWidthHeight,
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl: mediaList[1]['url'],
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          )
+                                        : SizedBox(),
+                                    SizedBox(height: 13),
+                                    Container(
+                                      width: mediaWidthHeight,
+                                      child: Text(
+                                        post.secondContentText,
+                                        style: kPostContentTextStyle,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                //항목 2
+                              ],
+                            ),
+                            SizedBox(height: 38.0),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  //----덩어리시작 2----
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: kInnerHorizontalPadding),
+                        child: Column(
+                          children: [
+                            //투표 버튼
+                            post.memberVoteChoice == null
+                                ? Row(
+                                    children: [
+                                      //항목 1 선택버튼
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            tapContent(1);
+                                          },
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 44,
+                                              height: 44,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kWhiteColor,
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: selectedContent == 1
+                                                      ? kAccentPinkColor
+                                                          .withOpacity(0.5)
+                                                      : Color(0xffD5D5D5),
+                                                ),
+                                              ),
+                                              child: selectedContent == 1
+                                                  ? Center(
+                                                      child: Container(
+                                                        width: 28,
+                                                        height: 28,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color:
+                                                              kAccentPinkColor,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      //항목 2 선택버튼
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            tapContent(2);
+                                          },
+                                          behavior: HitTestBehavior.opaque,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              width: 44,
+                                              height: 44,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: kWhiteColor,
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: selectedContent == 2
+                                                      ? kAccentPinkColor
+                                                          .withOpacity(0.5)
+                                                      : Color(0xffD5D5D5),
+                                                ),
+                                              ),
+                                              child: selectedContent == 2
+                                                  ? Center(
+                                                      child: Container(
+                                                        width: 28,
+                                                        height: 28,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color:
+                                                              kAccentPinkColor,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Container(),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Row(
+                                    children: [
+                                      //항목 1 선택버튼
+                                      Expanded(
+                                        child: post.memberVoteChoice == 1
+                                            ? Container(
+                                                width: 44,
+                                                height: 44,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: kAccentPinkColor,
+                                                ),
+                                                child: Center(
+                                                  child: Icon(Icons.check,
+                                                      color: kWhiteColor),
+                                                ),
+                                              )
+                                            : post.memberVoteChoice == 2
+                                                ? Container()
+                                                : Container(
+                                                    width: 44,
+                                                    height: 44,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color:
+                                                            Color(0xffD5D5D5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                      ),
+                                      //항목 2 선택버튼
+                                      Expanded(
+                                        child: post.memberVoteChoice == 2
+                                            ? Container(
+                                                width: 44,
+                                                height: 44,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: kAccentPinkColor,
+                                                ),
+                                                child: Center(
+                                                  child: Icon(Icons.check,
+                                                      color: kWhiteColor),
+                                                ),
+                                              )
+                                            : post.memberVoteChoice == 1
+                                                ? Container()
+                                                : Container(
+                                                    width: 44,
+                                                    height: 44,
+                                                    decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      color: kWhiteColor,
+                                                      border: Border.all(
+                                                        width: 2,
+                                                        color:
+                                                            Color(0xffD5D5D5),
+                                                      ),
+                                                    ),
+                                                  ),
+                                      ),
+                                    ],
+                                  ),
+                            SizedBox(height: 49.0),
+                            //투표 버튼, 투표 결과 영역
+                            post.memberVoteChoice != null
+                                ? _voteResultWidget(
+                                    firstContentVoteCount:
+                                        post.firstContentVoteCount,
+                                    secondContentVoteCount:
+                                        post.secondContentVoteCount)
+                                : selectedContent == -1
+                                    ? _completeButtonDeactivated()
+                                    : _completeButton(),
+                            SizedBox(
+                              height: 23,
+                            ),
+                          ],
+                        ),
+                      ),
+                      //좋아요, 댓글 버튼
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          //좋아요 버튼
+                          post.memberVoteChoice == null
+                              ? _likeButtonDeactivated(post)
+                              : _likeButton(post),
+
+                          // 댓글 버튼
+                          post.memberVoteChoice == null
+                              ? _commentButtonDeactivated(post)
+                              : _commentButton(post: post, postId: post.id),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 30),
+          //아래 Info Area
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '시작일  ' + post.createdAt.split('T')[0].replaceAll('-', '/'),
+                  style:
+                      kPostInfoTextStyleOld.copyWith(color: kGreyColor2_999999),
+                ),
+                Text(
+                  'BY  ' + post.profileName,
+                  style:
+                      kPostInfoTextStyleOld.copyWith(color: kGreyColor2_999999),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 30),
+        ]);
+      } else {
+        return Container();
+      }
+    });
   }
 }

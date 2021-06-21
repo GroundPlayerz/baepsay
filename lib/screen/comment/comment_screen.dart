@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/comment_screen_state.dart';
+import 'package:golden_balance_flutter/configuration.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
@@ -22,8 +23,6 @@ class CommentScreen extends StatefulWidget {
 }
 
 class _CommentScreenState extends State<CommentScreen> {
-  final String iosTestUnitId = 'ca-app-pub-3940256099942544/2934735716';
-  final String androidTestUnitId = 'ca-app-pub-3940256099942544/6300978111';
   BannerAd? banner;
   late int postId;
   late int postCommentCount;
@@ -127,7 +126,6 @@ class _CommentScreenState extends State<CommentScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              //Todo: 광고 영역
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 75,
@@ -137,7 +135,6 @@ class _CommentScreenState extends State<CommentScreen> {
                         ad: banner!,
                       ),
               ),
-              //SizedBox(height: 10),
               //댓글 업로드중 생기는 circularindicator
               !_isUploadingComment
                   ? Container()

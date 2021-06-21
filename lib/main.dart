@@ -41,7 +41,7 @@ void main() async {
 class GoldenBalance extends StatelessWidget {
   // This widget is the root of your application.
 
-  FirebaseAnalytics analytics = FirebaseAnalytics();
+  final FirebaseAnalytics analytics = FirebaseAnalytics();
 
   MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];
@@ -87,8 +87,9 @@ class GoldenBalance extends StatelessWidget {
               memberRepository: MemberRepository()),
         ),
         BlocProvider<ReportedPostCubit>(
-            create: (_) =>
-                ReportedPostCubit(adminRepository: AdminRepository())),
+            create: (_) => ReportedPostCubit(
+                adminRepository: AdminRepository(),
+                memberRepository: MemberRepository())),
         BlocProvider<ReportedCommentCubit>(
             create: (_) =>
                 ReportedCommentCubit(adminRepository: AdminRepository())),
@@ -100,7 +101,7 @@ class GoldenBalance extends StatelessWidget {
                 postRepository: PostRepository(),
                 memberRepository: MemberRepository())),
         BlocProvider<MyPostCubit>(
-            create: (_) => MyPostCubit(userRepository: MemberRepository())),
+            create: (_) => MyPostCubit(memberRepository: MemberRepository())),
         BlocProvider<MyVotedPostCubit>(
             create: (_) =>
                 MyVotedPostCubit(userRepository: MemberRepository())),

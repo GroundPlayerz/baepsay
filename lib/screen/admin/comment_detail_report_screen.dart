@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_post_cubit.dart';
 import 'package:golden_balance_flutter/model/report/report.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
 
 class CommentDetailReportScreen extends StatelessWidget {
   final int commentId;
@@ -52,7 +53,7 @@ class CommentDetailReportScreen extends StatelessWidget {
                     itemCount: snapshot.data!.length,
                   );
                 } else {
-                  return Center(child: Text('오류가 발생하였습니다.'));
+                  return ErrorScreen();
                 }
               } else {
                 return Center(child: CircularProgressIndicator());

@@ -4,11 +4,15 @@ import 'package:golden_balance_flutter/bloc/state/reported_post_state.dart';
 import 'package:golden_balance_flutter/model/post/reported_post.dart';
 import 'package:golden_balance_flutter/model/report/report.dart';
 import 'package:golden_balance_flutter/repository/admin_repository.dart';
+import 'package:golden_balance_flutter/repository/member_repository.dart';
 
 class ReportedPostCubit extends Cubit<ReportedPostState> {
   final AdminRepository adminRepository;
+  final MemberRepository memberRepository;
 
-  ReportedPostCubit({required this.adminRepository}) : super(Empty());
+  ReportedPostCubit(
+      {required this.adminRepository, required this.memberRepository})
+      : super(Empty());
 
   void getInitialReportedPost() async {
     try {
@@ -68,6 +72,22 @@ class ReportedPostCubit extends Cubit<ReportedPostState> {
           .map<Report>((e) => Report.fromJson(e))
           .toList();
       return reportList;
+    } catch (e) {
+      emit(Error(message: e.toString()));
+    }
+  }
+
+  void deletePost({required int postIndex}) async {
+    try {
+      if (state is Loaded) {
+        final parsedState = (state as Loaded);
+        final hasMore = parsedState.hasMore;
+        List<ReportedPost> postList = [...parsedState.feed];
+        ReportedPost post = postList[postIndex];
+        postList.removeAt(postIndex);
+        emit(Loaded(feed: postList, hasMore: hasMore, isLoadingMore: false));
+        await memberRepository.deletePost(postId: post.id);
+      }
     } catch (e) {
       emit(Error(message: e.toString()));
     }

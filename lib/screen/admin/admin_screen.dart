@@ -21,7 +21,7 @@ class AdminScreen extends StatelessWidget {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => AdminFeedScreen()));
             },
-            child: Text('게시물 리스트'),
+            child: Text('모든 어젠다 확인하기'),
           ),
           TextButton(
             onPressed: () {

@@ -5,6 +5,7 @@ import 'package:golden_balance_flutter/bloc/cubit/report_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/report_state.dart';
 import 'package:golden_balance_flutter/repository/member_repository.dart';
 import 'package:golden_balance_flutter/screen/home/home_screen.dart';
+import 'package:golden_balance_flutter/util/widget.dart';
 
 class PostReportScreen extends StatefulWidget {
   final int postId;
@@ -55,35 +56,22 @@ class _PostReportScreenState extends State<PostReportScreen> {
           if (state is Success) {
             Navigator.pop(context);
           } else if (state is Error) {
-            Fluttertoast.showToast(
-              msg: '문제가 발생하였습니다.',
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
-              timeInSecForIosWeb: 1,
-              backgroundColor: Colors.red,
-              textColor: Colors.white,
-              fontSize: 16.0,
-            );
+            showToast(msg: '문제가 발생하였습니다.');
             Navigator.pop(context);
           }
         },
         child: ListView(
           children: [
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                '어떤 점이 불편하신가요? 신고 내용을 적어주세요.',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
             Padding(
               padding: EdgeInsets.all(10.0),
               child: TextField(
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  hintText: '어떤 점이 불편하신가요?',
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
                 ),
                 controller: controller,
                 keyboardType: TextInputType.multiline,

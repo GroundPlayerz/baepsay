@@ -63,7 +63,11 @@ class _NestedCommentEditScreenState extends State<NestedCommentEditScreen> {
         padding: EdgeInsets.all(10.0),
         child: TextField(
           decoration: InputDecoration(
-            border: OutlineInputBorder(),
+            border: InputBorder.none,
+            focusedBorder: InputBorder.none,
+            enabledBorder: InputBorder.none,
+            errorBorder: InputBorder.none,
+            disabledBorder: InputBorder.none,
           ),
           controller: controller,
           keyboardType: TextInputType.multiline,

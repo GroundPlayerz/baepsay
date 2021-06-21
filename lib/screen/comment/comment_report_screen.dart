@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:golden_balance_flutter/bloc/cubit/report_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/report_state.dart';
-import 'package:golden_balance_flutter/repository/member_repository.dart';
-import 'package:golden_balance_flutter/screen/home/home_screen.dart';
 import 'package:golden_balance_flutter/util/widget.dart';
 
 class CommentReportScreen extends StatefulWidget {
@@ -62,21 +59,16 @@ class _CommentReportScreenState extends State<CommentReportScreen> {
         },
         child: ListView(
           children: [
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Text(
-                '어떤 점이 불편하신가요? 신고 내용을 적어주세요.',
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
             Padding(
               padding: EdgeInsets.all(10.0),
               child: TextField(
                 decoration: InputDecoration(
-                  border: OutlineInputBorder(),
+                  hintText: '어떤 점이 불편하신가요?',
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  errorBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
                 ),
                 controller: controller,
                 keyboardType: TextInputType.multiline,

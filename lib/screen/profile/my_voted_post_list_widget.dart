@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/my_voted_post_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/my_voted_post_state.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_widget.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_widget_new.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
+import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
 
 class MyVotedPostListWidget extends StatefulWidget {
   @override
@@ -95,7 +95,7 @@ class _MyVotedPostListWidgetState extends State<MyVotedPostListWidget> {
                 }),
           );
         } else {
-          return Center(child: Text('No Data'));
+          return Center(child: Text('관심있는 어젠다에 투표하고 의견을 공유해보세요'));
         }
       } else if (state is Error) {
         return Text(state.message);

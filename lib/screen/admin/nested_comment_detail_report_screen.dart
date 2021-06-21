@@ -4,6 +4,7 @@ import 'package:golden_balance_flutter/bloc/cubit/reported_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/reported_nested_comment_cubit.dart';
 
 import 'package:golden_balance_flutter/model/report/report.dart';
+import 'package:golden_balance_flutter/screen/error_screen.dart';
 
 class NestedCommentDetailReportScreen extends StatelessWidget {
   final int nestedCommentId;
@@ -53,7 +54,7 @@ class NestedCommentDetailReportScreen extends StatelessWidget {
                     itemCount: snapshot.data!.length,
                   );
                 } else {
-                  return Center(child: Text('오류가 발생하였습니다.'));
+                  return ErrorScreen();
                 }
               } else {
                 return Center(child: CircularProgressIndicator());

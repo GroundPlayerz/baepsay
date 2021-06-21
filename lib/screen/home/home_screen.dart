@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,13 +8,15 @@ import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
+import 'package:golden_balance_flutter/configuration.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/post/feed_post_widget.dart';
-import 'package:golden_balance_flutter/screen/post/feed_post_widget_new.dart';
+import 'package:golden_balance_flutter/screen/post/feed_post_widget.dart';
 import 'package:golden_balance_flutter/screen/profile/auth_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/profile/unauth_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -137,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   //height: 100,
                   width: MediaQuery.of(context).size.width,
                   //color: Colors.red,
-                  child: Text('게시물을 모두 시청했습니다.'),
+                  child: Text('게시물을 모두 확인했습니다.'),
                 ),
               );
             }
@@ -162,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         height: MediaQuery.of(context).size.height -
                             (safeAreaTopHeight + AppBar().preferredSize.height),
                         width: double.infinity,
-                        child: FeedPostWidgetNew(postIndex: index),
+                        child: FeedPostWidge(postIndex: index),
                       ),
                     ]),
                   );
@@ -176,7 +180,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  print(feedState.hasMore);
                   return Center(
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
