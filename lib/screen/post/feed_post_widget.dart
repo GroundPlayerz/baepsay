@@ -41,14 +41,14 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
     //     BlocProvider.of<DeviceMediaQueryCubit>(context).getSafeAreaTopHeight();
     safeAreaVerticalHeight = BlocProvider.of<DeviceMediaQueryCubit>(context)
         .getSafeAreaVerticalHeight();
-    mediaWidthHeight =
-        (BlocProvider.of<DeviceMediaQueryCubit>(context).getDeviceWidth() -
-                (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
-                24) /
-            2;
+    mediaWidthHeight = (BlocProvider.of<DeviceMediaQueryCubit>(context)
+                .getDeviceWidth() -
+            (kPostOuterHorizontalPadding + kPostInnerHorizontalPadding) * 2 -
+            24) /
+        2;
     completeButtonWidth =
         BlocProvider.of<DeviceMediaQueryCubit>(context).getDeviceWidth() -
-            (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
+            (kPostOuterHorizontalPadding + kPostInnerHorizontalPadding) * 2;
   }
 
   void tapContent(int tappedContent) {
@@ -187,7 +187,7 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
             Text(
               post.likeCount.toString(),
               style: kPostInfoNumberTextStyle.copyWith(
-                  color: kGreyColor1_767676.withOpacity(0.4)),
+                  color: kGreyColor_767676.withOpacity(0.4)),
             ),
           ],
         ),
@@ -241,7 +241,7 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
             SizedBox(width: 17),
             Text((post.commentCount).toString(),
                 style: kPostInfoNumberTextStyle.copyWith(
-                    color: kGreyColor1_767676.withOpacity(0.4))),
+                    color: kGreyColor_767676.withOpacity(0.4))),
           ],
         ),
       );
@@ -312,7 +312,8 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
 
             //Rounded 컨테이너
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: kOuterHorizontalPadding),
+              margin:
+                  EdgeInsets.symmetric(horizontal: kPostOuterHorizontalPadding),
               decoration: BoxDecoration(
                 color: kWhiteColor,
                 borderRadius: BorderRadius.all(
@@ -374,7 +375,7 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: kInnerHorizontalPadding),
+                            horizontal: kPostInnerHorizontalPadding),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -396,7 +397,11 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
                                   children: [
                                     mediaList[0]['type'] == 'image'
                                         ? Container(
-                                            decoration: BoxDecoration(),
+                                            decoration: BoxDecoration(
+                                              color: kLightGreyColor_F4F4F4,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
                                             width: mediaWidthHeight,
                                             height: mediaWidthHeight,
                                             child: ClipRRect(
@@ -424,7 +429,11 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
                                   children: [
                                     mediaList[1]['type'] == 'image'
                                         ? Container(
-                                            decoration: BoxDecoration(),
+                                            decoration: BoxDecoration(
+                                              color: kLightGreyColor_F4F4F4,
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
                                             width: mediaWidthHeight,
                                             height: mediaWidthHeight,
                                             child: ClipRRect(
@@ -462,7 +471,7 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: kInnerHorizontalPadding),
+                            horizontal: kPostInnerHorizontalPadding),
                         child: Column(
                           children: [
                             //투표 버튼
@@ -670,12 +679,12 @@ class _FeedPostWidgeState extends State<FeedPostWidge> {
                 Text(
                   '시작일  ' + post.createdAt.split('T')[0].replaceAll('-', '/'),
                   style:
-                      kPostInfoTextStyleOld.copyWith(color: kGreyColor2_999999),
+                      kPostInfoTextStyleOld.copyWith(color: kGreyColor_999999),
                 ),
                 Text(
                   'BY  ' + post.profileName,
                   style:
-                      kPostInfoTextStyleOld.copyWith(color: kGreyColor2_999999),
+                      kPostInfoTextStyleOld.copyWith(color: kGreyColor_999999),
                 ),
               ],
             ),

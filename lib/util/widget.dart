@@ -59,7 +59,7 @@ void showPostUploadAlertDialog(
                     ),
                     child: Text(
                       '확인',
-                      style: kNoto16M.copyWith(color: kAccentPurpleColor),
+                      style: kNoto16M.copyWith(color: kAccentPinkColor),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -109,7 +109,7 @@ void showToast({required String msg}) => unawaited(Fluttertoast.showToast(
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.CENTER,
       timeInSecForIosWeb: 1,
-      backgroundColor: kAccentPurpleColor,
+      backgroundColor: kAccentPinkColor,
       textColor: Colors.white,
       fontSize: 16.0,
     ));

@@ -164,7 +164,7 @@ class _CommentWidgetState extends State<CommentWidget> {
                                   .split('T')[0]
                                   .replaceAll('-', '.'),
                               style: kCommentInfoTextStyle.copyWith(
-                                  color: kGreyColor2_999999)),
+                                  color: kGreyColor_999999)),
                         ],
                       ),
                       Row(

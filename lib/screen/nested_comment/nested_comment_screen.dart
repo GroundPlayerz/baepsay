@@ -114,6 +114,77 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
         ),
       );
 
+  Widget _textField({required String hintText, required onTap}) {
+    return Column(
+      children: [
+        Divider(),
+        Container(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 0, bottom: 5, top: 5),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTextFieldTapped = true;
+                      });
+                      FocusScope.of(context).requestFocus(_myFocusNode);
+                    },
+                    child: Container(
+                      constraints: BoxConstraints(maxHeight: 100),
+                      color: Colors.transparent,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        reverse: true,
+                        child: TextField(
+                          focusNode: _myFocusNode,
+                          controller: _textController,
+                          keyboardType: TextInputType.multiline,
+                          style: kCommentScreenTextFieldTextStyle,
+                          maxLength: 2200,
+                          minLines: 1,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: hintText,
+                            hintStyle: kCommentScreenTextFieldHintTextStyle
+                                .copyWith(fontWeight: FontWeight.w500),
+                            contentPadding:
+                                EdgeInsets.only(left: 0, top: 5, bottom: 5),
+                            counterText: '',
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: onTap,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    child: Opacity(
+                      opacity: _canPost ? 1 : 0.4,
+                      child: CircleAvatar(
+                        radius: 15,
+                        backgroundColor: kAccentPinkColor,
+                        child: Icon(Icons.arrow_upward_rounded,
+                            color: kWhiteColor),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   void dispose() {
     // TODO: implement dispose
@@ -198,7 +269,7 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                                             .split('T')[0]
                                             .replaceAll('-', '.'),
                                         style: kCommentInfoTextStyle.copyWith(
-                                            color: kGreyColor2_999999)),
+                                            color: kGreyColor_999999)),
                                   ],
                                 ),
                                 Row(
@@ -337,99 +408,120 @@ class _NestedCommentScreenState extends State<NestedCommentScreen> {
                 return Text(nestedCommentScreenState.toString());
               },
             ),
+            _textField(
+              hintText: '대댓글 쓰기..',
+              onTap: () async {
+                if (_canPost) {
+                  //Todo: 작성한 댓글 없애고, 업로드중엔 로딩 indicator 띄우기
+                  setState(() {
+                    _isUploadingNestedComment = true;
+                  });
+                  await BlocProvider.of<NestedCommentScreenCubit>(context)
+                      .createNestedComment(
+                          commentId: commentId,
+                          text: _textController.value.text);
 
-            //대댓 작성 Textfield
-            Container(
-              //color: Colors.grey,
-              child: SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, bottom: 5, top: 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Expanded(
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                isTextFieldTapped = true;
-                              });
-                              FocusScope.of(context).requestFocus(_myFocusNode);
-                            },
-                            child: Container(
-                              constraints: BoxConstraints(maxHeight: 100),
-                              color: Colors.transparent,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.vertical,
-                                reverse: true,
-                                child: TextField(
-                                  focusNode: _myFocusNode,
-                                  controller: _textController,
-                                  keyboardType: TextInputType.multiline,
-                                  //scrollController: _scrollController,
-                                  style: kCommentScreenTextFieldTextStyle,
-                                  maxLength: 2200,
-                                  minLines: 1,
-                                  maxLines: null,
-                                  decoration: InputDecoration(
-                                    counterText: '',
-                                    hintStyle:
-                                        kCommentScreenTextFieldHintTextStyle,
-                                    contentPadding: EdgeInsets.only(
-                                        left: 18, top: 3, bottom: 3),
-                                    hintText: '대댓글 쓰기..',
-                                    border: InputBorder.none,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () async {
-                            if (_canPost) {
-                              //Todo: 작성한 댓글 없애고, 업로드중엔 로딩 indicator 띄우기
-                              setState(() {
-                                _isUploadingNestedComment = true;
-                              });
-                              await BlocProvider.of<NestedCommentScreenCubit>(
-                                      context)
-                                  .createNestedComment(
-                                      commentId: commentId,
-                                      text: _textController.value.text);
-
-                              _textController.clear();
-                              _myFocusNode?.unfocus();
-                              setState(() {
-                                _isUploadingNestedComment = false;
-                              });
-                              //Todo: 업로드된 댓글 나타나는지 확인하기
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Opacity(
-                              opacity: _canPost ? 1 : 0.4,
-                              child: CircleAvatar(
-                                radius: 19,
-                                backgroundColor: kAccentPinkColor,
-                                child: Icon(Icons.arrow_upward_rounded,
-                                    color: kWhiteColor),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+                  _textController.clear();
+                  _myFocusNode?.unfocus();
+                  setState(() {
+                    _isUploadingNestedComment = false;
+                  });
+                  //Todo: 업로드된 댓글 나타나는지 확인하기
+                }
+              },
             ),
+            //대댓 작성 Textfield
+            // Container(
+            //   //color: Colors.grey,
+            //   child: SafeArea(
+            //     child: Padding(
+            //       padding: const EdgeInsets.only(
+            //           left: 16, right: 16, bottom: 5, top: 5),
+            //       child: Container(
+            //         decoration: BoxDecoration(
+            //           color: Colors.white.withOpacity(0.15),
+            //           borderRadius: BorderRadius.circular(24),
+            //         ),
+            //         child: Row(
+            //           crossAxisAlignment: CrossAxisAlignment.end,
+            //           children: [
+            //             Expanded(
+            //               child: GestureDetector(
+            //                 onTap: () {
+            //                   setState(() {
+            //                     isTextFieldTapped = true;
+            //                   });
+            //                   FocusScope.of(context).requestFocus(_myFocusNode);
+            //                 },
+            //                 child: Container(
+            //                   constraints: BoxConstraints(maxHeight: 100),
+            //                   color: Colors.transparent,
+            //                   child: SingleChildScrollView(
+            //                     scrollDirection: Axis.vertical,
+            //                     reverse: true,
+            //                     child: TextField(
+            //                       focusNode: _myFocusNode,
+            //                       controller: _textController,
+            //                       keyboardType: TextInputType.multiline,
+            //                       //scrollController: _scrollController,
+            //                       style: kCommentScreenTextFieldTextStyle,
+            //                       maxLength: 2200,
+            //                       minLines: 1,
+            //                       maxLines: null,
+            //                       decoration: InputDecoration(
+            //                         counterText: '',
+            //                         hintStyle:
+            //                             kCommentScreenTextFieldHintTextStyle,
+            //                         contentPadding: EdgeInsets.only(
+            //                             left: 18, top: 3, bottom: 3),
+            //                         hintText: '대댓글 쓰기..',
+            //                         border: InputBorder.none,
+            //                       ),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //             GestureDetector(
+            //               onTap: () async {
+            //                 if (_canPost) {
+            //                   //Todo: 작성한 댓글 없애고, 업로드중엔 로딩 indicator 띄우기
+            //                   setState(() {
+            //                     _isUploadingNestedComment = true;
+            //                   });
+            //                   await BlocProvider.of<NestedCommentScreenCubit>(
+            //                           context)
+            //                       .createNestedComment(
+            //                           commentId: commentId,
+            //                           text: _textController.value.text);
+            //
+            //                   _textController.clear();
+            //                   _myFocusNode?.unfocus();
+            //                   setState(() {
+            //                     _isUploadingNestedComment = false;
+            //                   });
+            //                   //Todo: 업로드된 댓글 나타나는지 확인하기
+            //                 }
+            //               },
+            //               child: Padding(
+            //                 padding: const EdgeInsets.all(5.0),
+            //                 child: Opacity(
+            //                   opacity: _canPost ? 1 : 0.4,
+            //                   child: CircleAvatar(
+            //                     radius: 19,
+            //                     backgroundColor: kAccentPinkColor,
+            //                     child: Icon(Icons.arrow_upward_rounded,
+            //                         color: kWhiteColor),
+            //                   ),
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

@@ -49,7 +49,7 @@ class _UnauthProfileScreenState extends State<UnauthProfileScreen> {
                       },
                       child: Text(
                         '구글 로그인하기',
-                        style: TextStyle(color: kAccentPurpleColor),
+                        style: TextStyle(color: kAccentPinkColor),
                       ),
                     ),
                     Icon(

@@ -92,6 +92,22 @@ const TextStyle kNoto13R = TextStyle(
   color: kBlackColor,
 );
 
+const TextStyle kNoto13M = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 13,
+  fontWeight: FontWeight.w500,
+  letterSpacing: -0.26,
+  color: kBlackColor,
+);
+
+const TextStyle kNoto13B = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 13,
+  fontWeight: FontWeight.w700,
+  letterSpacing: -0.26,
+  color: kBlackColor,
+);
+
 //새로운
 const TextStyle kNoto16M = TextStyle(
   fontFamily: 'NotoSansCJKkr',
@@ -124,6 +140,20 @@ const TextStyle kNoto14R = TextStyle(
   letterSpacing: -0.28,
   color: kBlackColor,
 );
+const TextStyle kNoto14M = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 14,
+  fontWeight: FontWeight.w500,
+  letterSpacing: -0.28,
+  color: kBlackColor,
+);
+const TextStyle kNoto14B = TextStyle(
+  fontFamily: 'NotoSansCJKkr',
+  fontSize: 14,
+  fontWeight: FontWeight.w700,
+  letterSpacing: -0.28,
+  color: kBlackColor,
+);
 
 TextStyle kDefaultBody2TextStyle = kNoto12R;
 
@@ -142,10 +172,10 @@ TextStyle kPostVoteResultPercentTextStyleOld = kNoto50B;
 //새로운 Post
 TextStyle kPostTitleTextStyle = kNoto24B;
 TextStyle kPostContentTextStyle = kNoto16M;
-TextStyle kPostInfoTextStyle = kNoto12R.copyWith(color: kGreyColor2_999999);
+TextStyle kPostInfoTextStyle = kNoto12R.copyWith(color: kGreyColor_999999);
 TextStyle kPostVoteResultPercentTextStyle = kNoto20B;
 TextStyle kPostInfoNumberTextStyle =
-    kNoto14R.copyWith(color: kGreyColor1_767676);
+    kNoto14R.copyWith(color: kGreyColor_767676);
 
 //AppBar
 TextStyle kAppBarTitleTextStyle = kNoto16R;
@@ -159,5 +189,5 @@ TextStyle kCommentTextTextStyle = kNoto13R;
 TextStyle kCommentLikeNumberTextStyle = kSkia16R;
 TextStyle kNestedCommentButtonsTextStyle = kNoto12B;
 TextStyle kCommentScreenTextFieldHintTextStyle =
-    kNoto13R.copyWith(color: kGreyColor2_999999);
+    kNoto13R.copyWith(color: kGreyColor_999999);
 TextStyle kCommentScreenTextFieldTextStyle = kNoto13R;

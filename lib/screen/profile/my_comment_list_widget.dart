@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/cubit/my_comment_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/my_comment_state.dart';
+import 'package:golden_balance_flutter/constant/color.dart';
+import 'package:golden_balance_flutter/constant/spacings.dart';
+import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
@@ -46,28 +49,40 @@ class _MyCommentListWidgetState extends State<MyCommentListWidget> {
                                     SinglePostWidget(postId: comment.postId)));
                       },
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: EdgeInsets.only(
+                            left: kListViewOuterHorizontalPadding,
+                            right: kListViewOuterHorizontalPadding,
+                            top: 17,
+                            bottom: 0),
                         child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                comment.text,
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: kListViewInnerHorizontalPadding),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      comment.text,
+                                      style: kNoto14M.copyWith(fontSize: 15),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      comment.createdAt.split('T')[0],
+                                      style: kNoto13R.copyWith(
+                                          color: kGreyColor_999999),
+                                    ),
+                                    SizedBox(height: 6),
+                                    Text(
+                                      '-  ' + comment.postTitle,
+                                      style: kNoto13R.copyWith(
+                                          color: kGreyColor_767676),
+                                    ),
+                                    SizedBox(height: 14),
+                                  ],
                                 ),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(comment.createdAt.split('T')[0]),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(comment.postTitle),
-                              SizedBox(
-                                height: 5,
                               ),
                               Divider()
                             ]),

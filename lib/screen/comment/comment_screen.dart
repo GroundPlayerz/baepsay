@@ -56,11 +56,82 @@ class _CommentScreenState extends State<CommentScreen> {
           .getInitialCommentList(postId: postId);
     });
     banner = BannerAd(
-      size: AdSize.smartBanner,
+      size: AdSize.fullBanner,
       adUnitId: Platform.isIOS ? iosTestUnitId : androidTestUnitId,
       listener: BannerAdListener(),
       request: AdRequest(),
     )..load();
+  }
+
+  Widget _textField({required String hintText, required onTap}) {
+    return Column(
+      children: [
+        Divider(),
+        Container(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 20, right: 0, bottom: 5, top: 5),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isTextFieldTapped = true;
+                      });
+                      FocusScope.of(context).requestFocus(_myFocusNode);
+                    },
+                    child: Container(
+                      constraints: BoxConstraints(maxHeight: 100),
+                      color: Colors.transparent,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        reverse: true,
+                        child: TextField(
+                          focusNode: _myFocusNode,
+                          controller: _textController,
+                          keyboardType: TextInputType.multiline,
+                          style: kCommentScreenTextFieldTextStyle,
+                          maxLength: 2200,
+                          minLines: 1,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: hintText,
+                            hintStyle: kCommentScreenTextFieldHintTextStyle
+                                .copyWith(fontWeight: FontWeight.w500),
+                            contentPadding:
+                                EdgeInsets.only(left: 0, top: 5, bottom: 5),
+                            counterText: '',
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: onTap,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                    child: Opacity(
+                      opacity: _canPost ? 1 : 0.4,
+                      child: CircleAvatar(
+                        radius: 15,
+                        backgroundColor: kAccentPinkColor,
+                        child: Icon(Icons.arrow_upward_rounded,
+                            color: kWhiteColor),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
@@ -112,8 +183,8 @@ class _CommentScreenState extends State<CommentScreen> {
               },
               child: Text(
                 '닫기',
-                style: kNoto16R.copyWith(
-                    fontSize: 14.0, color: kGreyColor1_767676),
+                style:
+                    kNoto16R.copyWith(fontSize: 14.0, color: kGreyColor_767676),
               ),
             ),
           ],
@@ -128,7 +199,7 @@ class _CommentScreenState extends State<CommentScreen> {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 75,
+                height: banner!.size.height.toDouble(),
                 child: banner == null
                     ? Container()
                     : AdWidget(
@@ -204,98 +275,26 @@ class _CommentScreenState extends State<CommentScreen> {
                   return Center(child: CircularProgressIndicator());
                 },
               ),
+              _textField(
+                hintText: '당신의 의견을 말해주세요..',
+                onTap: () async {
+                  if (_canPost) {
+                    //Todo: 작성한 댓글 없애고, 업로드중엔 로딩 indicator 띄우기
+                    setState(() {
+                      _isUploadingComment = true;
+                    });
+                    await BlocProvider.of<CommentScreenCubit>(context)
+                        .createComment(
+                            postId: postId, text: _textController.value.text);
 
-              //댓글 입력 textfield
-              Container(
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 16, right: 16, bottom: 5, top: 5),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: kLightGreyColor_F4F4F4,
-                        borderRadius: BorderRadius.circular(24),
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isTextFieldTapped = true;
-                                });
-                                FocusScope.of(context)
-                                    .requestFocus(_myFocusNode);
-                              },
-                              child: Container(
-                                constraints: BoxConstraints(maxHeight: 100),
-                                color: Colors.transparent,
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  reverse: true,
-                                  child: TextField(
-                                    focusNode: _myFocusNode,
-                                    controller: _textController,
-                                    keyboardType: TextInputType.multiline,
-                                    //scrollController: _scrollController,
-                                    style: kCommentScreenTextFieldTextStyle,
-                                    maxLength: 2200,
-                                    minLines: 1,
-                                    maxLines: null,
-                                    decoration: InputDecoration(
-                                      counterText: '',
-                                      hintStyle:
-                                          kCommentScreenTextFieldHintTextStyle,
-                                      contentPadding: EdgeInsets.only(
-                                          left: 18, top: 3, bottom: 3),
-                                      hintText: '당신의 의견을 말해주세요..',
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () async {
-                              if (_canPost) {
-                                //Todo: 작성한 댓글 없애고, 업로드중엔 로딩 indicator 띄우기
-                                setState(() {
-                                  _isUploadingComment = true;
-                                });
-                                await BlocProvider.of<CommentScreenCubit>(
-                                        context)
-                                    .createComment(
-                                        postId: postId,
-                                        text: _textController.value.text);
-
-                                _textController.clear();
-                                _myFocusNode?.unfocus();
-                                setState(() {
-                                  _isUploadingComment = false;
-                                });
-                                //Todo: 업로드된 댓글 나타나는지 확인하기
-                              }
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Opacity(
-                                opacity: _canPost ? 1 : 0.4,
-                                child: CircleAvatar(
-                                  radius: 19,
-                                  backgroundColor: kAccentPinkColor,
-                                  child: Icon(Icons.arrow_upward_rounded,
-                                      color: kWhiteColor),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                    _textController.clear();
+                    _myFocusNode?.unfocus();
+                    setState(() {
+                      _isUploadingComment = false;
+                    });
+                    //Todo: 업로드된 댓글 나타나는지 확인하기
+                  }
+                },
               ),
             ],
           ),

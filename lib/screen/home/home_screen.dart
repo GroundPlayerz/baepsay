@@ -112,7 +112,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         backgroundColor: Colors.white,
                       )
-                    : Text('로그인이 필요합니다.'),
+                    : CircleAvatar(
+                        radius: 40.5,
+                        foregroundImage:
+                            AssetImage('images/default_profile_photo.png'),
+                        backgroundColor: Colors.white,
+                      ),
               ),
               onPressed: authState is FirebaseSignedIn
                   ? () {

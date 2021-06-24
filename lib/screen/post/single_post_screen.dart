@@ -26,7 +26,7 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
   late final double mediaWidthHeight;
   late final double completeButtonWidth;
   late final double safeAreaVerticalHeight;
-  final Color _accentColor = kAccentPurpleColor;
+  final Color _accentColor = kAccentPinkColor;
 
   int selectedContent = -1;
 
@@ -39,14 +39,14 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
 
     safeAreaVerticalHeight = BlocProvider.of<DeviceMediaQueryCubit>(context)
         .getSafeAreaVerticalHeight();
-    mediaWidthHeight =
-        (BlocProvider.of<DeviceMediaQueryCubit>(context).getDeviceWidth() -
-                (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
-                24) /
-            2;
+    mediaWidthHeight = (BlocProvider.of<DeviceMediaQueryCubit>(context)
+                .getDeviceWidth() -
+            (kPostOuterHorizontalPadding + kPostInnerHorizontalPadding) * 2 -
+            24) /
+        2;
     completeButtonWidth =
         BlocProvider.of<DeviceMediaQueryCubit>(context).getDeviceWidth() -
-            (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
+            (kPostOuterHorizontalPadding + kPostInnerHorizontalPadding) * 2;
   }
 
   Widget _completeButtonDeactivated() => Container(
@@ -102,7 +102,7 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
             Text(
               post.likeCount.toString(),
               style: kPostInfoNumberTextStyle.copyWith(
-                  color: kGreyColor1_767676.withOpacity(0.4)),
+                  color: kGreyColor_767676.withOpacity(0.4)),
             ),
           ],
         ),
@@ -156,7 +156,7 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
             SizedBox(width: 17),
             Text((post.commentCount).toString(),
                 style: kPostInfoNumberTextStyle.copyWith(
-                    color: kGreyColor1_767676.withOpacity(0.4))),
+                    color: kGreyColor_767676.withOpacity(0.4))),
           ],
         ),
       );
@@ -221,7 +221,7 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                       bottomLeft: Radius.circular(11)),
                 )
               : BoxDecoration(
-                  color: Color(0xffF4F4F4),
+                  color: kLightGreyColor_F4F4F4,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(11),
                       bottomLeft: Radius.circular(11)),
@@ -251,7 +251,7 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                       bottomRight: Radius.circular(11)),
                 )
               : BoxDecoration(
-                  color: Color(0xffF4F4F4),
+                  color: kLightGreyColor_F4F4F4,
                   borderRadius: BorderRadius.only(
                       topRight: Radius.circular(11),
                       bottomRight: Radius.circular(11)),
@@ -380,7 +380,7 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                     //Rounded 컨테이너
                     child: Container(
                       margin: EdgeInsets.symmetric(
-                          horizontal: kOuterHorizontalPadding),
+                          horizontal: kPostOuterHorizontalPadding),
                       decoration: BoxDecoration(
                         color: kWhiteColor,
                         borderRadius: BorderRadius.all(
@@ -407,7 +407,7 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                               ),
                               Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: kInnerHorizontalPadding),
+                                    horizontal: kPostInnerHorizontalPadding),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -432,7 +432,13 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                                           children: [
                                             mediaList[0]['type'] == 'image'
                                                 ? Container(
-                                                    decoration: BoxDecoration(),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          kLightGreyColor_F4F4F4,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
                                                     width: mediaWidthHeight,
                                                     height: mediaWidthHeight,
                                                     child: ClipRRect(
@@ -462,7 +468,13 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                                           children: [
                                             mediaList[1]['type'] == 'image'
                                                 ? Container(
-                                                    decoration: BoxDecoration(),
+                                                    decoration: BoxDecoration(
+                                                      color:
+                                                          kLightGreyColor_F4F4F4,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                    ),
                                                     width: mediaWidthHeight,
                                                     height: mediaWidthHeight,
                                                     child: ClipRRect(
@@ -502,7 +514,7 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                             children: [
                               Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: kInnerHorizontalPadding),
+                                    horizontal: kPostInnerHorizontalPadding),
                                 child: Column(
                                   children: [
                                     //투표 버튼
@@ -745,12 +757,12 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                           '시작일  ' +
                               post.createdAt.split('T')[0].replaceAll('-', '/'),
                           style: kPostInfoTextStyleOld.copyWith(
-                              color: kGreyColor2_999999),
+                              color: kGreyColor_999999),
                         ),
                         Text(
                           'BY  ' + post.profileName,
                           style: kPostInfoTextStyleOld.copyWith(
-                              color: kGreyColor2_999999),
+                              color: kGreyColor_999999),
                         ),
                       ],
                     ),
@@ -765,7 +777,16 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
           ),
         );
       } else {
-        return Scaffold();
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('...'),
+            elevation: 0,
+            centerTitle: true,
+          ),
+          body: Center(
+            child: Text('...'),
+          ),
+        );
       }
     });
   }

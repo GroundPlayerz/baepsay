@@ -46,12 +46,12 @@ class _UploadScreenState extends State<UploadScreen> {
       {required TextEditingController controller}) {
     return Container(
       child: TextField(
-        cursorColor: kAccentPurpleColor,
+        cursorColor: kAccentPinkColor,
         controller: controller,
         focusNode: myFocusNode,
         decoration: InputDecoration(
           hintText: '항목 입력..',
-          hintStyle: kPostContentTextStyle.copyWith(color: kGreyColor2_999999),
+          hintStyle: kPostContentTextStyle.copyWith(color: kGreyColor_999999),
           border: InputBorder.none,
         ),
         style: kPostContentTextStyle,
@@ -71,12 +71,12 @@ class _UploadScreenState extends State<UploadScreen> {
       child: TextField(
         controller: controller,
         focusNode: myFocusNode,
-        cursorColor: kAccentPurpleColor,
+        cursorColor: kAccentPinkColor,
         cursorWidth: 2.2,
         decoration: InputDecoration(
           //contentPadding: EdgeInsets.all(0),
           hintText: '제목 입력..',
-          hintStyle: kPostTitleTextStyle.copyWith(color: kGreyColor2_999999),
+          hintStyle: kPostTitleTextStyle.copyWith(color: kGreyColor_999999),
           border: InputBorder.none,
           counterText: '',
         ),
@@ -207,11 +207,11 @@ class _UploadScreenState extends State<UploadScreen> {
   Widget build(BuildContext context) {
     if (!isMediaQueryCalculationDone) {
       mediaWidthHeight = (MediaQuery.of(context).size.width -
-              (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2 -
+              (kPostOuterHorizontalPadding + kPostInnerHorizontalPadding) * 2 -
               24) /
           2;
       completeButtonWidth = MediaQuery.of(context).size.width -
-          (kOuterHorizontalPadding + kInnerHorizontalPadding) * 2;
+          (kPostOuterHorizontalPadding + kPostInnerHorizontalPadding) * 2;
       isMediaQueryCalculationDone = true;
     }
     //
@@ -228,7 +228,7 @@ class _UploadScreenState extends State<UploadScreen> {
               height: mediaWidthHeight,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: Color(0xffF4F4F4),
+                color: kLightGreyColor_F4F4F4,
               ),
             ),
             whichUploadMediaModel.mediaFile == null
@@ -342,7 +342,7 @@ class _UploadScreenState extends State<UploadScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Text('등록',
                         style: kNoto16M.copyWith(
-                          color: kAccentPurpleColor,
+                          color: kAccentPinkColor,
                         )),
                   ),
                 ),
@@ -375,7 +375,7 @@ class _UploadScreenState extends State<UploadScreen> {
                         //Rounded 컨테이너
                         child: Container(
                           margin: EdgeInsets.symmetric(
-                              horizontal: kOuterHorizontalPadding),
+                              horizontal: kPostOuterHorizontalPadding),
                           decoration: BoxDecoration(
                             color: kWhiteColor,
                             borderRadius: BorderRadius.all(
@@ -401,7 +401,8 @@ class _UploadScreenState extends State<UploadScreen> {
                                   SizedBox(height: 30),
                                   Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: kInnerHorizontalPadding),
+                                        horizontal:
+                                            kPostInnerHorizontalPadding),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -462,7 +463,8 @@ class _UploadScreenState extends State<UploadScreen> {
                                 children: [
                                   Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: kInnerHorizontalPadding),
+                                        horizontal:
+                                            kPostInnerHorizontalPadding),
                                     child: Column(
                                       children: [
                                         //투표 버튼

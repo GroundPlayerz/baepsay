@@ -56,7 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               width: double.infinity,
               padding: EdgeInsets.all(16.0),
               child: Text('로그아웃',
-                  style: TextStyle(color: kAccentPurpleColor, fontSize: 16.0)),
+                  style: TextStyle(color: kAccentPinkColor, fontSize: 16.0)),
             ),
           ),
         ],
