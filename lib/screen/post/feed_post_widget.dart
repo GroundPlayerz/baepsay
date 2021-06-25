@@ -396,26 +396,28 @@ class _FeedPostWidgetState extends State<FeedPostWidget> {
                                   showModalBottomSheet(
                                       context: context,
                                       builder: (BuildContext context) {
-                                        return Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Builder(builder: (context) {
-                                              return ListTile(
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              PostReportScreen(
-                                                                  postId: post
-                                                                      .id)));
-                                                },
-                                                leading: Icon(Icons.report),
-                                                title: Text('신고하기'),
-                                              );
-                                            }),
-                                          ],
+                                        return SafeArea(
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Builder(builder: (context) {
+                                                return ListTile(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                PostReportScreen(
+                                                                    postId: post
+                                                                        .id)));
+                                                  },
+                                                  leading: Icon(Icons.report),
+                                                  title: Text('신고하기'),
+                                                );
+                                              }),
+                                            ],
+                                          ),
                                         );
                                       });
                                 }),

@@ -9,6 +9,8 @@ import 'package:golden_balance_flutter/constant/spacings.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/screen/comment/comment_screen.dart';
+import 'package:golden_balance_flutter/screen/post/photo_viewer.dart';
+import 'package:golden_balance_flutter/screen/post/post_report_screen.dart';
 
 class SinglePostWidget extends StatefulWidget {
   final int postId;
@@ -279,6 +281,32 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
     super.dispose();
   }
 
+  Widget imageThumbnail({required String imageUrl}) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PhotoViewer(photoUrl: imageUrl)));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: kLightGreyColor_F4F4F4,
+          borderRadius: BorderRadius.circular(10),
+        ),
+        width: mediaWidthHeight,
+        height: mediaWidthHeight,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: CachedNetworkImage(
+            imageUrl: imageUrl,
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<PostCubit, PostState>(builder: (context, state) {
@@ -318,26 +346,27 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                     showModalBottomSheet(
                         context: context,
                         builder: (BuildContext context) {
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Builder(builder: (context) {
-                                return ListTile(
-                                  onTap: () {
-                                    Navigator.pop(context);
-                                    //Todo: 삭제하기
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             PostReportScreen(
-                                    //                 postId: post.id)));
-                                  },
-                                  leading: Icon(Icons.report),
-                                  title: Text('신고하기'),
-                                );
-                              }),
-                            ],
+                          return SafeArea(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Builder(builder: (context) {
+                                  return ListTile(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PostReportScreen(
+                                                      postId: post.id)));
+                                    },
+                                    leading: Icon(Icons.report),
+                                    title: Text('신고하기'),
+                                  );
+                                }),
+                              ],
+                            ),
                           );
                         });
                   }),
@@ -431,27 +460,9 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                                         Column(
                                           children: [
                                             mediaList[0]['type'] == 'image'
-                                                ? Container(
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          kLightGreyColor_F4F4F4,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    width: mediaWidthHeight,
-                                                    height: mediaWidthHeight,
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      child: CachedNetworkImage(
-                                                        imageUrl: mediaList[0]
-                                                            ['url'],
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  )
+                                                ? imageThumbnail(
+                                                    imageUrl: mediaList[1]
+                                                        ['url'])
                                                 : SizedBox(),
                                             SizedBox(height: 13),
                                             Container(
@@ -467,27 +478,9 @@ class _SinglePostWidgetState extends State<SinglePostWidget> {
                                         Column(
                                           children: [
                                             mediaList[1]['type'] == 'image'
-                                                ? Container(
-                                                    decoration: BoxDecoration(
-                                                      color:
-                                                          kLightGreyColor_F4F4F4,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                    width: mediaWidthHeight,
-                                                    height: mediaWidthHeight,
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      child: CachedNetworkImage(
-                                                        imageUrl: mediaList[1]
-                                                            ['url'],
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                  )
+                                                ? imageThumbnail(
+                                                    imageUrl: mediaList[0]
+                                                        ['url'])
                                                 : SizedBox(),
                                             SizedBox(height: 13),
                                             Container(

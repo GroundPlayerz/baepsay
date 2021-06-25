@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:golden_balance_flutter/bloc/cubit/device_media_query_cubit.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/constant/spacings.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
@@ -61,12 +60,6 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
@@ -75,135 +68,102 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
         }
       },
       child: Scaffold(
-        body: DefaultTabController(
-          length: 3,
-          child: NestedScrollView(
-            headerSliverBuilder: (context, value) {
-              return [
-                SliverAppBar(
-                  backgroundColor: kBackgroundGreyColor,
-                  elevation: 0.0,
-                  expandedHeight: 2 *
-                          BlocProvider.of<DeviceMediaQueryCubit>(context)
-                              .getSafeAreaTopHeight() +
-                      2 * kToolbarHeight +
-                      12 +
-                      20 +
-                      60,
-                  floating: false,
-                  pinned: true,
-                  primary: true,
-                  snap: false,
-                  title: Text(
-                    BlocProvider.of<AuthCubit>(context).getProfileName() != null
-                        ? BlocProvider.of<AuthCubit>(context).getProfileName()!
-                        : '이름없음',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  actions: [
-                    GestureDetector(
-                      onTap: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return SafeArea(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ListTile(
-                                      title: Text('프로필 편집'),
-                                      leading: Icon(Icons.edit),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProfileEditScreen()));
-                                      },
-                                    ),
-                                    ListTile(
-                                      title: Text('설정'),
-                                      leading: Icon(Icons.settings),
-                                      onTap: () {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    SettingsScreen()));
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              );
-                            });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            left: 8, top: 8, bottom: 8, right: 20),
-                        child: Image.asset(
-                          'icons/profile_screen_icon_setting@3x.png',
-                          color: kBlackColor,
-                          width: 24,
-                        ),
-                      ),
-                    ),
-                  ],
-                  flexibleSpace: BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                      if (state is FirebaseSignedIn) {
-                        return Column(
+        appBar: AppBar(
+          backgroundColor: kBackgroundGreyColor,
+          elevation: 0.0,
+          title: Text(
+            BlocProvider.of<AuthCubit>(context).getProfileName() != null
+                ? BlocProvider.of<AuthCubit>(context).getProfileName()!
+                : '이름없음',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: () {
+                showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return SafeArea(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(
-                              height: BlocProvider.of<DeviceMediaQueryCubit>(
-                                          context)
-                                      .getSafeAreaTopHeight() +
-                                  kToolbarHeight +
-                                  12,
+                            ListTile(
+                              title: Text('프로필 편집'),
+                              leading: Icon(Icons.edit),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProfileEditScreen()));
+                              },
                             ),
-                            state.member.profilePhotoUrl != null
-                                ? CircleAvatar(
-                                    radius: 40.5,
-                                    foregroundImage: CachedNetworkImageProvider(
-                                      state.member.profilePhotoUrl!,
-                                    ),
-                                    backgroundColor: Colors.white,
-                                  )
-                                : CircleAvatar(
-                                    radius: 40.5,
-                                    foregroundImage: AssetImage(
-                                        'images/default_profile_photo.png'),
-                                    backgroundColor: Colors.white,
-                                  ),
-                            state.member.role == 'admin'
-                                ? TextButton(
-                                    onPressed: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AdminScreen()));
-                                    },
-                                    child: Text(
-                                      '관리자 페이지',
-                                      style: TextStyle(color: kAccentPinkColor),
-                                    ),
-                                  )
-                                : Container(),
-                            SizedBox(
-                              height: 20,
+                            ListTile(
+                              title: Text('설정'),
+                              leading: Icon(Icons.settings),
+                              onTap: () {
+                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SettingsScreen()));
+                              },
                             ),
                           ],
-                        );
-                      } else if (state is AuthError) {
-                        return ErrorScreen();
-                      }
-                      return Container();
-                    },
+                        ),
+                      );
+                    });
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 8, top: 8, bottom: 8, right: 20),
+                child: Image.asset(
+                  'icons/profile_screen_icon_setting@3x.png',
+                  color: kBlackColor,
+                  width: 24,
+                ),
+              ),
+            ),
+          ],
+        ),
+        body: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if (state is FirebaseSignedIn) {
+              return Column(
+                children: [
+                  SizedBox(
+                    height: 12,
                   ),
-                  bottom: PreferredSize(
-                    preferredSize: Size.fromHeight(60),
+                  state.member.profilePhotoUrl != null
+                      ? CircleAvatar(
+                          radius: 40.5,
+                          foregroundImage: CachedNetworkImageProvider(
+                            state.member.profilePhotoUrl!,
+                          ),
+                          backgroundColor: Colors.white,
+                        )
+                      : Container(),
+                  state.member.role == 'admin'
+                      ? TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AdminScreen()));
+                          },
+                          child: Text(
+                            '관리자 페이지',
+                            style: TextStyle(color: kAccentPinkColor),
+                          ),
+                        )
+                      : Container(),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
                     child: Container(
                       decoration: BoxDecoration(
                         boxShadow: [
@@ -222,7 +182,9 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
                       ),
                       child: Column(
                         children: [
-                          SizedBox(height: 10),
+                          SizedBox(
+                            height: 10,
+                          ),
                           Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: kListViewOuterHorizontalPadding),
@@ -237,129 +199,28 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
                               ],
                             ),
                           ),
+                          Expanded(
+                            child: Builder(builder: (context) {
+                              if (selectedTabIndex == 0) {
+                                return MyPostListWidget();
+                              } else if (selectedTabIndex == 1) {
+                                return MyVotedPostListWidget();
+                              } else {
+                                return MyCommentListWidget();
+                              }
+                            }),
+                          ),
                         ],
                       ),
                     ),
                   ),
-                ),
-              ];
-            },
-            body: BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, state) {
-                if (state is FirebaseSignedIn) {
-                  return Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          // decoration: BoxDecoration(
-                          //   boxShadow: [
-                          //     BoxShadow(
-                          //       color: kBlackColor.withOpacity(0.08),
-                          //       spreadRadius: 5,
-                          //       blurRadius: 20,
-                          //       offset:
-                          //           Offset(0, -3), // changes position of shadow
-                          //     ),
-                          //   ],
-                          //   borderRadius: BorderRadius.only(
-                          //     topRight: Radius.circular(20.0),
-                          //     topLeft: Radius.circular(20.0),
-                          //   ),
-                          //   color: Colors.white,
-                          // ),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 10,
-                              ),
-                              // Padding(
-                              //   padding: const EdgeInsets.symmetric(
-                              //       horizontal:
-                              //           kListViewOuterHorizontalPadding),
-                              //   child: Row(
-                              //     children: [
-                              //       selectButtonTab(
-                              //           textButtonTitle: '내 어젠다', index: 0),
-                              //       selectButtonTab(
-                              //           textButtonTitle: '내 의견', index: 1),
-                              //       selectButtonTab(
-                              //           textButtonTitle: '투표한 어젠다', index: 2),
-                              //     ],
-                              //   ),
-                              // ),
-                              Expanded(
-                                child: Builder(builder: (context) {
-                                  if (selectedTabIndex == 0) {
-                                    return MyPostListWidget();
-                                  } else if (selectedTabIndex == 1) {
-                                    return MyCommentListWidget();
-                                  } else {
-                                    return MyVotedPostListWidget();
-                                  }
-                                }),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                } else if (state is AuthError) {
-                  return ErrorScreen();
-                }
-                return Container();
-              },
-            ),
-            // Container(
-            //       height: 200,
-            //       child: BlocBuilder<AuthCubit, AuthState>(
-            //           builder: (context, state) {
-            //         if (state is FirebaseSignedIn) {
-            //           return Column(
-            //             children: [
-            //               SizedBox(
-            //                 height: 12,
-            //               ),
-            //               state.member.profilePhotoUrl != null
-            //                   ? CircleAvatar(
-            //                       radius: 40.5,
-            //                       foregroundImage: CachedNetworkImageProvider(
-            //                         state.member.profilePhotoUrl!,
-            //                       ),
-            //                       backgroundColor: Colors.white,
-            //                     )
-            //                   : CircleAvatar(
-            //                       radius: 40.5,
-            //                       foregroundImage: AssetImage(
-            //                           'images/default_profile_photo.png'),
-            //                       backgroundColor: Colors.white,
-            //                     ),
-            //               state.member.role == 'admin'
-            //                   ? TextButton(
-            //                       onPressed: () {
-            //                         Navigator.push(
-            //                             context,
-            //                             MaterialPageRoute(
-            //                                 builder: (context) => AdminScreen()));
-            //                       },
-            //                       child: Text(
-            //                         '관리자 페이지',
-            //                         style: TextStyle(color: kAccentPinkColor),
-            //                       ),
-            //                     )
-            //                   : Container(),
-            //               SizedBox(
-            //                 height: 20,
-            //               ),
-            //             ],
-            //           );
-            //         } else if (state is AuthError) {
-            //           return ErrorScreen();
-            //         }
-            //         return Container();
-            //       }),
-            //     ),
-          ),
+                ],
+              );
+            } else if (state is AuthError) {
+              return ErrorScreen();
+            }
+            return Container();
+          },
         ),
       ),
     );
