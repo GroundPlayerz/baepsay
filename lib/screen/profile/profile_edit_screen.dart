@@ -142,19 +142,18 @@ class _ProfileEditScreenState extends State<ProfileEditScreen> {
                                 }
 
                                 if (uploadMediaModel.mediaFile != null) {
-                                  return Container(
-                                      height: 81,
-                                      width: 81,
-                                      child: Image.file(
+                                  return CircleAvatar(
+                                      radius: 40.5,
+                                      foregroundImage: FileImage(
                                         uploadMediaModel.mediaFile!,
-                                        fit: BoxFit.cover,
                                       ));
                                 }
 
-                                return Container(
-                                  color: Colors.grey,
-                                  height: 81,
-                                  width: 81,
+                                return CircleAvatar(
+                                  radius: 40.5,
+                                  foregroundImage: AssetImage(
+                                      'images/default_profile_photo.png'),
+                                  backgroundColor: Colors.white,
                                 );
                               },
                             ),

@@ -46,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     final PageController pageController = PageController(initialPage: 0);
-    //print(MediaQuery.of(context).padding.vertical);
     return BlocBuilder<AuthCubit, AuthState>(builder: (context, authState) {
       return Scaffold(
         appBar: AppBar(
@@ -157,24 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: feedState.feed.length + 1,
               itemBuilder: (BuildContext context, int index) {
                 if (index < feedState.feed.length) {
-                  return RefreshIndicator(
-                    onRefresh: () async {
-                      await BlocProvider.of<AuthCubit>(context)
-                          .getAccessTokenByState()
-                          .then((_) {
-                        BlocProvider.of<HomeFeedCubit>(context)
-                            .getInitialUserHomeFeed();
-                      });
-                    },
-                    child: ListView(children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height -
-                            (safeAreaTopHeight + AppBar().preferredSize.height),
-                        width: double.infinity,
-                        child: FeedPostWidge(postIndex: index),
-                      ),
-                    ]),
-                  );
+                  return FeedPostWidget(postIndex: index);
                 }
 
                 if (!feedState.isLoadingMore && feedState.hasMore) {
@@ -189,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('게시물을 모두 확인했습니다.'),
+                      Text('어젠다를 모두 확인했습니다.'),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

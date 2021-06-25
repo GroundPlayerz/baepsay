@@ -251,63 +251,7 @@ class _NestedCommentWidgetState extends State<NestedCommentWidget> {
             ),
           ],
         );
-        // return Column(
-        //   children: [
-        //     Row(
-        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //       crossAxisAlignment: CrossAxisAlignment.start,
-        //       children: [
-        //         Row(
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: [
-        //             Container(
-        //               width: 20,
-        //               height: 20,
-        //               clipBehavior: Clip.antiAlias,
-        //               decoration: BoxDecoration(
-        //                   borderRadius: BorderRadius.circular(7.0),
-        //                   color: Colors.grey),
-        //               child: nestedComment.profilePhotoUrl != null
-        //                   ? Image.network(nestedComment.profilePhotoUrl!)
-        //                   : Image.asset('images/default_profile_photo.png'),
-        //             ),
-        //             SizedBox(width: sizeboxWidthBetweenPhotoAndName),
-        //             SizedBox(
-        //               width:
-        //                   MediaQuery.of(context).size.width - sumConstantsWidth,
-        //               child: Column(
-        //                 crossAxisAlignment: CrossAxisAlignment.start,
-        //                 children: [
-        //                   Text(
-        //                     nestedComment.profileName +
-        //                         '     ' +
-        //                         _createdOrUpdatedAt(
-        //                                 nestedComment: nestedComment)
-        //                             .split(' ')[0]
-        //                             .split('T')[0]
-        //                             .replaceAll('-', '/'),
-        //                     style: kCommentInfoTextStyle.copyWith(
-        //                         color: kWhiteColor.withOpacity(0.7)),
-        //                   ),
-        //                   SizedBox(height: 4),
-        //                   Text(
-        //                     nestedComment.text,
-        //                     style: kCommentTextTextStyle,
-        //                     softWrap: true,
-        //                   ),
-        //                 ],
-        //               ),
-        //             ),
-        //             SizedBox(width: 8),
-        //           ],
-        //         ),
-        //         _likeButton(nestedComment: nestedComment),
-        //       ],
-        //     ),
-        //   ],
-        // );
       } else {
-        //Todo: 스켈레톤
         return Container();
       }
     });
