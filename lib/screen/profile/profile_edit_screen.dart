@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/upload_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
@@ -12,7 +11,6 @@ import 'package:golden_balance_flutter/bloc/state/upload_state.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen_media_model.dart';
 import 'package:golden_balance_flutter/util/widget.dart';
-import 'package:pedantic/pedantic.dart';
 
 class ProfileEditScreen extends StatefulWidget {
   @override

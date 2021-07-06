@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:golden_balance_flutter/bloc/cubit/comment_screen_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/nested_comment_screen_cubit.dart';
-import 'package:golden_balance_flutter/model/comment/comment.dart';
 import 'package:golden_balance_flutter/model/nested_comment/nested_comment.dart';
 import 'package:golden_balance_flutter/util/widget.dart';
 

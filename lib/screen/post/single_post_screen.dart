@@ -22,8 +22,6 @@ class SinglePostWidget extends StatefulWidget {
 
 class _SinglePostWidgetState extends State<SinglePostWidget> {
   late int postId;
-  final double _titleAreaHeight = 56;
-  bool _isTitleStretched = false;
 
   late final double mediaWidthHeight;
   late final double completeButtonWidth;

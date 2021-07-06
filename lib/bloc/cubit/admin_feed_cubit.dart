@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/admin_feed_state.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
-import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/repository/admin_repository.dart';
 
 class AdminFeedCubit extends Cubit<AdminFeedState> {

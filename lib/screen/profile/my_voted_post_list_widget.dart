@@ -7,7 +7,6 @@ import 'package:golden_balance_flutter/constant/spacings.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
 import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
 
 class MyVotedPostListWidget extends StatefulWidget {
   @override

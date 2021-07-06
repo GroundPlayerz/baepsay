@@ -8,7 +8,6 @@ import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
 
 class MyCommentListWidget extends StatefulWidget {
   @override

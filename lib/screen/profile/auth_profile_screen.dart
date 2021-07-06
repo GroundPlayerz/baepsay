@@ -204,9 +204,9 @@ class _AuthProfileScreenState extends State<AuthProfileScreen> {
                               if (selectedTabIndex == 0) {
                                 return MyPostListWidget();
                               } else if (selectedTabIndex == 1) {
-                                return MyVotedPostListWidget();
-                              } else {
                                 return MyCommentListWidget();
+                              } else {
+                                return MyVotedPostListWidget();
                               }
                             }),
                           ),

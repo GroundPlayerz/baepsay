@@ -10,7 +10,6 @@ import 'package:golden_balance_flutter/constant/spacings.dart';
 import 'package:golden_balance_flutter/constant/textstyle.dart';
 import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/screen/comment/comment_screen.dart';
-import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/post/photo_viewer.dart';
 import 'package:golden_balance_flutter/screen/post/post_report_screen.dart';
 

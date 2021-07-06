@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,15 +6,12 @@ import 'package:golden_balance_flutter/bloc/cubit/auth_cubit.dart';
 import 'package:golden_balance_flutter/bloc/cubit/home_feed_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/auth_state.dart';
 import 'package:golden_balance_flutter/bloc/state/home_feed_state.dart';
-import 'package:golden_balance_flutter/configuration.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
-import 'package:golden_balance_flutter/screen/post/feed_post_widget.dart';
 import 'package:golden_balance_flutter/screen/post/feed_post_widget.dart';
 import 'package:golden_balance_flutter/screen/profile/auth_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/profile/unauth_profile_screen.dart';
 import 'package:golden_balance_flutter/screen/upload/upload_screen.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -52,7 +47,16 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           //backgroundColor: kBackgroundNavyColor,
           leadingWidth: 0,
-          titleSpacing: 0,
+          titleSpacing: 10.0,
+          title: Container(
+            width: 40.0,
+            height: 40.0,
+            child:
+              Image.asset(
+                'icons/red_baepsay.png',
+              ),
+
+          ),
           actions: [
             IconButton(
                 icon: Container(

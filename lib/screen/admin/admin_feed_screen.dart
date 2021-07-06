@@ -6,7 +6,6 @@ import 'package:golden_balance_flutter/bloc/state/admin_feed_state.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
 import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
-import 'package:golden_balance_flutter/screen/post/single_post_screen.dart';
 
 class AdminFeedScreen extends StatefulWidget {
   @override

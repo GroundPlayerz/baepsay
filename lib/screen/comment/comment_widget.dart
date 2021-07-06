@@ -15,7 +15,7 @@ import 'package:golden_balance_flutter/util/widget.dart';
 
 class CommentWidget extends StatefulWidget {
   //Comment comment;
-  int commentIndex;
+  final int commentIndex;
   CommentWidget({required this.commentIndex});
   @override
   _CommentWidgetState createState() => _CommentWidgetState();

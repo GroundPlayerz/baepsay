@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:golden_balance_flutter/util/dio_logging_interceptor.dart';
 
 import '../configuration.dart';

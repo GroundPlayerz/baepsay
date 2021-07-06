@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
-import 'package:golden_balance_flutter/model/post/post.dart';
 
 @immutable
 abstract class AdminFeedState extends Equatable {}

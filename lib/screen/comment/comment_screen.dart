@@ -57,7 +57,7 @@ class _CommentScreenState extends State<CommentScreen> {
     });
     banner = BannerAd(
       size: AdSize.fullBanner,
-      adUnitId: Platform.isIOS ? iosTestUnitId : androidTestUnitId,
+      adUnitId: Platform.isIOS ? iosUnitId : androidUnitId,
       listener: BannerAdListener(),
       request: AdRequest(),
     )..load();
@@ -206,7 +206,6 @@ class _CommentScreenState extends State<CommentScreen> {
                         ad: banner!,
                       ),
               ),
-              //댓글 업로드중 생기는 circularindicator
               !_isUploadingComment
                   ? Container()
                   : SizedBox(
@@ -221,9 +220,6 @@ class _CommentScreenState extends State<CommentScreen> {
                       return Expanded(
                         child: Container(
                           width: MediaQuery.of(context).size.width,
-                          //height: 100,
-                          //color: Colors.red,
-                          //child: Text('아직 댓글이 없습니다.'),
                         ),
                       );
                     }
@@ -279,7 +275,6 @@ class _CommentScreenState extends State<CommentScreen> {
                 hintText: '당신의 의견을 말해주세요..',
                 onTap: () async {
                   if (_canPost) {
-                    //Todo: 작성한 댓글 없애고, 업로드중엔 로딩 indicator 띄우기
                     setState(() {
                       _isUploadingComment = true;
                     });
@@ -292,7 +287,6 @@ class _CommentScreenState extends State<CommentScreen> {
                     setState(() {
                       _isUploadingComment = false;
                     });
-                    //Todo: 업로드된 댓글 나타나는지 확인하기
                   }
                 },
               ),

@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_balance_flutter/bloc/state/my_post_state.dart';
-import 'package:golden_balance_flutter/model/post/post.dart';
 import 'package:golden_balance_flutter/model/post/simple_post.dart';
 import 'package:golden_balance_flutter/repository/member_repository.dart';
 

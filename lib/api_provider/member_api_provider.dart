@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:golden_balance_flutter/model/media_for_upload.dart';
 import '../configuration.dart';
@@ -10,7 +9,6 @@ import '../util/dio_logging_interceptor.dart';
 class MemberApiProvider {
   final Dio _dio = Dio();
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   MemberApiProvider() {
     _dio.options = dioOptions;

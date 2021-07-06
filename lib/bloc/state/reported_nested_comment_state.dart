@@ -1,9 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:golden_balance_flutter/model/comment/reported_comment.dart';
 import 'package:golden_balance_flutter/model/nested_comment/reported_nested_comment.dart';
-import 'package:golden_balance_flutter/model/post/simple_post.dart';
-import 'package:golden_balance_flutter/model/post/reported_post.dart';
 
 @immutable
 abstract class ReportedNestedCommentState extends Equatable {}

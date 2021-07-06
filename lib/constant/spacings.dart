@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 const double kPostOuterHorizontalPadding = 10;
 const double kPostInnerHorizontalPadding = 20;
 

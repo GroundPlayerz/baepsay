@@ -7,4 +7,6 @@ BaseOptions dioOptions = BaseOptions(
 );
 
 final String iosTestUnitId = 'ca-app-pub-3940256099942544/2934735716';
+final String iosUnitId = 'ca-app-pub-8676069517294551/3309081976';
 final String androidTestUnitId = 'ca-app-pub-3940256099942544/6300978111';
+final String androidUnitId = 'ca-app-pub-8676069517294551/4590374052';

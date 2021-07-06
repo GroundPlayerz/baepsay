@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:golden_balance_flutter/model/comment/comment.dart';
-import 'package:golden_balance_flutter/model/post/post.dart';
 
 @immutable
 abstract class MyCommentState extends Equatable {}

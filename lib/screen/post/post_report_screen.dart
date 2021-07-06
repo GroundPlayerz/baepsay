@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:golden_balance_flutter/bloc/cubit/report_cubit.dart';
 import 'package:golden_balance_flutter/bloc/state/report_state.dart';
-import 'package:golden_balance_flutter/repository/member_repository.dart';
-import 'package:golden_balance_flutter/screen/home/home_screen.dart';
 import 'package:golden_balance_flutter/util/widget.dart';
 
 class PostReportScreen extends StatefulWidget {

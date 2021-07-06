@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:golden_balance_flutter/model/token/token.dart';
-import 'package:golden_balance_flutter/repository/auth_repository.dart';
 
 class DioLoggingInterceptors extends dio.Interceptor {
   final dio.Dio _dio;

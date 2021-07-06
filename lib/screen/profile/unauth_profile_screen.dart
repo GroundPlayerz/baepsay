@@ -1,12 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:golden_balance_flutter/constant/color.dart';
-import 'package:golden_balance_flutter/screen/admin/admin_screen.dart';
 import 'package:golden_balance_flutter/screen/error_screen.dart';
-import 'package:golden_balance_flutter/screen/profile/profile_edit_screen.dart';
-import 'package:golden_balance_flutter/screen/setting/settings_screen.dart';
 
 import '../../bloc/cubit/auth_cubit.dart';
 import '../../bloc/state/auth_state.dart';
